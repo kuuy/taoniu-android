@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+    android:id="@+id/navHome"
+    android:icon="@drawable/ic_home"
+    android:title="Taoniu" />
+
+  <item
+    android:id="@+id/navStrategyHome"
+    android:icon="@drawable/ic_announcements"
+    android:title="Announcements" />
+
+  <item
+    android:id="@+id/navOrderHome"
+    android:icon="@drawable/ic_explore"
+    android:title="Orders" />
+
+  <!--
+  <item
+    android:id="@+id/navProductListings"
+    android:icon="@drawable/ic_messaging"
+    android:title="ProductListings"/>
+  -->
+
+  <item
+    android:id="@+id/navScanner"
+    android:icon="@drawable/ic_explore"
+    android:title="Explore" />
+
+  <!--
+  <item
+    android:id="@+id/messaging"
+    android:icon="@drawable/ic_messaging"
+    android:title="Messaging"/>
+  -->
+
+</menu>
+

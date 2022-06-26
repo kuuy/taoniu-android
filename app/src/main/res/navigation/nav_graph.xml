@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.kuuy.taoniu.ui.home.HomeFragment"
+        android:label="Taoniu"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.kuuy.taoniu.ui.detail.DetailFragment"
+        android:label="Article"
+        tools:layout="@layout/fragment_detail">
+        <action
+            android:id="@+id/action_detailFragment_to_articleFragment"
+            app:destination="@id/articleFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+            android:name="newsParcel"
+            app:argType="com.kuuy.taoniu.data.model.ArticlesItem" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.kuuy.taoniu.ui.article.ArticleFragment"
+        android:label="Article"
+        tools:layout="@layout/fragment_article">
+        <argument
+            android:name="webParcel"
+            app:argType="com.kuuy.taoniu.data.model.ArticlesItem" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/strategyHomeFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.StrategyHomeFragment"
+        android:label="StrategyHome"
+        tools:layout="@layout/fragment_cryptos_strategy_home">
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderHomeFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.OrderHomeFragment"
+        android:label="OrderHome"
+        tools:layout="@layout/fragment_cryptos_order_home">
+    </fragment>
+
+    <fragment
+        android:id="@+id/productListingsFragment"
+        android:name="com.kuuy.taoniu.ui.groceries.fragments.ProductListingsFragment"
+        android:label="ProductListings"
+        tools:layout="@layout/fragment_groceries_product_listings">
+        <action
+            android:id="@+id/toProductDetailFragment"
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.kuuy.taoniu.ui.groceries.fragments.ProductDetailFragment"
+        android:label="ProductDetail"
+        tools:layout="@layout/fragment_groceries_product_detail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+         <action
+            android:id="@+id/toProductListingsFragment"
+            app:destination="@id/productListingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productCreateFragment"
+        android:name="com.kuuy.taoniu.ui.groceries.fragments.ProductCreateFragment"
+        android:label="ProductCreate"
+        tools:layout="@layout/fragment_groceries_product_create">
+        <argument
+            android:name="barcode"
+            app:argType="string" />
+        <action
+            android:id="@+id/toProductListingsFragment"
+            app:destination="@id/productListingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productBarcodeFragment"
+        android:name="com.kuuy.taoniu.ui.groceries.fragments.ProductBarcodeFragment"
+        android:label="ProductBarcode"
+        tools:layout="@layout/fragment_groceries_product_barcode">
+        <action
+            android:id="@+id/toProductDetailFragment"
+            app:destination="@id/productDetailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <action
+            android:id="@+id/toProductCreateFragment"
+            app:destination="@id/productCreateFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+            android:name="barcode"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/scannerFragment"
+        android:name="com.kuuy.taoniu.ui.main.fragments.ScannerFragment"
+        android:label="OrderHome"
+        tools:layout="@layout/fragment_scanner">
+        <action
+            android:id="@+id/toProductBarcodeFragment"
+            app:destination="@id/productBarcodeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+ 
+</navigation>
