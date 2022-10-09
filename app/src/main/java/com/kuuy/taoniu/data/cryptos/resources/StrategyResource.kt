@@ -14,10 +14,10 @@ import com.kuuy.taoniu.data.ApiResponse
 class StrategyResource @Inject constructor(
   private var strategyApi: StrategyApi 
 ) {
-  suspend fun getStrategyListings()
+  suspend fun getStrategyListings(current: Int, pageSize: Int)
       : Flow<ApiResponse<StrategyListingsDto>> {
     return flow {
-      val response = strategyApi.getStrategyListings()
+      val response = strategyApi.getStrategyListings(current, pageSize)
       emit(ApiResponse.Success(response))
     }.flowOn(Dispatchers.IO)
   }

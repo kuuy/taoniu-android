@@ -2,10 +2,13 @@ package com.kuuy.taoniu.ui.cryptos.fragments
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.google.android.material.snackbar.Snackbar
+import com.kuuy.taoniu.R
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,6 +47,17 @@ class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() 
     binding.rvStrategyList.apply {
       adapter = this@StrategyHomeFragment.adapter
       layoutManager = LinearLayoutManager(requireContext())
+      val divider = DividerItemDecoration(
+        requireContext(),
+        DividerItemDecoration.VERTICAL
+      )
+      ContextCompat.getDrawable(
+        requireContext(),
+        R.drawable.divider_transparent
+      )?.let {
+        divider.setDrawable(it)
+      }
+      addItemDecoration(divider)
       setHasFixedSize(true)
     }
   }
@@ -60,7 +74,7 @@ class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() 
         }
         is ApiResource.Success -> {
           response.data?.let {
-            adapter.setData(it.transform().strategies)
+            adapter.setData(it.transform().data)
           }
           binding.rvStrategyList.visibility = View.VISIBLE
           showLoading(false)

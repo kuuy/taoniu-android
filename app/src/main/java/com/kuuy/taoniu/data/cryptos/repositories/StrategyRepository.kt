@@ -18,7 +18,7 @@ class StrategyRepository @Inject constructor(
       : Flow<ApiResource<StrategyListingsDto>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = strategyResource.getStrategyListings().first()) {
+      when (val response = strategyResource.getStrategyListings(1, 25).first()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))

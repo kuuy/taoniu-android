@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
+import com.kuuy.taoniu.data.DbResource
 import com.kuuy.taoniu.data.groceries.dto.ProductListingsDto
 import com.kuuy.taoniu.data.groceries.dto.ProductDetailDto
 import com.kuuy.taoniu.data.groceries.dto.ProductBarcodeDto
@@ -34,6 +35,8 @@ class ProductViewModel @Inject constructor(
       = MutableLiveData<ApiResource<Nothing>>()
   private val _productUpdate
       = MutableLiveData<ApiResource<Nothing>>()
+  private val _productAddToCounter
+      = MutableLiveData<DbResource<Nothing>>()
   val productListings: LiveData<ApiResource<ProductListingsDto>>
       get() = _productListings
   val productDetail: LiveData<ApiResource<ProductDetailDto>>
@@ -44,6 +47,8 @@ class ProductViewModel @Inject constructor(
       get() = _productCreate
   val productUpdate: LiveData<ApiResource<Nothing>>
       get() = _productUpdate
+  val productAddToCounter: LiveData<DbResource<Nothing>>
+      get() = _productAddToCounter
 
   fun getProductListings() {
     viewModelScope.launch {
@@ -173,4 +178,27 @@ class ProductViewModel @Inject constructor(
     }
   }
 
+  fun addToCounter(
+    id: String,
+    title: String,
+    price: Float
+  ) {
+    viewModelScope.launch {
+      repository.addToCounter(
+        id,
+        title,
+        price
+      ).onStart {
+        _productAddToCounter.postValue(DbResource.Loading())
+      }.catch {
+        it.message?.let { message ->
+          _productAddToCounter.postValue(DbResource.Error(message))
+        }
+      }.collect { result ->
+        result.data.let {
+          _productAddToCounter.postValue(DbResource.Success(it))
+        }
+      }
+    }
+  }
 }

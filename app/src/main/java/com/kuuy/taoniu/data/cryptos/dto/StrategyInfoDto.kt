@@ -16,4 +16,6 @@ data class StrategyInfoDto(
   val price: Float,
   @field:SerializedName("signal")
   val signal: Int,
+  @field:SerializedName("created_at_fmt")
+  var createdAt: String,
 ) : Parcelable

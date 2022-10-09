@@ -22,6 +22,7 @@ class StrategyInfoHolder(
     }
     binding.tvPosition.text = positionText
     binding.tvPrice.text = model.price.toString()
+    binding.tvCreatedAt.text = model.createdAt
   }
 }
 

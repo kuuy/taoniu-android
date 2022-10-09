@@ -6,4 +6,5 @@ data class StrategyInfo(
   val indicator : String,
   val price : Float,
   val signal : Int,
+  var createdAt : String,
 )

@@ -8,7 +8,11 @@ import com.kuuy.taoniu.data.cryptos.models.StrategyInfo
 
 fun StrategyListingsDto.transform(): StrategyListings {
   return StrategyListings(
-    strategies=strategies.transform(),
+    success=success,
+    data=data.transform(),
+    total=total,
+    current=current,
+    pageSize=pageSize,
   )
 }
 
@@ -23,5 +27,6 @@ fun StrategyInfoDto.transform(): StrategyInfo {
     indicator,
     price,
     signal,
+    createdAt,
   )
 }

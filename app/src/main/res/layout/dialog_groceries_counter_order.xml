@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@color/material_grey200"
+    tools:context=".ui.groceries.dialogs.CounterOrderDialog">
+
+    <ImageView 
+        android:id="@+id/ivClose"
+        android:padding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close_black_24dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnUpdate"
+        android:theme="@style/ButtonStyleGreen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="更新"
+        android:textSize="20sp"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flQuantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="5dp"
+        android:background="@drawable/bg_rounded"
+        app:layout_constraintTop_toBottomOf="@id/btnUpdate">
+
+        <ImageView
+            android:id="@+id/ivDown"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_minus"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/etQuantity"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <com.kuuy.taoniu.ui.widgets.NumberEditText
+            android:id="@+id/etQuantity"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:textColor="@color/material_grey800"
+            android:background="@drawable/border_edittext"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintStart_toEndOf="@id/ivDown"
+            app:layout_constraintEnd_toStartOf="@id/ivUp"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <ImageView
+            android:id="@+id/ivUp"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_add"
+            android:tint="@color/colorPrimary"
+            app:layout_constraintStart_toEndOf="@id/etQuantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_rounded"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@id/flQuantity" >
+
+        <com.kuuy.taoniu.ui.widgets.NumberEditText
+            android:id="@+id/etPrice"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_edittext"
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="5dp"
+            android:text="0.00"
+            android:textColor="@color/material_grey800"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_rounded"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@id/flPrice" >
+
+        <com.kuuy.taoniu.ui.widgets.NumberEditText
+            android:id="@+id/etDiscount"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:textColor="@color/material_grey800"
+            android:background="@drawable/border_edittext"
+            android:gravity="center"
+            android:text="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvResetDiscountOrReduce"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <TextView
+            android:id="@+id/tvResetDiscountOrReduce"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_add"
+            android:tint="@color/colorPrimary"
+            android:gravity="center"
+            android:text="重置"
+            app:layout_constraintStart_toEndOf="@id/etDiscount"
+            app:layout_constraintEnd_toStartOf="@id/etReduce"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <com.kuuy.taoniu.ui.widgets.NumberEditText
+            android:id="@+id/etReduce"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:inputType="number"
+            android:textColor="@color/material_grey800"
+            android:background="@drawable/border_edittext"
+            android:gravity="center"
+            android:text="0.00"
+            app:layout_constraintStart_toEndOf="@id/tvResetDiscountOrReduce"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flFreeOrGift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_rounded"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@id/flDiscount" >
+
+        <TextView
+            android:id="@+id/tvFree"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_add"
+            android:tint="@color/colorPrimary"
+            android:text="免单"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/etNumber"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <com.kuuy.taoniu.ui.widgets.NumberEditText
+            android:id="@+id/etNumber"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border_edittext"
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="5dp"
+            android:text="0"
+            android:textColor="@color/material_grey800"
+            app:layout_constraintStart_toEndOf="@id/tvFree"
+            app:layout_constraintEnd_toStartOf="@id/tvGift"
+            app:layout_constraintHorizontal_weight="1" />
+
+        <TextView
+            android:id="@+id/tvGift"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_add"
+            android:tint="@color/colorPrimary"
+            android:text="礼品"
+            app:layout_constraintStart_toEndOf="@id/etNumber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

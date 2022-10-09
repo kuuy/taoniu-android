@@ -21,9 +21,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.utils.*
 import com.kuuy.taoniu.data.ApiResource
+import com.kuuy.taoniu.data.DbResource
 import com.kuuy.taoniu.data.images.mappings.transform
 import com.kuuy.taoniu.data.groceries.mappings.transform
 import com.kuuy.taoniu.data.groceries.models.ProductBarcode
+import com.kuuy.taoniu.data.groceries.models.ProductDetail
 
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.images.fragments.ImageViewModel
@@ -43,6 +45,7 @@ class ProductDetailFragment
   private val viewModel by viewModels<ProductViewModel>()
   private val imageViewModel by viewModels<ImageViewModel>()
   private var snackBar: Snackbar? = null
+  private lateinit var productDetail: ProductDetail
 
   private val resultLauncherCamera =
       registerForActivityResult(
@@ -156,6 +159,16 @@ class ProductDetailFragment
       }
     }
 
+    binding.btnAdd.setOnClickListener {
+      if (::productDetail.isInitialized) {
+        viewModel.addToCounter(
+          productDetail.remoteId,
+          productDetail.title,
+          productDetail.price
+        )
+      }
+    }
+
     binding.btnSubmit.setOnClickListener {
       viewModel.updateProduct(
         args.id,
@@ -178,13 +191,13 @@ class ProductDetailFragment
         }
         is ApiResource.Success -> {
           showLoading(false)
-          response.data?.let{
-            val product = it.transform()
-            binding.tvBarcode.text = product.barcode
-            binding.etTitle.setText(product.title)
-            binding.etIntro.setText(product.intro)
-            binding.etPrice.setText(product.price.toString())
-            binding.tvCover.text = product.cover
+          response.data?.let {
+            productDetail = it.transform()
+            binding.tvBarcode.text = productDetail.barcode
+            binding.etTitle.setText(productDetail.title)
+            binding.etIntro.setText(productDetail.intro)
+            binding.etPrice.setText(productDetail.price.toString())
+            binding.tvCover.text = productDetail.cover
           }
         }
         is ApiResource.Error -> {
@@ -240,6 +253,23 @@ class ProductDetailFragment
       }
     }
 
+    viewModel.productAddToCounter.observe(
+      viewLifecycleOwner
+    ) { result->
+      when (result) {
+        is DbResource.Loading -> {
+          showLoading(true)
+        } 
+        is DbResource.Success -> {
+          showLoading(false)
+          showToast("add to counter success")
+        }
+        is DbResource.Error -> {
+          showLoading(false)
+          showToast(result.message ?: "db failed")
+        }
+      }
+    }
   }
 
   override protected fun bindCameraUseCases() {

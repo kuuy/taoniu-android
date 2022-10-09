@@ -1,6 +1,10 @@
 package com.kuuy.taoniu.data.cryptos.models
 
 data class StrategyListings(
-  val strategies: List<StrategyInfo>,
+  var success: Boolean,
+  val data: List<StrategyInfo>,
+  var total: Int,
+  var current: Int,
+  var pageSize: Int,
 )
 

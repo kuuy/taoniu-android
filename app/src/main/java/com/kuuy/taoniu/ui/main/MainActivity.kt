@@ -43,6 +43,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         R.id.navOrderHome -> {
           navController.navigate(R.id.orderHomeFragment)
         }
+        R.id.navCounter -> {
+          navController.navigate(R.id.counterFragment)
+        }
         R.id.navScanner -> {
           navController.navigate(R.id.scannerFragment)
         }

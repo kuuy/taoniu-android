@@ -15,12 +15,10 @@
     android:icon="@drawable/ic_explore"
     android:title="Orders" />
 
-  <!--
   <item
-    android:id="@+id/navProductListings"
+    android:id="@+id/navCounter"
     android:icon="@drawable/ic_messaging"
-    android:title="ProductListings"/>
-  -->
+    android:title="Counter"/>
 
   <item
     android:id="@+id/navScanner"

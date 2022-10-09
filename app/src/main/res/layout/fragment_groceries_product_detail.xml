@@ -59,13 +59,22 @@
             app:layout_constraintTop_toBottomOf="@id/tvCover"
             app:layout_constraintStart_toStartOf="parent"/>
 
+         <Button
+            android:id="@+id/btnAdd"
+            android:text="柜台结算"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/btnUpload"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <Button
             android:id="@+id/btnSubmit"
             android:text="Submit"
             android:textAllCaps="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/btnUpload"
+            app:layout_constraintTop_toBottomOf="@id/btnAdd"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <ImageView

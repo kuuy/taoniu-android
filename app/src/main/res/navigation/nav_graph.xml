@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/productListingsFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -117,6 +117,18 @@
         <argument
             android:name="barcode"
             app:argType="string" />
+    </fragment>
+
+    <fragment    
+        android:id="@+id/counterFragment"
+        android:name="com.kuuy.taoniu.ui.groceries.fragments.CounterFragment"
+        android:label="Counter"
+        tools:layout="@layout/fragment_groceries_counter">
+        <action
+            android:id="@+id/toProductListingsFragment"
+            app:destination="@id/productListingsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
     </fragment>
 
     <fragment

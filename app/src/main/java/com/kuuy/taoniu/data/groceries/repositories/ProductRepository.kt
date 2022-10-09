@@ -7,14 +7,18 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 
 import com.kuuy.taoniu.data.groceries.resources.ProductResource
+import com.kuuy.taoniu.data.groceries.dao.CounterOrderDao
 import com.kuuy.taoniu.data.groceries.dto.ProductListingsDto
 import com.kuuy.taoniu.data.groceries.dto.ProductDetailDto
 import com.kuuy.taoniu.data.groceries.dto.ProductBarcodeDto
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.ApiResponse
+import com.kuuy.taoniu.data.DbResource
+import com.kuuy.taoniu.data.DbResult
 
 class ProductRepository @Inject constructor(
-  private val productResource: ProductResource
+  private val productResource: ProductResource,
+  private val counterOrderDao: CounterOrderDao
 ) {
   suspend fun getProductListings()
       : Flow<ApiResource<ProductListingsDto>> {
@@ -137,5 +141,29 @@ class ProductRepository @Inject constructor(
     }
   }
 
+  fun addToCounter(
+    id: String,
+    title: String,
+    price: Float
+  ) : Flow<DbResource<Nothing?>> {
+    return flow {
+      emit(DbResource.Loading())
+      when (val result = counterOrderDao.addProduct(
+        id,
+        title,
+        price
+      ).first()) {
+        is DbResult.Success -> {
+          emit(DbResource.Success(null))
+        }
+        is DbResult.Empty -> {
+          emit(DbResource.Success(null))
+        }
+        is DbResult.Error -> {
+          emit(DbResource.Error(result.errorMessage))    
+        }
+      }
+    }
+  }
 }
 
