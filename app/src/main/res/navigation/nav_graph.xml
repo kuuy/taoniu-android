@@ -18,6 +18,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.kuuy.taoniu.ui.account.fragments.LoginFragment"
+        android:label="Taoniu"
+        tools:layout="@layout/fragment_account_login">
+        <action
+            android:id="@+id/toHomeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+    </fragment>
+
+    <fragment
         android:id="@+id/detailFragment"
         android:name="com.kuuy.taoniu.ui.detail.DetailFragment"
         android:label="Article"

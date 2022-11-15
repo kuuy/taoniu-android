@@ -1,5 +1,6 @@
 package com.kuuy.taoniu.ui.home
 
+import android.content.SharedPreferences
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -7,15 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.databinding.FragmentHomeBinding
+import com.kuuy.taoniu.di.PreferencesModule
 import com.kuuy.taoniu.ui.adapter.ItemNewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.utils.*
+import javax.inject.Named
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
   private val viewModels by viewModels<HomeViewModel>()
   private val mAdapter by lazy { ItemNewsAdapter() }
   private var snackBar: Snackbar? = null

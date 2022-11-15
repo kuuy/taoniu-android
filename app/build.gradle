@@ -24,6 +24,8 @@ android {
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+    buildConfigField("String", "ACCOUNT_API_URL", project.properties["ACCOUNT_API_URL"])
+    buildConfigField("String", "ACCOUNT_ASSETS_URL", project.properties["ACCOUNT_ASSETS_URL"])
     buildConfigField("String", "CRYPTOS_API_URL", project.properties["CRYPTOS_API_URL"])
     buildConfigField("String", "CRYPTOS_ASSETS_URL", project.properties["CRYPTOS_ASSETS_URL"])
     buildConfigField("String", "GROCERIES_API_URL", project.properties["GROCERIES_API_URL"])

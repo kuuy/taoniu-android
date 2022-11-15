@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.ui.base
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,18 @@ import androidx.viewbinding.ViewBinding
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.kuuy.taoniu.di.PreferencesModule
 
 import com.kuuy.taoniu.utils.showToast
+import javax.inject.Inject
+import javax.inject.Named
 
 abstract class BaseFragment<B:ViewBinding> : Fragment() {
   private var _binding: B? = null
   protected val binding get() = _binding!!
+
+  @Inject
+  @Named(PreferencesModule.AUTH_PREFERENCES) protected lateinit var authPreferences: SharedPreferences
 
   protected abstract fun viewBinding(container: ViewGroup?): B
 
