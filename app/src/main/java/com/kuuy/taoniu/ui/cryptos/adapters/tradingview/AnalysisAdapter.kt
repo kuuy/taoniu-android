@@ -25,11 +25,24 @@ class AnalysisAdapter: BaseListAdapter<AnalysisInfo, AnalysisHolder>() {
     holder.onBind(model, position)
   }
 
-  fun setData(items: List<AnalysisInfo>) {
-    val diffUtil = DiffUtils<AnalysisInfo>(listings, items)
+  fun setDatas(items: List<AnalysisInfo>) {
+    val diffUtil = DiffUtils(listings, items)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = items
     diffUtilResult.dispatchUpdatesTo(this)
+
+    listings = items
+  }
+
+  fun addDatas(items: List<AnalysisInfo>) {
+    val datas = mutableListOf<AnalysisInfo>()
+    datas.addAll(listings)
+    datas.addAll(items)
+
+    val diffUtil = DiffUtils(listings, datas)
+    val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
+    diffUtilResult.dispatchUpdatesTo(this)
+
+    listings = datas
   }
 
 }

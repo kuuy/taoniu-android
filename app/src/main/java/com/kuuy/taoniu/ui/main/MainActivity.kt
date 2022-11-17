@@ -12,7 +12,6 @@ import com.kuuy.taoniu.ui.base.BaseActivity
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
-
   private lateinit var navController: NavController
   private lateinit var navHostFragment: NavHostFragment
 
@@ -21,7 +20,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
   }
 
   override fun onBind() {
-
     navHostFragment = supportFragmentManager.findFragmentById(
       R.id.navHostFragment
     ) as NavHostFragment
@@ -55,7 +53,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
       return@setOnItemSelectedListener true
     }
+  }
 
+  override fun onResume() {
+    super.onResume()
     if (!authPreferences.contains("ACCESS_TOKEN")) {
       navController.navigate(R.id.loginFragment)
     }

@@ -23,8 +23,7 @@ class AnalysisRepository @Inject constructor(
       emit(ApiResource.Loading())
       when (val response = resource.listings(exchange, interval, current, pageSize).first()) {
         is ApiResponse.Success -> {
-          val data = response.data
-          emit(ApiResource.Success(data))
+          emit(ApiResource.Success(response.data))
         }
         is ApiResponse.Empty -> {
           emit(ApiResource.Success(null))

@@ -144,23 +144,18 @@ class CounterFragment
   }
 
   private fun swipeToDelete(recyclerView: RecyclerView) {
-
     val swipeCallBack = object : SwipeToDelete() {
-
       override fun onSwiped(
         viewHolder: RecyclerView.ViewHolder,
         direction: Int
       ) {
-        val position = viewHolder.adapterPosition
-        adapter.remove(position)
+        adapter.remove(viewHolder.absoluteAdapterPosition)
       }
     }
 
     val itemTouchHelper = ItemTouchHelper(swipeCallBack)
     itemTouchHelper.attachToRecyclerView(recyclerView)
-
   }
-
 
   private fun showLoading(isLoading: Boolean) {
   }

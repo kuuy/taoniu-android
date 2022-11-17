@@ -2,6 +2,7 @@ package com.kuuy.taoniu.data
 
 import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.account.dto.TokenDto
 import com.kuuy.taoniu.data.account.repositories.TokenRepository
@@ -60,11 +61,15 @@ class ApiInterceptor constructor(
       }.commit()
     }
     if (response.code == 200) {
-      val gson = GsonBuilder().create()
-      var result = gson.fromJson(response.body?.string(), DtoResponse::class.java)
-      if (result.success) {
-        var token = gson.fromJson(gson.toJson(result.data), TokenDto::class.java)
-        return token.access
+      try {
+        val gson = GsonBuilder().create()
+        var result = gson.fromJson(response.body?.string(), DtoResponse::class.java)
+        if (result.success) {
+          var token = gson.fromJson(gson.toJson(result.data), TokenDto::class.java)
+          return token.access
+        }
+      } catch (e: JsonSyntaxException) {
+      } catch (e: NullPointerException) {
       }
     }
 

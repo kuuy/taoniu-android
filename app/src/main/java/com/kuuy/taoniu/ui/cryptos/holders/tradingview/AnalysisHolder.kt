@@ -10,5 +10,6 @@ class AnalysisHolder(
 
   override fun onBind(model: AnalysisInfo, position: Int) {
     binding.tvSymbol.text = model.symbol
+    binding.tvRecommendation.text = model.summary.recommendation
   }
 }
