@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.math.BigInteger
+import java.security.MessageDigest
 
 suspend fun Fragment.delayToast(
   message: String,
@@ -16,12 +18,11 @@ suspend fun Fragment.delayToast(
   }
 }
 
-
 fun Fragment.showToast(
   message: String,
   duration: Int = Toast.LENGTH_SHORT
 ) {
-  Toast.makeText(getActivity(), message, duration).show()
+  Toast.makeText(activity, message, duration).show()
 }
 
 fun Fragment.showOptionsDialog(
@@ -29,7 +30,7 @@ fun Fragment.showOptionsDialog(
   title: String? = null,
   action: (Int) -> Unit
 ) {
-  val builder = AlertDialog.Builder(getActivity())
+  val builder = AlertDialog.Builder(activity)
   title?.let {
     builder.setTitle(it)
   }
@@ -41,4 +42,9 @@ fun Fragment.showOptionsDialog(
   dialog?.run {
     show()
   }
+}
+
+fun Fragment.md5(input:String): String {
+  val md = MessageDigest.getInstance("MD5")
+  return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
 }

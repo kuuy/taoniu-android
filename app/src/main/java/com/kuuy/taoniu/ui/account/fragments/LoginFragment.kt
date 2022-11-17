@@ -6,9 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.databinding.FragmentAccountLoginBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
-import com.kuuy.taoniu.ui.groceries.fragments.ProductCreateFragmentDirections
-import com.kuuy.taoniu.ui.home.HomeFragmentDirections
-import com.kuuy.taoniu.utils.showToast
+import com.kuuy.taoniu.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,7 +25,7 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
     binding.btnSubmit.setOnClickListener {
       viewModels.login(
         binding.email.text.toString(),
-        binding.password.text.toString()
+        md5(binding.password.text.toString())
       )
     }
 

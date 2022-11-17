@@ -12,8 +12,7 @@ import javax.inject.Singleton
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.cryptos.api.OrderApi
 import com.kuuy.taoniu.data.cryptos.api.StrategyApi
-import com.kuuy.taoniu.data.cryptos.resources.OrderResource
-import com.kuuy.taoniu.data.cryptos.resources.StrategyResource
+import com.kuuy.taoniu.data.cryptos.api.tradingview.AnalysisApi as TradingviewAnalysisApi
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -40,6 +39,18 @@ object CryptosModule {
       okHttpClient,
       gsonConverterFactory,
     ).create(StrategyApi::class.java)
+  }
+
+  @Provides
+  @Singleton
+  fun provideTradingviewAnalysisApi(
+    okHttpClient: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory,
+  ): TradingviewAnalysisApi {
+    return getDynamicRetrofitClient(
+      okHttpClient,
+      gsonConverterFactory,
+    ).create(TradingviewAnalysisApi::class.java)
   }
 
   private fun getDynamicRetrofitClient(

@@ -38,13 +38,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
           navController.navigate(R.id.strategyHomeFragment)
         }
         R.id.navOrderHome -> {
-          navController.navigate(R.id.orderHomeFragment)
+          navController.navigate(R.id.tradingviewAnalysisFragment)
+//          navController.navigate(R.id.orderHomeFragment)
         }
         R.id.navCounter -> {
           navController.navigate(R.id.counterFragment)
         }
         R.id.navScanner -> {
-          navController.navigate(R.id.scannerFragment)
+          navController.navigate(R.id.loginFragment)
+//          navController.navigate(R.id.scannerFragment)
         }
         else -> {
           return@setOnItemSelectedListener false

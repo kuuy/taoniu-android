@@ -9,5 +9,5 @@ data class TokenDto(
   @field:SerializedName("access_token")
   val access: String,
   @field:SerializedName("refresh_token")
-  val refresh: String,
+  val refresh: String?,
 ) : Parcelable

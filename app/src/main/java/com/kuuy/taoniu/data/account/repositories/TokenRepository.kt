@@ -3,20 +3,20 @@ package com.kuuy.taoniu.data.account.repositories
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.account.dto.TokenDto
-import com.kuuy.taoniu.data.account.resources.AuthResource
+import com.kuuy.taoniu.data.account.resources.TokenResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(
-  private val authResource: AuthResource
+class TokenRepository @Inject constructor(
+  private val tokenResource: TokenResource
 ) {
-  suspend fun login(email: String, password: String)
+  suspend fun refresh(refreshToken: String)
       : Flow<ApiResource<TokenDto>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = authResource.login(email, password).first()) {
+      when (val response = tokenResource.refresh(refreshToken).first()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))

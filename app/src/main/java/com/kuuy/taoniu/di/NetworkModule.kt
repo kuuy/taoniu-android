@@ -1,5 +1,8 @@
 package com.kuuy.taoniu.di
 
+import android.content.SharedPreferences
+import com.kuuy.taoniu.data.ApiInterceptor
+import com.kuuy.taoniu.data.account.repositories.TokenRepository
 import com.kuuy.taoniu.data.network.ApiService
 import com.kuuy.taoniu.utils.Constants.BASE_URL
 import dagger.Module
@@ -10,6 +13,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -18,12 +23,15 @@ object NetworkModule {
 
   @Singleton
   @Provides
-  fun providesHttpClient(): OkHttpClient {
+  fun providesHttpClient(
+    @Named(PreferencesModule.AUTH_PREFERENCES) authPreferences: SharedPreferences
+  ): OkHttpClient {
     return OkHttpClient.Builder()
-        .readTimeout(15, TimeUnit.SECONDS)
-        .writeTimeout(20, TimeUnit.SECONDS)
-        .connectTimeout(15, TimeUnit.SECONDS)
-        .build()
+      .addInterceptor(ApiInterceptor(authPreferences))
+      .readTimeout(15, TimeUnit.SECONDS)
+      .writeTimeout(20, TimeUnit.SECONDS)
+      .connectTimeout(15, TimeUnit.SECONDS)
+      .build()
   }
 
   @Singleton

@@ -23,7 +23,7 @@ abstract class BaseFragment<B:ViewBinding> : Fragment() {
   protected val binding get() = _binding!!
 
   @Inject
-  @Named(PreferencesModule.AUTH_PREFERENCES) protected lateinit var authPreferences: SharedPreferences
+  @Named(PreferencesModule.AUTH_PREFERENCES) lateinit var authPreferences: SharedPreferences
 
   protected abstract fun viewBinding(container: ViewGroup?): B
 
