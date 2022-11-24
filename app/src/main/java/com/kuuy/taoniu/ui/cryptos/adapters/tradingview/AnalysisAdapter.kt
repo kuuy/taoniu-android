@@ -11,7 +11,7 @@ import com.kuuy.taoniu.ui.cryptos.holders.tradingview.AnalysisHolder
 import com.kuuy.taoniu.utils.DiffUtils
 
 class AnalysisAdapter(
-  private val ticker: (String, TextView) -> Unit,
+  private val ticker: (String, (String) -> Unit) -> Unit,
 ): BaseListAdapter<AnalysisInfo, AnalysisHolder>() {
   override fun viewHolder(parent: ViewGroup): AnalysisHolder {
     var binding = ItemCryptosTradingviewAnalysisBinding.inflate(

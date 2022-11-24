@@ -114,11 +114,11 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     }
   }
 
-  private fun ticker(symbol: String, textView: TextView) {
-    viewModel.tickers[symbol]?.observe(
+  private fun ticker(symbol: String, callback: (String) -> Unit) {
+    viewModel.tickers[symbol]!!.observe(
       viewLifecycleOwner
     ) { ticker ->
-      textView.text = ticker.toString()
+      callback.invoke(ticker)
     }
   }
 

@@ -8,13 +8,17 @@ import com.kuuy.taoniu.ui.base.BaseListViewHolder
 
 class AnalysisHolder(
   private val binding: ItemCryptosTradingviewAnalysisBinding,
-  private val ticker: (String, TextView) -> Unit,
+  private val ticker: (String, (String) -> Unit) -> Unit,
 ) : BaseListViewHolder<AnalysisInfo, ItemCryptosTradingviewAnalysisBinding>(binding) {
 
   override fun onBind(model: AnalysisInfo, position: Int) {
     binding.tvSymbol.text = model.symbol
     binding.tvRecommendation.text = model.summary.recommendation
     binding.tvPrice.text = "--"
-    ticker(model.symbol, binding.tvPrice)
+    ticker(model.symbol, ::displayTicker)
+  }
+
+  private fun displayTicker(ticker: String) {
+    binding.tvPrice.text = ticker
   }
 }
