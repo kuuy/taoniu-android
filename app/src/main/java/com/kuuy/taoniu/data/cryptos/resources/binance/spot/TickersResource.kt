@@ -17,7 +17,7 @@ class TickersResource @Inject constructor(
     fields: List<String>,
   ) : Flow<ApiResponse<DtoResponse<List<String>>>> {
     return flow {
-      val response = tickersApi.gets(symbols.joinToString(), fields.joinToString())
+      val response = tickersApi.gets(symbols.joinToString(","), fields.joinToString(","))
       emit(ApiResponse.Success(response))
     }.flowOn(Dispatchers.IO)
   }

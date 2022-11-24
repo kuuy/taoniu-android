@@ -3,6 +3,7 @@ package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
@@ -23,34 +24,31 @@ class AnalysisViewModel @Inject constructor(
   private val repository: AnalysisRepository,
   private val tickersRepository: TickersRepository
 ) : BaseViewModel() {
-  private  val _symbols: MutableSet<String> = mutableSetOf()
-  val symbols: MutableSet<String>
-    get() = _symbols
-
-  private val _prices: MutableMap<String, Float> = mutableMapOf()
-  val prices: MutableMap<String, Float>
-    get() = _prices
+  private val _tickers: MutableMap<String, MutableLiveData<String>> = mutableMapOf()
+  val tickers: Map<String, MutableLiveData<String>>
+    get() = _tickers
 
   private val _analysisPaginate
       = MutableLiveData<ApiResource<DtoPaginate<AnalysisInfoDto>>>()
   val analysisPaginate: LiveData<ApiResource<DtoPaginate<AnalysisInfoDto>>>
     get() = _analysisPaginate
 
-  fun tickers(
-    symbols: List<String>,
-    fields: List<String>,
-  ) {
+  fun flushTickers() {
+    var symbols = tickers.keys.toList()
+    var fields = listOf("price")
+
+    if (symbols.isEmpty()) {
+      return
+    }
+
     viewModelScope.launch {
-      tickersRepository.gets(
-        symbols,
-        fields,
-      ).collect { response ->
+      tickersRepository.gets(symbols, fields).collect { response ->
         response.data?.let {
-          it.data.forEach { item ->
-            var values = item.split(",")
-            fields.forEachIndexed { idx, field ->
-              if (field == "price") {
-                _prices.put(symbols[idx], values[idx].toFloat())
+          it.data.forEachIndexed { i, values ->
+            val symbol = symbols[i]
+            values.split(",").forEachIndexed { j, value ->
+              if (fields[j] == "price") {
+                _tickers[symbol]!!.postValue(value)
               }
             }
           }
@@ -80,7 +78,7 @@ class AnalysisViewModel @Inject constructor(
       }.collect { response ->
         response.data.let {
           it?.data?.forEach { item ->
-            _symbols.add(item.symbol)
+            _tickers[item.symbol] = MutableLiveData<String>()
           }
           _analysisPaginate.postValue(ApiResource.Success(it))
         }

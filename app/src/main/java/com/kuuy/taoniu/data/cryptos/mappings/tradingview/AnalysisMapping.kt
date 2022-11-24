@@ -22,6 +22,7 @@ fun AnalysisInfoDto.transform(): AnalysisInfo {
   return AnalysisInfo(
     remoteId=id,
     symbol,
+    null,
     summary.transform(),
     timestamp,
   )

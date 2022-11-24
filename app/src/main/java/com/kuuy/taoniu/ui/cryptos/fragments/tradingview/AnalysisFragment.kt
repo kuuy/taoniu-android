@@ -1,16 +1,13 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
@@ -24,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>() {
   private lateinit var mainHandler: Handler
   private val viewModel by viewModels<AnalysisViewModel>()
-  private val adapter by lazy { AnalysisAdapter() }
+  private val adapter by lazy { AnalysisAdapter(::ticker) }
   private var isLoading = false
   private var current = 1
   private val pageSize = 20
@@ -49,12 +46,12 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
 
   override fun onResume() {
     super.onResume()
-    mainHandler.post(flushAnalysis)
+    mainHandler.post(flushTickers)
   }
 
   override fun onPause() {
     super.onPause()
-    mainHandler.removeCallbacks(flushAnalysis)
+    mainHandler.removeCallbacks(flushTickers)
   }
 
   private val flushAnalysis = object : Runnable {
@@ -64,7 +61,8 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
 
   private val flushTickers = object : Runnable {
     override fun run() {
-      //mainHandler.postDelayed(this, 1000)
+      viewModel.flushTickers()
+      mainHandler.postDelayed(this, 5000)
     }
   }
 
@@ -113,6 +111,14 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
           showLoading(false)
         }
       }
+    }
+  }
+
+  private fun ticker(symbol: String, textView: TextView) {
+    viewModel.tickers[symbol]?.observe(
+      viewLifecycleOwner
+    ) { ticker ->
+      textView.text = ticker.toString()
     }
   }
 
