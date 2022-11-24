@@ -1,9 +1,9 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -60,9 +60,14 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   }
 
   private val flushTickers = object : Runnable {
+    @SuppressLint("NotifyDataSetChanged")
     override fun run() {
-      viewModel.flushTickers()
-      mainHandler.postDelayed(this, 5000)
+      if (!isLoading) {
+        viewModel.flushTickers(){
+          adapter.notifyDataSetChanged()
+        }
+      }
+      mainHandler.postDelayed(this, 3000)
     }
   }
 
@@ -85,6 +90,7 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
       setHasFixedSize(true)
     }
     val onScrollListener = OnScrollListener(binding.rvListings.layoutManager as LinearLayoutManager) {
+      binding.swipeRefreshLayout.isRefreshing = true
       viewModel.listings("BINANCE", "1m", current+1, pageSize)
     }
     binding.rvListings.addOnScrollListener(onScrollListener)
@@ -115,15 +121,15 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   }
 
   private fun ticker(symbol: String, callback: (String) -> Unit) {
-    viewModel.tickers[symbol]!!.observe(
-      viewLifecycleOwner
-    ) { ticker ->
-      callback.invoke(ticker)
-    }
+    callback.invoke(viewModel.tickers[symbol] ?: "--")
   }
 
   private fun showLoading(isLoading: Boolean) {
     this.isLoading = isLoading
-    binding.swipeRefreshLayout.isRefreshing = isLoading
+    if (!isLoading) {
+      mainHandler.postDelayed({
+        binding.swipeRefreshLayout.isRefreshing = isLoading
+      }, 900)
+    }
   }
 }

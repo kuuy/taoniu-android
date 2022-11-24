@@ -24,8 +24,8 @@ class AnalysisViewModel @Inject constructor(
   private val repository: AnalysisRepository,
   private val tickersRepository: TickersRepository
 ) : BaseViewModel() {
-  private val _tickers: MutableMap<String, MutableLiveData<String>> = mutableMapOf()
-  val tickers: Map<String, MutableLiveData<String>>
+  private val _tickers: MutableMap<String, String> = mutableMapOf()
+  val tickers: Map<String, String>
     get() = _tickers
 
   private val _analysisPaginate
@@ -33,7 +33,7 @@ class AnalysisViewModel @Inject constructor(
   val analysisPaginate: LiveData<ApiResource<DtoPaginate<AnalysisInfoDto>>>
     get() = _analysisPaginate
 
-  fun flushTickers() {
+  fun flushTickers(callback: () -> Unit) {
     var symbols = tickers.keys.toList()
     var fields = listOf("price")
 
@@ -46,12 +46,14 @@ class AnalysisViewModel @Inject constructor(
         response.data?.let {
           it.data.forEachIndexed { i, values ->
             val symbol = symbols[i]
-            values.split(",").forEachIndexed { j, value ->
-              if (fields[j] == "price") {
-                _tickers[symbol]!!.postValue(value)
+            val data = values.split(",")
+            fields.forEachIndexed { j, field ->
+              if (field == "price") {
+                _tickers[symbol] = data[j]
               }
             }
           }
+          callback.invoke()
         }
       }
     }
@@ -78,12 +80,13 @@ class AnalysisViewModel @Inject constructor(
       }.collect { response ->
         response.data.let {
           it?.data?.forEach { item ->
-            _tickers[item.symbol] = MutableLiveData<String>()
+            if (!_tickers.containsKey(item.symbol)) {
+              _tickers[item.symbol] = "--"
+            }
           }
           _analysisPaginate.postValue(ApiResource.Success(it))
         }
       }
     }
   }
-
 }

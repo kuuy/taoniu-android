@@ -14,11 +14,8 @@ class AnalysisHolder(
   override fun onBind(model: AnalysisInfo, position: Int) {
     binding.tvSymbol.text = model.symbol
     binding.tvRecommendation.text = model.summary.recommendation
-    binding.tvPrice.text = "--"
-    ticker(model.symbol, ::displayTicker)
-  }
-
-  private fun displayTicker(ticker: String) {
-    binding.tvPrice.text = ticker
+    ticker(model.symbol) {
+      binding.tvPrice.text = it
+    }
   }
 }
