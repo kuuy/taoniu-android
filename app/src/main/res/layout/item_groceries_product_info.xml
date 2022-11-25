@@ -55,7 +55,7 @@
 	android:layout_height="1px"
 	android:layout_marginEnd="@dimen/_12sdp"
 	app:layout_constraintTop_toTopOf="parent"
-	app:layout_constraintStart_toEndOf="@id/tvPrice" 
+	app:layout_constraintStart_toEndOf="@id/tvPrice"
 	app:layout_constraintEnd_toEndOf="parent"
 	app:layout_constraintHorizontal_weight="1.0" />
 

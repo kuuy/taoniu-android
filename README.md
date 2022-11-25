@@ -1,5 +1,4 @@
 # taoniu-android
 淘牛客户端（Android）
 
-# USDT捐赠
-TTpMqd3SGckaAmuh1v5VuzJEMegRpqkWWQ
+![app.png](https://raw.githubusercontent.com/kuuy/taoniu-android/main/screen.png)

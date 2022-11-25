@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.round
 
 @HiltViewModel
 class AnalysisViewModel @Inject constructor(
@@ -44,11 +45,14 @@ class AnalysisViewModel @Inject constructor(
           it.data.forEachIndexed { i, values ->
             val symbol = symbols[i]
             val data = values.split(",")
-            fields.forEachIndexed { j, field ->
-              if (field == "open" && data[j].isNotEmpty()) {
-                _tickers[symbol]?.open = data[j].toFloat()
-              } else if (field == "price" && data[j].isNotEmpty()) {
-                _tickers[symbol]?.let {ticker ->
+            if (data.size != fields.size) {
+              return@forEachIndexed
+            }
+            _tickers[symbol]?.let {ticker ->
+              fields.forEachIndexed { j, field ->
+                if (field == "open" && data[j].isNotEmpty()) {
+                  ticker.open = data[j].toFloat()
+                } else if (field == "price" && data[j].isNotEmpty()) {
                   var price = data[j].toFloat()
                   if (price > ticker.price) {
                     ticker.state = 1
@@ -60,6 +64,15 @@ class AnalysisViewModel @Inject constructor(
                   ticker.price = price
                 }
               }
+              var change = round((ticker.open - ticker.price)*100/ticker.open) /100
+              if (change > ticker.change) {
+                ticker.changeState = 1
+              } else if (change > ticker.change) {
+                ticker.changeState = 2
+              } else {
+                ticker.changeState = 0
+              }
+              ticker.change = change
             }
           }
           callback.invoke()
@@ -90,7 +103,7 @@ class AnalysisViewModel @Inject constructor(
         response.data.let {
           it?.data?.forEach { item ->
             if (!_tickers.containsKey(item.symbol)) {
-              _tickers[item.symbol] = TickerInfo(0f, 0f, 0)
+              _tickers[item.symbol] = TickerInfo(0f, 0f, 0, 0f, 0)
             }
           }
           _analysisPaginate.postValue(ApiResource.Success(it))

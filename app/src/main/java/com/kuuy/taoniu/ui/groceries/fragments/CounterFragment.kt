@@ -31,7 +31,7 @@ class CounterFragment
 
   private val viewModel by viewModels<CounterViewModel>()
   private val adapter by lazy {
-    CounterOrderListAdapter( { model ->
+    CounterOrderListAdapter( { _ ->
       val dialog = CounterOrderDialog()
       dialog.show(getParentFragmentManager(), "counter_order")
     }, { model ->

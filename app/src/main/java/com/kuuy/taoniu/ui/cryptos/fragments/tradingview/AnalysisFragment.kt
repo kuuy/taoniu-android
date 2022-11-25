@@ -122,8 +122,10 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     }
   }
 
-  private fun ticker(symbol: String, callback: (TickerInfo, Context) -> Unit) {
-    callback.invoke(viewModel.tickers[symbol]!!, requireContext())
+  private fun ticker(symbol: String, callback: (TickerInfo) -> Unit) {
+    viewModel.tickers[symbol]?.let{
+      callback.invoke(it)
+    }
   }
 
   private fun showLoading(isLoading: Boolean) {
