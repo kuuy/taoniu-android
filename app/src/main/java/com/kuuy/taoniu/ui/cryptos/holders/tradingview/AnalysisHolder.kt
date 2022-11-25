@@ -41,22 +41,25 @@ class AnalysisHolder(
     ticker(model.symbol) {ticker ->
       if (ticker.price == 0f) {
         binding.tvPrice.text = "--"
-        binding.tvPercent.text = "--"
+        binding.tvPercent.let{
+          it.text = "--"
+          it.background = binding.root.context.getDrawable(R.drawable.bg_percent_gray)
+        }
       } else {
         binding.tvPrice.text = ticker.price.toString()
         if (ticker.change > 0) {
           binding.tvPercent.let{
-            it.background = binding.root.context.getDrawable(R.drawable.bg_percent_green)
             it.text ="+%.2f%%".format(ticker.change)
+            it.background = binding.root.context.getDrawable(R.drawable.bg_percent_green)
           }
         } else {
           binding.tvPercent.let{
             if (ticker.change < 0) {
-              it.background = binding.root.context.getDrawable(R.drawable.bg_percent_red)
               it.text ="%.2f%%".format(ticker.change)
+              it.background = binding.root.context.getDrawable(R.drawable.bg_percent_red)
             } else {
-              it.background = binding.root.context.getDrawable(R.drawable.bg_percent_gray)
               it.text = "0.00%"
+              it.background = binding.root.context.getDrawable(R.drawable.bg_percent_gray)
             }
           }
         }
