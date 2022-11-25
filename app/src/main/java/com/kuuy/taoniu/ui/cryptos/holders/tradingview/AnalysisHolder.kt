@@ -46,17 +46,26 @@ class AnalysisHolder(
         binding.tvPrice.text = ticker.price.toString()
         if (ticker.change > 0) {
           binding.tvPercent.let{
-            it.setBackgroundColor(binding.root.context.getColor(R.color.material_green300))
+            it.background = binding.root.context.getDrawable(R.drawable.bg_percent_green)
             it.text ="+%.2f%%".format(ticker.change)
           }
         } else {
           binding.tvPercent.let{
             if (ticker.change < 0) {
-              it.setBackgroundColor(binding.root.context.getColor(R.color.material_red300))
+              it.background = binding.root.context.getDrawable(R.drawable.bg_percent_red)
+              it.text ="%.2f%%".format(ticker.change)
+            } else {
+              it.background = binding.root.context.getDrawable(R.drawable.bg_percent_gray)
+              it.text = "0.00%"
             }
-            it.text ="%.2f%%".format(ticker.change)
           }
         }
+      }
+
+      if (ticker.state == 1) {
+        binding.tvPrice.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink_up)
+      } else if (ticker.state == 2) {
+        binding.tvPrice.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink_down)
       }
 
       if (ticker.changeState == 1) {
