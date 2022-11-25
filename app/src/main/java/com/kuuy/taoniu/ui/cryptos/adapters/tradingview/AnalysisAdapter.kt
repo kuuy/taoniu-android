@@ -1,9 +1,10 @@
 package com.kuuy.taoniu.ui.cryptos.adapters.tradingview
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosTradingviewAnalysisBinding
 import com.kuuy.taoniu.ui.base.BaseListAdapter
@@ -11,7 +12,7 @@ import com.kuuy.taoniu.ui.cryptos.holders.tradingview.AnalysisHolder
 import com.kuuy.taoniu.utils.DiffUtils
 
 class AnalysisAdapter(
-  private val ticker: (String, (String) -> Unit) -> Unit,
+  private val ticker: (String, (TickerInfo, Context) -> Unit) -> Unit,
 ): BaseListAdapter<AnalysisInfo, AnalysisHolder>() {
   override fun viewHolder(parent: ViewGroup): AnalysisHolder {
     var binding = ItemCryptosTradingviewAnalysisBinding.inflate(

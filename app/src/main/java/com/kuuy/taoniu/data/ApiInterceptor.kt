@@ -26,14 +26,18 @@ class ApiInterceptor constructor(
 
     var response = chain.proceed(request)
     if (response.code == 401) {
-      accessToken = refreshToken()
-      if (accessToken != "") {
-        authPreferences.edit().putString("ACCESS_TOKEN", accessToken)
-        response.close()
-        val request = original.newBuilder()
-          .addHeader("Authorization", "Taoniu $accessToken")
-          .build()
-        return chain.proceed(request)
+      try {
+        accessToken = refreshToken()
+        if (accessToken != "") {
+          authPreferences.edit().putString("ACCESS_TOKEN", accessToken)
+          response.close()
+          val request = original.newBuilder()
+            .addHeader("Authorization", "Taoniu $accessToken")
+            .build()
+          return chain.proceed(request)
+        }
+      } catch (e: java.net.ConnectException) {
+      } catch (e: java.net.SocketTimeoutException) {
       }
     }
     return response

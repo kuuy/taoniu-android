@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
+import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.databinding.FragmentCryptosTradingviewAnalysisBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.AnalysisAdapter
@@ -67,7 +69,7 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
           adapter.notifyDataSetChanged()
         }
       }
-      mainHandler.postDelayed(this, 3000)
+      mainHandler.postDelayed(this, 5000)
     }
   }
 
@@ -120,8 +122,8 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     }
   }
 
-  private fun ticker(symbol: String, callback: (String) -> Unit) {
-    callback.invoke(viewModel.tickers[symbol] ?: "--")
+  private fun ticker(symbol: String, callback: (TickerInfo, Context) -> Unit) {
+    callback.invoke(viewModel.tickers[symbol]!!, requireContext())
   }
 
   private fun showLoading(isLoading: Boolean) {

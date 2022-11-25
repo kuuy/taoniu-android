@@ -1,31 +1,28 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
+import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
-import com.kuuy.taoniu.di.PreferencesModule
 import com.kuuy.taoniu.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class AnalysisViewModel @Inject constructor(
   private val repository: AnalysisRepository,
   private val tickersRepository: TickersRepository
 ) : BaseViewModel() {
-  private val _tickers: MutableMap<String, String> = mutableMapOf()
-  val tickers: Map<String, String>
+  private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
+  val tickers: Map<String, TickerInfo>
     get() = _tickers
 
   private val _analysisPaginate
@@ -35,7 +32,7 @@ class AnalysisViewModel @Inject constructor(
 
   fun flushTickers(callback: () -> Unit) {
     var symbols = tickers.keys.toList()
-    var fields = listOf("price")
+    var fields = listOf("open","price")
 
     if (symbols.isEmpty()) {
       return
@@ -48,8 +45,20 @@ class AnalysisViewModel @Inject constructor(
             val symbol = symbols[i]
             val data = values.split(",")
             fields.forEachIndexed { j, field ->
-              if (field == "price") {
-                _tickers[symbol] = data[j]
+              if (field == "open" && data[j].isNotEmpty()) {
+                _tickers[symbol]?.open = data[j].toFloat()
+              } else if (field == "price" && data[j].isNotEmpty()) {
+                _tickers[symbol]?.let {ticker ->
+                  var price = data[j].toFloat()
+                  if (price > ticker.price) {
+                    ticker.state = 1
+                  } else if (price < ticker.price) {
+                    ticker.state = 2
+                  } else {
+                    ticker.state = 0
+                  }
+                  ticker.price = price
+                }
               }
             }
           }
@@ -81,7 +90,7 @@ class AnalysisViewModel @Inject constructor(
         response.data.let {
           it?.data?.forEach { item ->
             if (!_tickers.containsKey(item.symbol)) {
-              _tickers[item.symbol] = "--"
+              _tickers[item.symbol] = TickerInfo(0f, 0f, 0)
             }
           }
           _analysisPaginate.postValue(ApiResource.Success(it))

@@ -8,4 +8,3 @@ abstract class BaseListViewHolder<T, B : ViewBinding>(
 ) : RecyclerView.ViewHolder(binding.root) {
   abstract fun onBind(model: T, position: Int)
 }
-
