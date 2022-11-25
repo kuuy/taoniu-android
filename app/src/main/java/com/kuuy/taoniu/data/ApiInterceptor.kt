@@ -24,9 +24,9 @@ class ApiInterceptor constructor(
       .addHeader("Authorization", "Taoniu $accessToken")
       .build()
 
-    var response = chain.proceed(request)
-    if (response.code == 401) {
-      try {
+    try {
+      var response = chain.proceed(request)
+      if (response.code == 401) {
         accessToken = refreshToken()
         if (accessToken != "") {
           authPreferences.edit().putString("ACCESS_TOKEN", accessToken)
@@ -36,11 +36,11 @@ class ApiInterceptor constructor(
             .build()
           return chain.proceed(request)
         }
-      } catch (e: java.net.ConnectException) {
-      } catch (e: java.net.SocketTimeoutException) {
       }
+      return response
+    } catch (t: Throwable) {
+      return intercept(chain)
     }
-    return response
   }
 
   fun refreshToken(): String {
