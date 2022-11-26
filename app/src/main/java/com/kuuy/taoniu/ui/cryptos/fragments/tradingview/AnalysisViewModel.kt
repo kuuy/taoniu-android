@@ -64,7 +64,7 @@ class AnalysisViewModel @Inject constructor(
                   ticker.price = price
                 }
               }
-              var change = round((ticker.open - ticker.price)*100/ticker.open) /100
+              var change = round((ticker.price - ticker.open)*10000/ticker.open) /100
               if (change > ticker.change) {
                 ticker.changeState = 1
               } else if (change > ticker.change) {

@@ -1,6 +1,5 @@
 package com.kuuy.taoniu.ui.cryptos.holders.tradingview
 
-import android.content.Context
 import android.graphics.Typeface
 import android.view.animation.AnimationUtils
 import com.kuuy.taoniu.R
@@ -8,7 +7,6 @@ import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosTradingviewAnalysisBinding
 import com.kuuy.taoniu.ui.base.BaseListViewHolder
-import javax.inject.Inject
 
 class AnalysisHolder(
   private val binding: ItemCryptosTradingviewAnalysisBinding,
@@ -22,7 +20,7 @@ class AnalysisHolder(
       binding.tvRecommendation.let{
         it.setTextColor(binding.root.context.getColor(R.color.material_red300))
         if (model.summary.recommendation == "STRONG_BUY") {
-          it.text = "\ue621 \ue621"
+          it.text = "\ue621\ue621"
         } else {
           it.text = "\ue621"
         }
@@ -31,7 +29,7 @@ class AnalysisHolder(
       binding.tvRecommendation.let{
         it.setTextColor(binding.root.context.getColor(R.color.material_green300))
         if (model.summary.recommendation == "STRONG_SELL") {
-          it.text = "\ue622 \uE622"
+          it.text = "\ue622\uE622"
         } else {
           it.text = "\ue622"
         }
@@ -65,16 +63,12 @@ class AnalysisHolder(
         }
       }
 
-      if (ticker.state == 1) {
-        binding.tvPrice.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink_up)
-      } else if (ticker.state == 2) {
-        binding.tvPrice.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink_down)
+      if (ticker.state != 0) {
+        binding.tvPrice.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink)
       }
 
-      if (ticker.changeState == 1) {
-        binding.tvPercent.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink_up)
-      } else if (ticker.changeState == 2) {
-        binding.tvPercent.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink_down)
+      if (ticker.changeState != 0) {
+        binding.tvPercent.animation = AnimationUtils.loadAnimation(binding.root.context, R.anim.blink)
       }
     }
   }
