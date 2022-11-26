@@ -1,7 +1,6 @@
-package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
+package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.plans
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
@@ -11,26 +10,27 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
-import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
+import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.plans.transform
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
-import com.kuuy.taoniu.databinding.FragmentCryptosTradingviewAnalysisBinding
+import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotPlansDailyBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
-import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.AnalysisAdapter
-import com.kuuy.taoniu.utils.*
+import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.plans.DailyAdapter
+import com.kuuy.taoniu.utils.OnScrollListener
+import com.kuuy.taoniu.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>() {
+class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>() {
   private lateinit var mainHandler: Handler
-  private val viewModel by viewModels<AnalysisViewModel>()
-  private val adapter by lazy { AnalysisAdapter(::ticker) }
+  private val viewModel by viewModels<DailyViewModel>()
+  private val adapter by lazy { DailyAdapter() }
   private var isLoading = false
   private var current = 1
   private val pageSize = 20
 
   override fun viewBinding(container: ViewGroup?)
-      : FragmentCryptosTradingviewAnalysisBinding {
-    return FragmentCryptosTradingviewAnalysisBinding.inflate(
+      : FragmentCryptosBinanceSpotPlansDailyBinding {
+    return FragmentCryptosBinanceSpotPlansDailyBinding.inflate(
       layoutInflater,
       container,
       false
@@ -45,35 +45,21 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
 
   override fun onResume() {
     super.onResume()
-    mainHandler.post(flushTickers)
   }
 
   override fun onPause() {
     super.onPause()
-    mainHandler.removeCallbacks(flushTickers)
   }
 
-  private val flushAnalysis = object : Runnable {
+  private val flushDaily = object : Runnable {
     override fun run() {
-    }
-  }
-
-  private val flushTickers = object : Runnable {
-    @SuppressLint("NotifyDataSetChanged")
-    override fun run() {
-      if (!isLoading) {
-        viewModel.flushTickers(){
-          adapter.notifyDataSetChanged()
-        }
-      }
-      mainHandler.postDelayed(this, 5000)
     }
   }
 
   private fun initRecycler() {
-    viewModel.listings("BINANCE", "1m", current, pageSize)
+    viewModel.listings(current, pageSize)
     binding.rvListings.apply {
-      adapter = this@AnalysisFragment.adapter
+      adapter = this@DailyFragment.adapter
       layoutManager = LinearLayoutManager(requireContext())
       val divider = DividerItemDecoration(
         requireContext(),
@@ -89,7 +75,7 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
       setHasFixedSize(true)
     }
     val onScrollListener = OnScrollListener(binding.rvListings.layoutManager as LinearLayoutManager) {
-      viewModel.listings("BINANCE", "1m", current+1, pageSize)
+      viewModel.listings(current+1, pageSize)
     }
     binding.rvListings.addOnScrollListener(onScrollListener)
   }
@@ -115,12 +101,6 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
           showLoading(false)
         }
       }
-    }
-  }
-
-  private fun ticker(symbol: String, callback: (TickerInfo) -> Unit) {
-    viewModel.tickers[symbol]?.let{
-      callback.invoke(it)
     }
   }
 

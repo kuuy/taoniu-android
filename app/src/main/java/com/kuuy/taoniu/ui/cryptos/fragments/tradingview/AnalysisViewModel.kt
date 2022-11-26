@@ -50,9 +50,12 @@ class AnalysisViewModel @Inject constructor(
             }
             _tickers[symbol]?.let {ticker ->
               fields.forEachIndexed { j, field ->
-                if (field == "open" && data[j].isNotEmpty()) {
+                if (data[j].isEmpty()) {
+                  return@forEachIndexed
+                }
+                if (field == "open") {
                   ticker.open = data[j].toFloat()
-                } else if (field == "price" && data[j].isNotEmpty()) {
+                } else if (field == "price") {
                   var price = data[j].toFloat()
                   if (price > ticker.price) {
                     ticker.state = 1

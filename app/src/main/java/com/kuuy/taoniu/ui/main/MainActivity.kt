@@ -33,7 +33,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
           navController.navigate(R.id.productListingsFragment)
         }
         R.id.navStrategyHome -> {
-          navController.navigate(R.id.strategyHomeFragment)
+          navController.navigate(R.id.binanceSpotPlansDailyFragment)
         }
         R.id.navOrderHome -> {
           navController.navigate(R.id.tradingviewAnalysisFragment)

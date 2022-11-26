@@ -13,6 +13,7 @@ import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.cryptos.api.OrderApi
 import com.kuuy.taoniu.data.cryptos.api.StrategyApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.TickersApi as BinanceSpotTickersApi
+import com.kuuy.taoniu.data.cryptos.api.binance.spot.plans.DailyApi as BinanceSpotPlansDailyApi
 import com.kuuy.taoniu.data.cryptos.api.tradingview.AnalysisApi as TradingviewAnalysisApi
 
 @Module
@@ -52,6 +53,18 @@ object CryptosModule {
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotTickersApi::class.java)
+  }
+
+  @Provides
+  @Singleton
+  fun provideBinanceSpotPlansDailyApi(
+    okHttpClient: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory,
+  ): BinanceSpotPlansDailyApi {
+    return getDynamicRetrofitClient(
+      okHttpClient,
+      gsonConverterFactory,
+    ).create(BinanceSpotPlansDailyApi::class.java)
   }
 
   @Provides

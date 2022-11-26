@@ -70,6 +70,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/binanceSpotPlansDailyFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.plans.DailyFragment"
+        android:label="BinanceSpotPlansDaily"
+        tools:layout="@layout/fragment_cryptos_binance_spot_plans_daily">
+    </fragment>
+
+    <fragment
         android:id="@+id/tradingviewAnalysisFragment"
         android:name="com.kuuy.taoniu.ui.cryptos.fragments.tradingview.AnalysisFragment"
         android:label="TradingviewAnalysis"
