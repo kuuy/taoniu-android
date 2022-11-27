@@ -6,6 +6,7 @@ import com.kuuy.taoniu.data.cryptos.api.binance.spot.plans.DailyApi
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.plans.DailyInfoDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -20,6 +21,6 @@ class DailyResource @Inject constructor(
     return flow {
       val response = dailyApi.listings(current, pageSize)
       emit(ApiResponse.Success(response))
-    }.flowOn(Dispatchers.IO)
+    }.catch {}.flowOn(Dispatchers.IO)
   }
 }

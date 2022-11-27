@@ -24,14 +24,6 @@ class DailyAdapter: BaseListAdapter<DailyInfo, DailyHolder>() {
     holder.onBind(model, position)
   }
 
-  fun setDatas(items: List<DailyInfo>) {
-    val diffUtil = DiffUtils(listings, items)
-    val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    diffUtilResult.dispatchUpdatesTo(this)
-
-    listings = items
-  }
-
   fun addDatas(items: List<DailyInfo>) {
     val datas = mutableListOf<DailyInfo>()
     datas.addAll(listings)

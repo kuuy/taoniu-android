@@ -41,7 +41,7 @@ class CounterOrderListAdapter(
   fun setData(orders: List<CounterOrderInfo>) {
     val diffUtil = DiffUtils<CounterOrderInfo>(listings, orders)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = orders
+    listings = orders as MutableList<CounterOrderInfo>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 

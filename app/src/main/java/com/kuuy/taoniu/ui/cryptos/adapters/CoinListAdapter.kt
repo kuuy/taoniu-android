@@ -30,7 +30,7 @@ class CoinListAdapter
   fun setData(coins: List<CoinInfo>) {
     val diffUtil = DiffUtils<CoinInfo>(listings, coins)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = coins
+    listings = coins as MutableList<CoinInfo>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 

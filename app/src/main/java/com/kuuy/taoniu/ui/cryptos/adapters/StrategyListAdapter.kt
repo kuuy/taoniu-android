@@ -30,7 +30,7 @@ class StrategyListAdapter
   fun setData(strategies: List<StrategyInfo>) {
     val diffUtil = DiffUtils<StrategyInfo>(listings, strategies)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = strategies
+    listings = strategies as MutableList<StrategyInfo>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 

@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>() {
-  private lateinit var mainHandler: Handler
+  private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<DailyViewModel>()
   private val adapter by lazy { DailyAdapter() }
   private var isLoading = false
@@ -40,7 +40,6 @@ class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>(
   override fun onBind() {
     initRecycler()
     initViewModel()
-    mainHandler = Handler(Looper.getMainLooper())
   }
 
   override fun onResume() {

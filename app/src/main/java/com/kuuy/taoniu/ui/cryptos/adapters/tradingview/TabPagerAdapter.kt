@@ -31,7 +31,9 @@ class TabPagerAdapter(
 
   @SuppressLint("NotifyDataSetChanged")
   override fun initDatas(size: Int) {
-    listings = (1..size).map { null }
+    (1..size).map {
+      listings.add(null)
+    }
     notifyDataSetChanged()
   }
 }

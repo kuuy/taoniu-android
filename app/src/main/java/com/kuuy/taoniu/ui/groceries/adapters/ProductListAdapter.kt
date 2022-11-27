@@ -34,7 +34,7 @@ class ProductListAdapter(
   fun setData(products: List<ProductInfo>) {
     val diffUtil = DiffUtils<ProductInfo>(listings, products)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = products
+    listings = products as MutableList<ProductInfo>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 

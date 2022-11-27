@@ -114,8 +114,4 @@ class AnalysisViewModel @Inject constructor(
       }
     }
   }
-
-  fun clear() {
-    _tickers.clear()
-  }
 }

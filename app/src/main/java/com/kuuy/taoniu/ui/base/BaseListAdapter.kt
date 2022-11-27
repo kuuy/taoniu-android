@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseListAdapter<T, VH: RecyclerView.ViewHolder>
     : RecyclerView.Adapter<VH>() {
 
-  protected var listings = emptyList<T>()
+  protected var listings = mutableListOf<T>()
 
   abstract fun viewHolder(parent: ViewGroup): VH
 

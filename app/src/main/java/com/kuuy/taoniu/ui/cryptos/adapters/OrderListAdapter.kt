@@ -30,7 +30,7 @@ class OrderListAdapter
   fun setData(orders: List<OrderInfo>) {
     val diffUtil = DiffUtils<OrderInfo>(listings, orders)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = orders
+    listings = orders as MutableList<OrderInfo>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 

@@ -31,7 +31,7 @@ class ItemNewsAdapter : BaseListAdapter<ArticlesItem, NewsViewHolder>() {
   fun setData(newData: NewsResponse) {
     val newsDiffUtil = DiffUtils(listings, newData.articles)
     val diffUtilResult = DiffUtil.calculateDiff(newsDiffUtil)
-    listings = newData.articles
+    listings = newData.articles as MutableList<ArticlesItem>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 

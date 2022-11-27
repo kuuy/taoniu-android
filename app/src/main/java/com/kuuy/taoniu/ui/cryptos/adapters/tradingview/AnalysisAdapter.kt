@@ -28,21 +28,13 @@ class AnalysisAdapter(
     holder.onBind(model, position)
   }
 
-  @SuppressLint("NotifyDataSetChanged")
   fun clear() {
-    listings = listOf()
-    notifyDataSetChanged()
+    listings.clear()
   }
 
-  fun addDatas(items: List<AnalysisInfo>) {
-    val datas = mutableListOf<AnalysisInfo>()
-    datas.addAll(listings)
-    datas.addAll(items)
-
-    val diffUtil = DiffUtils(listings, datas)
-    val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-
-    listings = datas
-    diffUtilResult.dispatchUpdatesTo(this)
+  @SuppressLint("NotifyDataSetChanged")
+  fun addDatas(datas: List<AnalysisInfo>) {
+    listings.addAll(datas)
+    notifyDataSetChanged()
   }
 }

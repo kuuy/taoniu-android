@@ -27,7 +27,7 @@ class BannerAdapter : BaseBannerAdapter<Int, BannerHolder>() {
   override fun setData(banners: List<Int>) {
     val diffUtil = DiffUtils(listings, banners)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    listings = banners
+    listings = banners as MutableList<Int>
     diffUtilResult.dispatchUpdatesTo(this)
   }
 }

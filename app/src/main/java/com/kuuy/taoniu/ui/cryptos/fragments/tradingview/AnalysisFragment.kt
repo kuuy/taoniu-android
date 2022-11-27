@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged")
 @AndroidEntryPoint
 class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>() {
-  private lateinit var mainHandler: Handler
+  private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<AnalysisViewModel>()
   private val adapter by lazy { AnalysisAdapter(::ticker) }
   private val pagerAdapter by lazy { TabPagerAdapter(::initRecycler) }
@@ -45,7 +45,6 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   override fun onBind() {
     initTabPager()
     initViewModel()
-    mainHandler = Handler(Looper.getMainLooper())
   }
 
   override fun onResume() {
@@ -62,10 +61,10 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     Runnable {
       if (!isLoading) {
         viewModel.flushTickers(){
-          pagerAdapter.notifyDataSetChanged()
+          adapter.notifyDataSetChanged()
         }
       }
-      mainHandler.postDelayed(flushTickers, 5000)
+      mainHandler.postDelayed(flushTickers, 3000)
     }
   }
 
@@ -77,28 +76,33 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   }
 
   private fun initRecycler(rvListings: RecyclerView) {
+    current = 1
+    adapter.clear()
+
     val interval = tabs[position]
-    viewModel.listings("BINANCE", interval, 1, pageSize)
-    rvListings.apply {
-      adapter = this@AnalysisFragment.adapter
-      layoutManager = LinearLayoutManager(requireContext())
-      val divider = DividerItemDecoration(
-        requireContext(),
-        DividerItemDecoration.VERTICAL
-      )
-      ContextCompat.getDrawable(
-        requireContext(),
-        R.drawable.divider_transparent
-      )?.let {
-        divider.setDrawable(it)
+    viewModel.listings("BINANCE", interval, current, pageSize)
+    rvListings.adapter ?: run {
+      rvListings.apply {
+        adapter = this@AnalysisFragment.adapter
+        layoutManager = LinearLayoutManager(requireContext())
+        val divider = DividerItemDecoration(
+          requireContext(),
+          DividerItemDecoration.VERTICAL
+        )
+        ContextCompat.getDrawable(
+          requireContext(),
+          R.drawable.divider_transparent
+        )?.let {
+          divider.setDrawable(it)
+        }
+        addItemDecoration(divider)
+        setHasFixedSize(true)
       }
-      addItemDecoration(divider)
-      setHasFixedSize(true)
+      val onScrollListener = OnScrollListener(rvListings.layoutManager as LinearLayoutManager) {
+        viewModel.listings("BINANCE", interval, current+1, pageSize)
+      }
+      rvListings.addOnScrollListener(onScrollListener)
     }
-    val onScrollListener = OnScrollListener(rvListings.layoutManager as LinearLayoutManager) {
-      viewModel.listings("BINANCE", interval, current+1, pageSize)
-    }
-    rvListings.addOnScrollListener(onScrollListener)
   }
 
   private fun initViewModel() {
