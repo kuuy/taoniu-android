@@ -1,5 +1,6 @@
 package com.kuuy.taoniu.ui.cryptos.adapters.tradingview
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -27,12 +28,10 @@ class AnalysisAdapter(
     holder.onBind(model, position)
   }
 
-  fun setDatas(items: List<AnalysisInfo>) {
-    val diffUtil = DiffUtils(listings, items)
-    val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    diffUtilResult.dispatchUpdatesTo(this)
-
-    listings = items
+  @SuppressLint("NotifyDataSetChanged")
+  fun clear() {
+    listings = listOf()
+    notifyDataSetChanged()
   }
 
   fun addDatas(items: List<AnalysisInfo>) {
@@ -42,8 +41,8 @@ class AnalysisAdapter(
 
     val diffUtil = DiffUtils(listings, datas)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    diffUtilResult.dispatchUpdatesTo(this)
 
     listings = datas
+    diffUtilResult.dispatchUpdatesTo(this)
   }
 }

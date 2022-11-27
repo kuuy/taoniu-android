@@ -10,7 +10,6 @@ import com.kuuy.taoniu.ui.base.BaseBannerAdapter
 import com.kuuy.taoniu.ui.cryptos.holders.BannerHolder
 
 class BannerAdapter : BaseBannerAdapter<Int, BannerHolder>() {
-
   override fun viewHolder(parent: ViewGroup): BannerHolder {
     var binding = ItemCryptosBannerBinding.inflate(
       LayoutInflater.from(parent.context),
@@ -26,10 +25,9 @@ class BannerAdapter : BaseBannerAdapter<Int, BannerHolder>() {
   }
 
   override fun setData(banners: List<Int>) {
-    val diffUtil = DiffUtils<Int>(listings, banners)
+    val diffUtil = DiffUtils(listings, banners)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
     listings = banners
     diffUtilResult.dispatchUpdatesTo(this)
   }
-
 }

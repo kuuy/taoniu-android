@@ -78,7 +78,7 @@ class AnalysisViewModel @Inject constructor(
               ticker.change = change
             }
           }
-          callback.invoke()
+          callback()
         }
       }
     }
@@ -113,5 +113,9 @@ class AnalysisViewModel @Inject constructor(
         }
       }
     }
+  }
+
+  fun clear() {
+    _tickers.clear()
   }
 }

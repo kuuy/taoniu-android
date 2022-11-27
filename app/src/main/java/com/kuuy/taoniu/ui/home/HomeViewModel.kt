@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
         val currentList = retryFunctionList.toList()
         retryFunctionList.clear()
         currentList.forEach {
-            it.invoke()
+            it()
         }
     }
 

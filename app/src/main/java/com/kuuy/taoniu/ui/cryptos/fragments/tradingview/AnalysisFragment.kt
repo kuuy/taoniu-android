@@ -1,7 +1,6 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
@@ -16,15 +16,20 @@ import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.databinding.FragmentCryptosTradingviewAnalysisBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.AnalysisAdapter
+import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.TabPagerAdapter
 import com.kuuy.taoniu.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("NotifyDataSetChanged")
 @AndroidEntryPoint
 class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>() {
   private lateinit var mainHandler: Handler
   private val viewModel by viewModels<AnalysisViewModel>()
   private val adapter by lazy { AnalysisAdapter(::ticker) }
+  private val pagerAdapter by lazy { TabPagerAdapter(::initRecycler) }
+  private val tabs = arrayOf("1m", "5m", "15m", "30m", "1h", "2h", "4h", "1d", "1W", "1M")
   private var isLoading = false
+  private var position = 0
   private var current = 1
   private val pageSize = 20
 
@@ -38,7 +43,7 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   }
 
   override fun onBind() {
-    initRecycler()
+    initTabPager()
     initViewModel()
     mainHandler = Handler(Looper.getMainLooper())
   }
@@ -53,26 +58,28 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     mainHandler.removeCallbacks(flushTickers)
   }
 
-  private val flushAnalysis = object : Runnable {
-    override fun run() {
-    }
-  }
-
-  private val flushTickers = object : Runnable {
-    @SuppressLint("NotifyDataSetChanged")
-    override fun run() {
+  private val flushTickers : Runnable by lazy {
+    Runnable {
       if (!isLoading) {
         viewModel.flushTickers(){
-          adapter.notifyDataSetChanged()
+          pagerAdapter.notifyDataSetChanged()
         }
       }
-      mainHandler.postDelayed(this, 5000)
+      mainHandler.postDelayed(flushTickers, 5000)
     }
   }
 
-  private fun initRecycler() {
-    viewModel.listings("BINANCE", "1m", current, pageSize)
-    binding.rvListings.apply {
+  private fun initTabPager() {
+    binding.pager.adapter = pagerAdapter
+    binding.pager.flush = ::flush
+    binding.pager.tabs(tabs)
+    binding.pager.lifecycleRegistry(lifecycle)
+  }
+
+  private fun initRecycler(rvListings: RecyclerView) {
+    val interval = tabs[position]
+    viewModel.listings("BINANCE", interval, 1, pageSize)
+    rvListings.apply {
       adapter = this@AnalysisFragment.adapter
       layoutManager = LinearLayoutManager(requireContext())
       val divider = DividerItemDecoration(
@@ -88,10 +95,10 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
       addItemDecoration(divider)
       setHasFixedSize(true)
     }
-    val onScrollListener = OnScrollListener(binding.rvListings.layoutManager as LinearLayoutManager) {
-      viewModel.listings("BINANCE", "1m", current+1, pageSize)
+    val onScrollListener = OnScrollListener(rvListings.layoutManager as LinearLayoutManager) {
+      viewModel.listings("BINANCE", interval, current+1, pageSize)
     }
-    binding.rvListings.addOnScrollListener(onScrollListener)
+    rvListings.addOnScrollListener(onScrollListener)
   }
 
   private fun initViewModel() {
@@ -118,9 +125,13 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     }
   }
 
+  private fun flush(position: Int) {
+    this.position = position
+  }
+
   private fun ticker(symbol: String, callback: (TickerInfo) -> Unit) {
     viewModel.tickers[symbol]?.let{
-      callback.invoke(it)
+      callback(it)
     }
   }
 

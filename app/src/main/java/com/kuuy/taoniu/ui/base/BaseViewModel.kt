@@ -18,7 +18,7 @@ abstract class BaseViewModel : ViewModel() {
     val currentList = retryFunctionList.toList()
     retryFunctionList.clear()
     currentList.forEach {
-      it.invoke()
+      it()
     }
   } 
 }

@@ -24,7 +24,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-	    <androidx.recyclerview.widget.RecyclerView
+	        <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCoinList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 app:layout_constraintTop_toBottomOf="@id/banner"
                 tools:ignore="RtlSymmetry" />
 
-	    <androidx.recyclerview.widget.RecyclerView
+	        <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvProductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,31 +42,6 @@
                 android:paddingEnd="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintTop_toBottomOf="@id/rvCoinList" />
- 
-            <ImageView
-                android:id="@+id/ivErrorIcon"
-                android:layout_width="@dimen/_150sdp"
-                android:layout_height="@dimen/_150sdp"
-                android:alpha="0.7"
-                android:src="@drawable/ic_no_internet"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:contentDescription="@string/image_no_internet" />
-
-            <TextView
-                android:id="@+id/tvErrorMessage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:alpha="0.7"
-                android:text="@string/no_internet_connection"
-                android:textColor="@color/text_color"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/ivErrorIcon"
-                app:layout_constraintTop_toBottomOf="@+id/ivErrorIcon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>   
 

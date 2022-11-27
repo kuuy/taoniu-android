@@ -9,7 +9,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
-import com.kuuy.taoniu.utils.*
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.models.CoinInfo
 import com.kuuy.taoniu.data.cryptos.mappings.transform
@@ -91,7 +90,7 @@ class OrderHomeFragment : BaseFragment<FragmentCryptosOrderHomeBinding>() {
     binding.banner.adapter = BannerAdapter()
     binding.banner.isAutoPlay = true
     binding.banner.isCanLoop = true
-    binding.banner.setLifecycleRegistry(lifecycle)
+    binding.banner.lifecycleRegistry(lifecycle)
     binding.banner.setCanShowIndicator(true)
     binding.banner.setData(
       listOf(

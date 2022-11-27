@@ -25,7 +25,7 @@ class BannerView<T> @JvmOverloads constructor(
   attrs: AttributeSet?,
   defStyleAttr: Int = 0
 ): RelativeLayout(context, attrs, defStyleAttr), LifecycleEventObserver {
-  private val viewPager2 by lazy {
+  private val viewPager by lazy {
     ViewPager2(context).apply {
       layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
@@ -38,7 +38,7 @@ class BannerView<T> @JvmOverloads constructor(
     }
   }
   var adapter: BaseBannerAdapter<T, *>? = null
-      set(value) { field = value; viewPager2.adapter = value }
+      set(value) { field = value; viewPager.adapter = value }
   private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
   private var onPageClickListener: BaseBannerAdapter.OnPageClickListener? = null
   private var compositePageTransformer: CompositePageTransformer? = null
@@ -47,15 +47,17 @@ class BannerView<T> @JvmOverloads constructor(
   private var lastPosition = 0
   private var listSize = 0
 
-  private val task: Runnable by lazy { Runnable {
-    val currentItem = viewPager2.currentItem
-    if (currentItem == listSize - 1) {
-      viewPager2.setCurrentItem(0, false)
-    } else {
-      viewPager2.currentItem = currentItem + 1
+  private val play: Runnable by lazy {
+    Runnable {
+      val currentItem = viewPager.currentItem
+      if (currentItem == listSize - 1) {
+        viewPager.setCurrentItem(0, false)
+      } else {
+        viewPager.currentItem = currentItem + 1
+      }
+      postDelayed(play, interval)
     }
-    postDelayed(task, interval)
-  }}
+  }
 
   private var interval = 3000L
 
@@ -108,12 +110,12 @@ class BannerView<T> @JvmOverloads constructor(
   }
 
   init {
-    addView(viewPager2)
+    addView(viewPager)
     addView(indicatorLayout)
-    viewPager2.unregisterOnPageChangeCallback(callback)
-    viewPager2.registerOnPageChangeCallback(callback)
+    viewPager.unregisterOnPageChangeCallback(callback)
+    viewPager.registerOnPageChangeCallback(callback)
     compositePageTransformer = CompositePageTransformer()
-    viewPager2.setPageTransformer(compositePageTransformer)
+    viewPager.setPageTransformer(compositePageTransformer)
   }
 
   private fun initBannerData(list: List<T>) {
@@ -166,7 +168,7 @@ class BannerView<T> @JvmOverloads constructor(
     }
 
     if (revealWidth != -1) {
-      val recyclerView = viewPager2.getChildAt(0) as RecyclerView
+      val recyclerView = viewPager.getChildAt(0) as RecyclerView
       recyclerView.setPadding(pageMargin + revealWidth, 0, pageMargin + revealWidth, 0)
       recyclerView.clipToPadding = false
     }
@@ -174,7 +176,7 @@ class BannerView<T> @JvmOverloads constructor(
     adapter!!.pageClickListener = onPageClickListener
     resetCurrentItem()
 
-    viewPager2.offscreenPageLimit = offscreenPageLimit
+    viewPager.offscreenPageLimit = offscreenPageLimit
     startTimer()
   }
 
@@ -207,12 +209,12 @@ class BannerView<T> @JvmOverloads constructor(
   private fun startTimer() {
     if (isAutoPlay && adapter != null && listSize > 1) {
       stopTimer()
-      postDelayed(task, interval)
+      postDelayed(play, interval)
     }
   }
 
   private fun stopTimer() {
-    removeCallbacks(task)
+    removeCallbacks(play)
   }
 
   fun setOnPageSelectedCallBack(
@@ -221,7 +223,7 @@ class BannerView<T> @JvmOverloads constructor(
     this.onPageChangeCallback = onPageChangeCallback
   }
 
-  fun setLifecycleRegistry(
+  fun lifecycleRegistry(
     lifecycleRegistry: Lifecycle,
   ): BannerView<T> {
     lifecycleRegistry.addObserver(this)
@@ -254,7 +256,7 @@ class BannerView<T> @JvmOverloads constructor(
   }
 
   fun setPageTransformer(transformer: ViewPager2.PageTransformer): BannerView<T> {
-    viewPager2.setPageTransformer(transformer)
+    viewPager.setPageTransformer(transformer)
     return this
   }
 
@@ -314,19 +316,19 @@ class BannerView<T> @JvmOverloads constructor(
 
   fun setUpCurrentItem(item: Int, smoothScroll: Boolean) {
     if (isCanLoop && listSize > 1) {
-      val currentItem = viewPager2.currentItem
+      val currentItem = viewPager.currentItem
       val realPosition: Int = adapter!!.getRealPosition(currentItem)
       if (currentItem != item) {
         if (item == 0 && realPosition == listSize - 1) {
-          viewPager2.setCurrentItem(currentItem + 1, smoothScroll)
+          viewPager.setCurrentItem(currentItem + 1, smoothScroll)
         } else if (realPosition == 0 && item == listSize - 1) {
-          viewPager2.setCurrentItem(currentItem - 1, smoothScroll)
+          viewPager.setCurrentItem(currentItem - 1, smoothScroll)
         } else {
-          viewPager2.setCurrentItem(currentItem + (item - realPosition), smoothScroll)
+          viewPager.setCurrentItem(currentItem + (item - realPosition), smoothScroll)
         }
       }
     } else {
-      viewPager2.setCurrentItem(item, smoothScroll)
+      viewPager.setCurrentItem(item, smoothScroll)
     }
   }
 
@@ -349,9 +351,9 @@ class BannerView<T> @JvmOverloads constructor(
   private fun resetCurrentItem() {
     if (listSize > 1 && isCanLoop) {
       lastPosition = Int.MAX_VALUE / 2 - ((Int.MAX_VALUE / 2) % listSize)
-      viewPager2.setCurrentItem(lastPosition, false)
+      viewPager.setCurrentItem(lastPosition, false)
     } else {
-      viewPager2.setCurrentItem(0, false)
+      viewPager.setCurrentItem(0, false)
     }
   }
 }
