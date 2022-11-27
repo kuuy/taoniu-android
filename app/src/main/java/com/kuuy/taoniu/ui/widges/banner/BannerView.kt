@@ -2,9 +2,8 @@ package com.kuuy.taoniu.ui.widgets.banner
 
 import android.content.Context
 import android.content.res.Resources
-import android.os.Handler
 import android.util.AttributeSet
-import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -26,19 +25,24 @@ class BannerView<T> @JvmOverloads constructor(
   attrs: AttributeSet?,
   defStyleAttr: Int = 0
 ): RelativeLayout(context, attrs, defStyleAttr), LifecycleEventObserver {
-
-  private lateinit var mIndicatorLayout: LinearLayout
-  val viewPager2 by lazy {
+  private val viewPager2 by lazy {
     ViewPager2(context).apply {
-      layoutParams = LayoutParams(-1, -1)
+      layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+    }
+  }
+  private val indicatorLayout by lazy {
+    LinearLayout(context).apply {
+      layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+      (layoutParams as LayoutParams).addRule(ALIGN_PARENT_BOTTOM)
+      gravity = Gravity.CENTER
     }
   }
   var adapter: BaseBannerAdapter<T, *>? = null
       set(value) { field = value; viewPager2.adapter = value }
   private var onPageChangeCallback: ViewPager2.OnPageChangeCallback? = null
-  private var mCompositePageTransformer: CompositePageTransformer? = null
-  private var mMarginPageTransformer: MarginPageTransformer? = null
-  private var mOnPageClickListener: BaseBannerAdapter.OnPageClickListener? = null
+  private var onPageClickListener: BaseBannerAdapter.OnPageClickListener? = null
+  private var compositePageTransformer: CompositePageTransformer? = null
+  private var marginPageTransformer: MarginPageTransformer? = null
 
   private var lastPosition = 0
   private var listSize = 0
@@ -76,7 +80,6 @@ class BannerView<T> @JvmOverloads constructor(
   private var checkedImage = R.drawable.main_shape_bvp_dot_selected
 
   private val callback = object : ViewPager2.OnPageChangeCallback() {
-
     override fun onPageScrolled(
       position: Int,
       positionOffset: Float,
@@ -102,21 +105,15 @@ class BannerView<T> @JvmOverloads constructor(
       super.onPageScrollStateChanged(state)
       onPageChangeCallback?.onPageScrollStateChanged(state)
     }
-
   }
 
   init {
-    initView()
     addView(viewPager2)
+    addView(indicatorLayout)
     viewPager2.unregisterOnPageChangeCallback(callback)
     viewPager2.registerOnPageChangeCallback(callback)
-    mCompositePageTransformer = CompositePageTransformer()
-    viewPager2.setPageTransformer(mCompositePageTransformer)
-  }
-
-  private fun initView() {
-    inflate(context, R.layout.main_util_bvp_layout, this)
-    mIndicatorLayout = findViewById(R.id.bvp_layout_indicator)
+    compositePageTransformer = CompositePageTransformer()
+    viewPager2.setPageTransformer(compositePageTransformer)
   }
 
   private fun initBannerData(list: List<T>) {
@@ -127,7 +124,7 @@ class BannerView<T> @JvmOverloads constructor(
   }
 
   private fun initIndicatorDots(list: List<T>) {
-    mIndicatorLayout.removeAllViews()
+    indicatorLayout.removeAllViews()
     if (isShowIndicator && listSize > 1) {
       for (i in list.indices) {
         val imageView = ImageView(context)
@@ -148,7 +145,7 @@ class BannerView<T> @JvmOverloads constructor(
           indicatorMargin
         )
         imageView.layoutParams = layoutParams
-        mIndicatorLayout.addView(imageView)
+        indicatorLayout.addView(imageView)
       }
     }
   }
@@ -157,8 +154,8 @@ class BannerView<T> @JvmOverloads constructor(
     if (isShowIndicator && listSize > 1) {
       val current = position % listSize
       val last = lastPosition % listSize
-      mIndicatorLayout.getChildAt(last).setBackgroundResource(normalImage)
-      mIndicatorLayout.getChildAt(current).setBackgroundResource(checkedImage)
+      indicatorLayout.getChildAt(last).setBackgroundResource(normalImage)
+      indicatorLayout.getChildAt(current).setBackgroundResource(checkedImage)
       lastPosition = position
     }
   }
@@ -174,11 +171,9 @@ class BannerView<T> @JvmOverloads constructor(
       recyclerView.clipToPadding = false
     }
 
-    adapter!!.pageClickListener = mOnPageClickListener
+    adapter!!.pageClickListener = onPageClickListener
     resetCurrentItem()
 
-    //viewPager2.unregisterOnPageChangeCallback(callback)
-    //viewPager2.registerOnPageChangeCallback(callback)
     viewPager2.offscreenPageLimit = offscreenPageLimit
     startTimer()
   }
@@ -216,7 +211,6 @@ class BannerView<T> @JvmOverloads constructor(
     }
   }
 
-
   private fun stopTimer() {
     removeCallbacks(task)
   }
@@ -226,7 +220,6 @@ class BannerView<T> @JvmOverloads constructor(
   ) {
     this.onPageChangeCallback = onPageChangeCallback
   }
-
 
   fun setLifecycleRegistry(
     lifecycleRegistry: Lifecycle,
@@ -266,26 +259,26 @@ class BannerView<T> @JvmOverloads constructor(
   }
 
   fun addPageTransformer(transformer: ViewPager2.PageTransformer): BannerView<T> {
-    mCompositePageTransformer?.addTransformer(transformer)
+    compositePageTransformer?.addTransformer(transformer)
     return this
   }
 
   fun removeTransformer(transformer: ViewPager2.PageTransformer) {
-    mCompositePageTransformer?.removeTransformer(transformer)
+    compositePageTransformer?.removeTransformer(transformer)
   }
 
 
   fun removeMarginPageTransformer() {
-    if (mMarginPageTransformer != null) {
-      mCompositePageTransformer?.removeTransformer(mMarginPageTransformer!!)
+    if (marginPageTransformer != null) {
+      compositePageTransformer?.removeTransformer(marginPageTransformer!!)
     }
   }
 
   fun setPageMargin(margin: Int): BannerView<T> {
     pageMargin = dpToPx(margin)
     removeMarginPageTransformer()
-    mMarginPageTransformer = MarginPageTransformer(pageMargin)
-    mCompositePageTransformer?.addTransformer(mMarginPageTransformer!!)
+    marginPageTransformer = MarginPageTransformer(pageMargin)
+    compositePageTransformer?.addTransformer(marginPageTransformer!!)
     return this
   }
 
@@ -295,7 +288,7 @@ class BannerView<T> @JvmOverloads constructor(
   }
 
   fun setOnPageClickListener(onPageClickListener: BaseBannerAdapter.OnPageClickListener): BannerView<T> {
-    mOnPageClickListener = onPageClickListener
+    this.onPageClickListener = onPageClickListener
     return this
   }
 
