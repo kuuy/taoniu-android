@@ -1,6 +1,8 @@
 package com.kuuy.taoniu.ui.base
 
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseTabPagerAdapter<T, VH : RecyclerView.ViewHolder>
@@ -14,6 +16,7 @@ abstract class BaseTabPagerAdapter<T, VH : RecyclerView.ViewHolder>
     fun onPageClick(position: Int, v: View)
   }
 
+  var activatePosition = MutableLiveData<Int>()
   var realPosition = { position: Int ->
     var itemCount = listings.size
 
@@ -34,4 +37,6 @@ abstract class BaseTabPagerAdapter<T, VH : RecyclerView.ViewHolder>
   }
 
   abstract fun initDatas(size: Int)
+
+  abstract fun activate(position: Int)
 }

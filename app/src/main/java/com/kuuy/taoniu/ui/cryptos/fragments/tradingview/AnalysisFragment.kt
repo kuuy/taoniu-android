@@ -19,6 +19,8 @@ import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.AnalysisAdapter
 import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.TabPagerAdapter
 import com.kuuy.taoniu.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import io.realm.kotlin.internal.platform.freeze
+import timber.log.Timber
 
 @SuppressLint("NotifyDataSetChanged")
 @AndroidEntryPoint
@@ -57,40 +59,40 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     mainHandler.removeCallbacks(flushTickers)
   }
 
-  private val flushTickers : Runnable by lazy {
+  private val flushTickers: Runnable by lazy {
     Runnable {
       if (!isLoading) {
         viewModel.flushTickers(){
           adapter.notifyDataSetChanged()
         }
       }
-      mainHandler.postDelayed(flushTickers, 3000)
+      mainHandler.postDelayed(flushTickers, 5000)
     }
   }
 
   private fun initTabPager() {
     binding.pager.adapter = pagerAdapter
-    binding.pager.flush = ::flush
     binding.pager.tabs(tabs)
     binding.pager.lifecycleRegistry(lifecycle)
+    pagerAdapter.activatePosition.observe(viewLifecycleOwner) {
+      pagerAdapter.activate(it)
+    }
   }
 
-  private fun initRecycler(rvListings: RecyclerView) {
-    current = 1
+  private fun initRecycler(rvListings: RecyclerView, position: Int) {
     adapter.clear()
+    viewModel.listings("BINANCE", tabs[position], 1, pageSize)
 
-    val interval = tabs[position]
-    viewModel.listings("BINANCE", interval, current, pageSize)
-    rvListings.adapter ?: run {
-      rvListings.apply {
-        adapter = this@AnalysisFragment.adapter
-        layoutManager = LinearLayoutManager(requireContext())
+    rvListings.apply {
+      adapter = this@AnalysisFragment.adapter
+      layoutManager ?: run {
+        layoutManager = LinearLayoutManager(context)
         val divider = DividerItemDecoration(
-          requireContext(),
+          context,
           DividerItemDecoration.VERTICAL
         )
         ContextCompat.getDrawable(
-          requireContext(),
+          context,
           R.drawable.divider_transparent
         )?.let {
           divider.setDrawable(it)
@@ -98,10 +100,9 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
         addItemDecoration(divider)
         setHasFixedSize(true)
       }
-      val onScrollListener = OnScrollListener(rvListings.layoutManager as LinearLayoutManager) {
-        viewModel.listings("BINANCE", interval, current+1, pageSize)
-      }
-      rvListings.addOnScrollListener(onScrollListener)
+      addOnScrollListener(OnScrollListener(layoutManager as LinearLayoutManager) {
+        viewModel.listings("BINANCE", tabs[position], current+1, pageSize)
+      })
     }
   }
 
@@ -129,10 +130,6 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
     }
   }
 
-  private fun flush(position: Int) {
-    this.position = position
-  }
-
   private fun ticker(symbol: String, callback: (TickerInfo) -> Unit) {
     viewModel.tickers[symbol]?.let{
       callback(it)
@@ -142,5 +139,9 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   private fun showLoading(isLoading: Boolean) {
     this.isLoading = isLoading
     binding.swipeRefreshLayout.isRefreshing = isLoading
+  }
+
+  companion object {
+    const val TAG = "TRADINGVIEW_ANALYSIS"
   }
 }

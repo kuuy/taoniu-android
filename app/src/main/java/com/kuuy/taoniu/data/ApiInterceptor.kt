@@ -1,11 +1,10 @@
 package com.kuuy.taoniu.data
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
-import com.google.gson.JsonSyntaxException
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.account.dto.TokenDto
-import com.kuuy.taoniu.data.account.repositories.TokenRepository
 import com.kuuy.taoniu.di.PreferencesModule
 import okhttp3.*
 import java.util.concurrent.TimeUnit
@@ -14,32 +13,34 @@ import javax.inject.Named
 class ApiInterceptor constructor(
   @Named(PreferencesModule.AUTH_PREFERENCES) private var authPreferences: SharedPreferences
 ) : Interceptor {
-  var repository: TokenRepository? = null
+  private var accessToken: String? = null
 
   override fun intercept(chain: Interceptor.Chain): Response {
-    var accessToken = authPreferences.getString("ACCESS_TOKEN", "")
+    if (accessToken == null) {
+      accessToken = authPreferences.getString("ACCESS_TOKEN", "")
+    }
 
     val original = chain.request()
     val request = original.newBuilder()
       .addHeader("Authorization", "Taoniu $accessToken")
       .build()
 
-    var response = chain.proceed(request)
+    val response = chain.proceed(request)
     if (response.code == 401) {
-      accessToken = refreshToken()
+      refreshToken()
       if (accessToken != "") {
-        authPreferences.edit().putString("ACCESS_TOKEN", accessToken)
         response.close()
-        val request = original.newBuilder()
+        val retry = original.newBuilder()
           .addHeader("Authorization", "Taoniu $accessToken")
           .build()
-        return chain.proceed(request)
+        return chain.proceed(retry)
       }
     }
     return response
   }
 
-  fun refreshToken(): String {
+  @SuppressLint("CommitPrefEdits")
+  fun refreshToken() {
     val client = OkHttpClient.Builder()
       .readTimeout(15, TimeUnit.SECONDS)
       .writeTimeout(20, TimeUnit.SECONDS)
@@ -66,13 +67,10 @@ class ApiInterceptor constructor(
         var result = gson.fromJson(response.body?.string(), DtoResponse::class.java)
         if (result.success) {
           var token = gson.fromJson(gson.toJson(result.data), TokenDto::class.java)
-          return token.access
+          accessToken = token.access
+          authPreferences.edit().putString("ACCESS_TOKEN", accessToken)
         }
-      } catch (e: JsonSyntaxException) {
-      } catch (e: NullPointerException) {
-      }
+      } catch (t: Throwable) { }
     }
-
-    return ""
   }
 }

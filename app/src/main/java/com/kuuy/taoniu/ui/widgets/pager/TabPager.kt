@@ -35,14 +35,14 @@ class TabPager<T> @JvmOverloads constructor(
   }
   var adapter: BaseTabPagerAdapter<T, *>? = null
     set(value) { field = value; viewPager.adapter = value }
-  var flush: (Int) -> Unit = {}
   private var compositePageTransformer: CompositePageTransformer? = null
 
   private val callback = object : ViewPager2.OnPageChangeCallback() {
     override fun onPageSelected(position: Int) {
       super.onPageSelected(position)
-      val realPosition: Int = adapter!!.getRealPosition(position)
-      flush(realPosition)
+      val realPosition = adapter!!.getRealPosition(position)
+      adapter!!.activatePosition.postValue(realPosition)
+      scrollTo(0, 0)
     }
   }
 
