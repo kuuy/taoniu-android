@@ -1,4 +1,5 @@
 # taoniu-android
 淘牛客户端（Android）
 
-![app.png](https://raw.githubusercontent.com/kuuy/taoniu-android/main/screen.png)
+![screen.gif](https://raw.githubusercontent.com/kuuy/taoniu-android/main/gif.png) 
+![screen.png](https://raw.githubusercontent.com/kuuy/taoniu-android/main/screen.png) 
