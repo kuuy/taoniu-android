@@ -43,7 +43,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
           navController.navigate(R.id.counterFragment)
         }
         R.id.navScanner -> {
-          navController.navigate(R.id.loginFragment)
+          navController.navigate(R.id.binanceSpotMarginIsolatedTradingsGridsFragment)
 //          navController.navigate(R.id.scannerFragment)
         }
         else -> {

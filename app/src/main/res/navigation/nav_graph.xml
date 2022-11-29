@@ -77,6 +77,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/binanceSpotMarginIsolatedTradingsGridsFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated.tradings.GridsFragment"
+        android:label="BinanceSpotMarginIsolatedTradingsGrids"
+        tools:layout="@layout/fragment_cryptos_binance_spot_margin_isolated_tradings_grids">
+    </fragment>
+
+    <fragment
         android:id="@+id/tradingviewAnalysisFragment"
         android:name="com.kuuy.taoniu.ui.cryptos.fragments.tradingview.AnalysisFragment"
         android:label="TradingviewAnalysis"

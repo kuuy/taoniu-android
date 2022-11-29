@@ -21,7 +21,6 @@
 	    android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_gravity="bottom"
         android:background="@drawable/back_bottom_nav_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="BottomAppBar">
