@@ -42,7 +42,7 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
             authPreferences.edit().apply {
               putString("ACCESS_TOKEN", it.access)
               putString("REFRESH_TOKEN", it.refresh)
-            }.commit()
+            }.apply()
             showToast(response.message ?: "login success")
             val action = LoginFragmentDirections.toHomeFragment()
             findNavController().navigate(action)

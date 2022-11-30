@@ -59,7 +59,7 @@ class ApiInterceptor constructor(
       authPreferences.edit().apply{
         remove("ACCESS_TOKEN")
         remove("REFRESH_TOKEN")
-      }.commit()
+      }.apply()
     }
     if (response.code == 200) {
       try {
@@ -68,7 +68,7 @@ class ApiInterceptor constructor(
         if (result.success) {
           var token = gson.fromJson(gson.toJson(result.data), TokenDto::class.java)
           accessToken = token.access
-          authPreferences.edit().putString("ACCESS_TOKEN", accessToken)
+          authPreferences.edit().putString("ACCESS_TOKEN", accessToken).apply()
         }
       } catch (t: Throwable) { }
     }
