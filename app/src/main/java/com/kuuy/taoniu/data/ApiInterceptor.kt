@@ -7,28 +7,29 @@ import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.account.dto.TokenDto
 import com.kuuy.taoniu.di.PreferencesModule
 import okhttp3.*
+import okhttp3.internal.wait
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 
 class ApiInterceptor constructor(
   @Named(PreferencesModule.AUTH_PREFERENCES) private var authPreferences: SharedPreferences
 ) : Interceptor {
-  private var accessToken: String? = null
+  private var accessToken: String = ""
 
   override fun intercept(chain: Interceptor.Chain): Response {
-    if (accessToken == null) {
-      accessToken = authPreferences.getString("ACCESS_TOKEN", "")
+    if (accessToken.isEmpty()) {
+      accessToken = authPreferences.getString("ACCESS_TOKEN", "")!!
     }
 
     val original = chain.request()
-    val request = original.newBuilder()
-      .addHeader("Authorization", "Taoniu $accessToken")
-      .build()
-
-    val response = chain.proceed(request)
+    val builder = original.newBuilder()
+    if (accessToken.isNotEmpty()) {
+      builder.header("Authorization", "Taoniu $accessToken")
+    }
+    val response = chain.proceed(builder.build())
     if (response.code == 401) {
       refreshToken()
-      if (accessToken != "") {
+      if (accessToken.isNotEmpty()) {
         response.close()
         val retry = original.newBuilder()
           .addHeader("Authorization", "Taoniu $accessToken")
@@ -36,6 +37,7 @@ class ApiInterceptor constructor(
         return chain.proceed(retry)
       }
     }
+
     return response
   }
 
