@@ -6,12 +6,12 @@ import android.os.Looper
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.plans.transform
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotPlansDailyBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.plans.DailyAdapter
@@ -23,7 +23,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>() {
   private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<DailyViewModel>()
-  private val adapter by lazy { DailyAdapter() }
+  private val adapter by lazy { DailyAdapter{ model ->
+    val action = DailyFragmentDirections
+      .toTrade(model.symbol)
+    findNavController().navigate(action)
+  } }
   private var isLoading = false
   private var current = 1
   private val pageSize = 20

@@ -5,6 +5,7 @@ import android.os.Looper
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kuuy.taoniu.R
@@ -13,6 +14,7 @@ import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.margin.isolated.tradin
 import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotMarginIsolatedTradingsGridsBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated.tradings.GridsAdapter
+import com.kuuy.taoniu.ui.cryptos.fragments.tradingview.AnalysisFragmentDirections
 import com.kuuy.taoniu.utils.OnScrollListener
 import com.kuuy.taoniu.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +23,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class GridsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedTradingsGridsBinding>() {
   private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<GridsViewModel>()
-  private val adapter by lazy { GridsAdapter() }
+  private val adapter by lazy { GridsAdapter{ model ->
+    val action = GridsFragmentDirections
+      .toTrade(model.symbol)
+    findNavController().navigate(action)
+  } }
   private var isLoading = false
   private var current = 1
   private val pageSize = 20

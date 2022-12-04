@@ -4,12 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.margin.isolated.tradings.GridInfo
+import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotMarginIsolatedTradingsGridsBinding
 import com.kuuy.taoniu.ui.base.BaseListAdapter
 import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.margin.isolated.tradings.GridsHolder
 import com.kuuy.taoniu.utils.DiffUtils
 
-class GridsAdapter: BaseListAdapter<GridInfo, GridsHolder>() {
+class GridsAdapter(
+  private val onItemClicked: (GridInfo) -> Unit,
+): BaseListAdapter<GridInfo, GridsHolder>() {
   override fun viewHolder(parent: ViewGroup): GridsHolder {
     var binding = ItemCryptosBinanceSpotMarginIsolatedTradingsGridsBinding.inflate(
       LayoutInflater.from(parent.context),
@@ -22,6 +25,9 @@ class GridsAdapter: BaseListAdapter<GridInfo, GridsHolder>() {
   override fun onBind(holder: GridsHolder, position: Int) {
     var model = listings[position]
     holder.onBind(model, position)
+    holder.itemView.setOnClickListener {
+      onItemClicked(model)
+    }
   }
 
   fun addDatas(items: List<GridInfo>) {

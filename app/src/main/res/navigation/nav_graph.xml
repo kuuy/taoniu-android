@@ -74,6 +74,14 @@
         android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.plans.DailyFragment"
         android:label="BinanceSpotPlansDaily"
         tools:layout="@layout/fragment_cryptos_binance_spot_plans_daily">
+        <action
+            android:id="@+id/toTrade"
+            app:destination="@id/binanceSpotTradeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+            android:name="symbol"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -81,6 +89,24 @@
         android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated.tradings.GridsFragment"
         android:label="BinanceSpotMarginIsolatedTradingsGrids"
         tools:layout="@layout/fragment_cryptos_binance_spot_margin_isolated_tradings_grids">
+        <action
+            android:id="@+id/toTrade"
+            app:destination="@id/binanceSpotTradeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+            android:name="symbol"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/binanceSpotTradeFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.TradeFragment"
+        android:label="BinanceSpotTrade"
+        tools:layout="@layout/fragment_cryptos_binance_spot_trade">
+        <argument
+            android:name="symbol"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -88,6 +114,14 @@
         android:name="com.kuuy.taoniu.ui.cryptos.fragments.tradingview.AnalysisFragment"
         android:label="TradingviewAnalysis"
         tools:layout="@layout/fragment_cryptos_tradingview_analysis">
+        <action
+            android:id="@+id/toTrade"
+            app:destination="@id/binanceSpotTradeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:popEnterAnim="@android:anim/fade_in" />
+        <argument
+            android:name="symbol"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -110,7 +144,7 @@
         <argument
             android:name="id"
             app:argType="string" />
-         <action
+        <action
             android:id="@+id/toProductListingsFragment"
             app:destination="@id/productListingsFragment"
             app:enterAnim="@android:anim/fade_in"

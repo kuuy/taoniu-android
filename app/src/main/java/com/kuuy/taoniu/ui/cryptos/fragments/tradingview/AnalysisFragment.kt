@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,7 @@ import com.kuuy.taoniu.databinding.FragmentCryptosTradingviewAnalysisBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.AnalysisAdapter
 import com.kuuy.taoniu.ui.cryptos.adapters.tradingview.TabPagerAdapter
+import com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.plans.DailyFragmentDirections
 import com.kuuy.taoniu.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.realm.kotlin.internal.platform.freeze
@@ -27,7 +29,11 @@ import timber.log.Timber
 class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>() {
   private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<AnalysisViewModel>()
-  private val adapter by lazy { AnalysisAdapter(::ticker) }
+  private val adapter by lazy { AnalysisAdapter(::ticker){ model ->
+    val action = AnalysisFragmentDirections
+      .toTrade(model.symbol)
+    findNavController().navigate(action)
+  } }
   private val pagerAdapter by lazy { TabPagerAdapter(::initRecycler) }
   private val tabs = arrayOf("1m", "5m", "15m", "30m", "1h", "2h", "4h", "1d", "1W", "1M")
   private var isLoading = false

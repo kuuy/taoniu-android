@@ -119,6 +119,9 @@ dependencies {
     // Rounded Image View
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
+    // Tradingview
+    implementation 'com.tradingview:lightweightcharts:3.8.0'
+
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
