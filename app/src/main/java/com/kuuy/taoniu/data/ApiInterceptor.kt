@@ -58,12 +58,12 @@ class ApiInterceptor constructor(
 
     val response = client.newCall(request).execute()
     if (response.code == 401) {
+      accessToken = ""
       authPreferences.edit().apply{
         remove("ACCESS_TOKEN")
         remove("REFRESH_TOKEN")
       }.apply()
-    }
-    if (response.code == 200) {
+    } else if (response.code == 200) {
       try {
         val gson = GsonBuilder().create()
         var result = gson.fromJson(response.body?.string(), DtoResponse::class.java)

@@ -14,7 +14,6 @@ import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.margin.isolated.tradin
 import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotMarginIsolatedTradingsGridsBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated.tradings.GridsAdapter
-import com.kuuy.taoniu.ui.cryptos.fragments.tradingview.AnalysisFragmentDirections
 import com.kuuy.taoniu.utils.OnScrollListener
 import com.kuuy.taoniu.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,7 +83,7 @@ class GridsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedTradi
   }
 
   private fun initViewModel() {
-    viewModel.analysisPaginate.observe(
+    viewModel.gridsPaginate.observe(
       viewLifecycleOwner
     ) { response->
       when (response) {

@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.utils
 
 import android.app.AlertDialog
+import android.util.TypedValue
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 
@@ -42,6 +43,14 @@ fun Fragment.showOptionsDialog(
   dialog?.run {
     show()
   }
+}
+
+fun Fragment.sp2px(sp: Float): Float {
+  return TypedValue.applyDimension(
+    TypedValue.COMPLEX_UNIT_SP,
+    sp,
+    resources.displayMetrics,
+  )
 }
 
 fun Fragment.md5(input:String): String {

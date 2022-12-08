@@ -32,14 +32,4 @@ class AnalysisAdapter(
       onItemClicked(model)
     }
   }
-
-  fun clear() {
-    listings.clear()
-  }
-
-  @SuppressLint("NotifyDataSetChanged")
-  fun addDatas(datas: List<AnalysisInfo>) {
-    listings.addAll(datas)
-    notifyDataSetChanged()
-  }
 }

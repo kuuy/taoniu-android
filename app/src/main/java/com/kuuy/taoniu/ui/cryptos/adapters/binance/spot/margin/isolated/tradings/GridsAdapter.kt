@@ -1,8 +1,10 @@
 package com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated.tradings
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.kuuy.taoniu.data.cryptos.models.binance.spot.margin.OrderInfo
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.margin.isolated.tradings.GridInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotMarginIsolatedTradingsGridsBinding
@@ -23,22 +25,10 @@ class GridsAdapter(
   }
 
   override fun onBind(holder: GridsHolder, position: Int) {
-    var model = listings[position]
+    val model = listings[position]
     holder.onBind(model, position)
     holder.itemView.setOnClickListener {
       onItemClicked(model)
     }
-  }
-
-  fun addDatas(items: List<GridInfo>) {
-    val datas = mutableListOf<GridInfo>()
-    datas.addAll(listings)
-    datas.addAll(items)
-
-    val diffUtil = DiffUtils(listings, datas)
-    val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    diffUtilResult.dispatchUpdatesTo(this)
-
-    listings = datas
   }
 }

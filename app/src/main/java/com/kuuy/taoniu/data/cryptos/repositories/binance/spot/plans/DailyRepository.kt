@@ -14,12 +14,13 @@ class DailyRepository @Inject constructor(
   private val resource: DailyResource
 ) {
   suspend fun listings(
+    symbols: List<String>,
     current: Int,
     pageSize: Int,
   ) : Flow<ApiResource<DtoPaginate<DailyInfoDto>>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = resource.listings(current, pageSize).first()) {
+      when (val response = resource.listings(symbols, current, pageSize).first()) {
         is ApiResponse.Success -> {
           emit(ApiResource.Success(response.data))
         }

@@ -20,7 +20,7 @@ class GridsViewModel @Inject constructor(
 ) : BaseViewModel() {
   private val _gridsPaginate
       = MutableLiveData<ApiResource<DtoPaginate<GridInfoDto>>>()
-  val analysisPaginate: LiveData<ApiResource<DtoPaginate<GridInfoDto>>>
+  val gridsPaginate: LiveData<ApiResource<DtoPaginate<GridInfoDto>>>
     get() = _gridsPaginate
 
   fun listings(
@@ -29,6 +29,7 @@ class GridsViewModel @Inject constructor(
   ) {
     viewModelScope.launch {
       repository.listings(
+        listOf(),
         current,
         pageSize,
       ).onStart {

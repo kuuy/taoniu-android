@@ -1,23 +1,23 @@
-package com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.tradings
+package com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin
 
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoPaginate
-import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.GridInfoDto
-import com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.isolated.tradings.GridsResource
+import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.OrderInfoDto
+import com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.OrdersResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GridsRepository @Inject constructor(
-  private val resource: GridsResource
+class OrdersRepository @Inject constructor(
+  private val resource: OrdersResource
 ) {
   suspend fun listings(
     symbols: List<String>,
     current: Int,
     pageSize: Int,
-  ) : Flow<ApiResource<DtoPaginate<GridInfoDto>>> {
+  ) : Flow<ApiResource<DtoPaginate<OrderInfoDto>>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.listings(symbols, current, pageSize).first()) {

@@ -6,6 +6,6 @@ data class GridInfo(
   var buyPrice : Float,
   var sellPrice : Float,
   var status : Int,
-  val timestamp : Int,
+  val timestamp : Long,
   val timestampFormat : String,
 )

@@ -1,42 +1,29 @@
 package com.kuuy.taoniu.ui.base
 
-import android.view.View
-import androidx.lifecycle.LiveData
+import android.annotation.SuppressLint
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseTabPagerAdapter<T, VH : RecyclerView.ViewHolder>
-  : BaseListAdapter<T, VH>() {
+abstract class BaseTabPagerAdapter<VH : RecyclerView.ViewHolder>
+  : BaseListAdapter<Boolean, VH>() {
+  var position = MutableLiveData<Int>()
 
-  var isCanLoop = false
-
-  var pageClickListener: OnPageClickListener? = null
-
-  interface OnPageClickListener {
-    fun onPageClick(position: Int, v: View)
-  }
-
-  var activatePosition = MutableLiveData<Int>()
-  var realPosition = { position: Int ->
-    var itemCount = listings.size
-
-    when {
-      !isCanLoop -> position
-      else -> (position + itemCount) % itemCount
+  @SuppressLint("NotifyDataSetChanged")
+  fun size(size: Int, lifecycle: LifecycleOwner) {
+    (0 until size).map {
+      listings.add(false)
+    }
+    notifyDataSetChanged()
+    position.observe(lifecycle) {
+      for (i in 0 until listings.size) {
+        if (listings[i]) {
+          listings[i] = false
+          notifyItemChanged(i)
+        }
+      }
+      listings[it] = true
+      notifyItemChanged(it)
     }
   }
-
-  abstract fun onRealBind(holder: VH, position: Int)
-
-  override fun onBind(holder: VH, position: Int) {
-    onRealBind(holder, realPosition(position))
-  }
-
-  fun getRealPosition(position: Int): Int {
-    return realPosition(position)
-  }
-
-  abstract fun initDatas(size: Int)
-
-  abstract fun activate(position: Int)
 }

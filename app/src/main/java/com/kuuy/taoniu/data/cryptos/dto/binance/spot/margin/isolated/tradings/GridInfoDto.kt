@@ -17,7 +17,7 @@ data class GridInfoDto(
   @field:SerializedName("status")
   var status: Int,
   @field:SerializedName("timestamp")
-  var timestamp: Int,
+  var timestamp: Long,
   @field:SerializedName("timestamp_fmt")
   var timestampFormat: String,
 ) : Parcelable

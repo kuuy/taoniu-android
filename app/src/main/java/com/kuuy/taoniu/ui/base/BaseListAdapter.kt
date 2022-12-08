@@ -1,8 +1,10 @@
 package com.kuuy.taoniu.ui.base
 
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.kuuy.taoniu.data.cryptos.models.binance.spot.margin.isolated.tradings.GridInfo
 
 abstract class BaseListAdapter<T, VH: RecyclerView.ViewHolder>
     : RecyclerView.Adapter<VH>() {
@@ -29,5 +31,14 @@ abstract class BaseListAdapter<T, VH: RecyclerView.ViewHolder>
     onBind(holder, position)
   }
 
+  fun clear() {
+    listings.clear()
+  }
+
+  @SuppressLint("NotifyDataSetChanged")
+  fun addDatas(datas: List<T>) {
+    listings.addAll(datas)
+    notifyDataSetChanged()
+  }
 }
 

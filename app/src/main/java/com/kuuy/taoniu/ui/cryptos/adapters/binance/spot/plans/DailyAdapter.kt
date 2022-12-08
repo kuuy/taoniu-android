@@ -1,5 +1,6 @@
 package com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.plans
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -28,17 +29,5 @@ class DailyAdapter(
     holder.itemView.setOnClickListener {
       onItemClicked(model)
     }
-  }
-
-  fun addDatas(items: List<DailyInfo>) {
-    val datas = mutableListOf<DailyInfo>()
-    datas.addAll(listings)
-    datas.addAll(items)
-
-    val diffUtil = DiffUtils(listings, datas)
-    val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
-    diffUtilResult.dispatchUpdatesTo(this)
-
-    listings = datas
   }
 }

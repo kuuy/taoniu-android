@@ -1,6 +1,5 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.plans
 
-import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
@@ -84,7 +83,7 @@ class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>(
   }
 
   private fun initViewModel() {
-    viewModel.analysisPaginate.observe(
+    viewModel.plansPaginate.observe(
       viewLifecycleOwner
     ) { response->
       when (response) {
@@ -93,8 +92,8 @@ class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>(
         }
         is ApiResource.Success -> {
           response.data?.let {
-            val analysis = it.data.transform()
-            adapter.addDatas(analysis)
+            val plans = it.data.transform()
+            adapter.addDatas(plans)
             current = it.current
           }
           showLoading(false)

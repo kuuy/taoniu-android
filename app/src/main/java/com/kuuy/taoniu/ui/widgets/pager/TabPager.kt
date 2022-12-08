@@ -2,12 +2,13 @@ package com.kuuy.taoniu.ui.widgets.pager
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.children
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -23,7 +24,6 @@ class TabPager<T> @JvmOverloads constructor(
     TabLayout(context).apply {
       id = View.generateViewId()
       layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-      tabMode = TabLayout.MODE_SCROLLABLE
       tabGravity = TabLayout.GRAVITY_FILL
     }
   }
@@ -33,16 +33,14 @@ class TabPager<T> @JvmOverloads constructor(
       layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
     }
   }
-  var adapter: BaseTabPagerAdapter<T, *>? = null
+  var adapter: BaseTabPagerAdapter<*>? = null
     set(value) { field = value; viewPager.adapter = value }
   private var compositePageTransformer: CompositePageTransformer? = null
 
   private val callback = object : ViewPager2.OnPageChangeCallback() {
     override fun onPageSelected(position: Int) {
       super.onPageSelected(position)
-      val realPosition = adapter!!.getRealPosition(position)
-      adapter!!.activatePosition.postValue(realPosition)
-      scrollTo(0, 0)
+      adapter!!.position.postValue(position)
     }
   }
 
@@ -63,49 +61,16 @@ class TabPager<T> @JvmOverloads constructor(
     viewPager.setPageTransformer(compositePageTransformer)
   }
 
-  override fun onStateChanged(
-    source: LifecycleOwner,
-    event: Lifecycle.Event,
-  ) {
-    when(event) {
-      Lifecycle.Event.ON_START -> startTimer()
-      Lifecycle.Event.ON_STOP -> stopTimer()
-      else -> {}
-    }
-  }
-
-  override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-    when (ev.action) {
-      MotionEvent.ACTION_DOWN -> {
-        stopTimer()
-      }
-      MotionEvent.ACTION_UP,
-      MotionEvent.ACTION_CANCEL,
-      MotionEvent.ACTION_OUTSIDE -> {
-        startTimer()
-      }
-    }
-
-    return super.dispatchTouchEvent(ev)
-  }
-
-  private fun startTimer() {
-  }
-
-  private fun stopTimer() {
-  }
-
-  fun tabs(tabs: Array<String>) {
+  fun tabs(tabs: Array<String>, mode: Int, lifecycleOwner: LifecycleOwner) {
+    tabLayout.tabMode = mode
     TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-      tab.text = tabs[position]
+      if (position < tabs.size) {
+        tab.text = tabs[position]
+      }
     }.attach()
-    adapter?.initDatas(tabs.size)
+    adapter?.size(tabs.size, lifecycleOwner)
   }
 
-  fun lifecycleRegistry(
-    lifecycleRegistry: Lifecycle,
-  ): TabPager<T> {
-    lifecycleRegistry.addObserver(this)
-    return this
+  override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
   }
 }

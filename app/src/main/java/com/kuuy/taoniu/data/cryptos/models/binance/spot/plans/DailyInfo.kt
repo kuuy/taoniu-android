@@ -7,6 +7,6 @@ data class DailyInfo(
   var price : Float,
   var amount : Float,
   var status : Int,
-  val timestamp : Int,
+  val timestamp : Long,
   val timestampFormat : String,
 )
