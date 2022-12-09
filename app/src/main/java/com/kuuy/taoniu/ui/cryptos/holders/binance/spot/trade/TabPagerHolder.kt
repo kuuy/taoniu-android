@@ -2,12 +2,8 @@ package com.kuuy.taoniu.ui.cryptos.holders.binance.spot.trade
 
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.children
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kuuy.taoniu.R
 import com.kuuy.taoniu.databinding.WidgesCryptosBinanceSpotTradeTabPagerBinding
 import com.kuuy.taoniu.ui.base.BaseListViewHolder
 

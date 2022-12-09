@@ -29,6 +29,9 @@ import com.kuuy.taoniu.utils.OnScrollListener
 import com.kuuy.taoniu.utils.*
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.options.models.*
+import com.tradingview.lightweightcharts.api.series.enums.LineStyle
+import com.tradingview.lightweightcharts.api.series.models.BarData
+import com.tradingview.lightweightcharts.api.series.models.Time
 import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
@@ -163,14 +166,22 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
   private fun initKlineChart() {
     binding.klineChart.api.applyOptions {
       layout = layoutOptions {
-        textColor = Color.BLACK.toIntColor()
+        textColor = R.color.primary_text.toIntColor()
+      }
+      rightPriceScale = priceScaleOptions {
+        visible = false
+      }
+      timeScale = timeScaleOptions {
+        visible = false
       }
       grid = gridOptions {
         vertLines = gridLineOptions {
-          color = Color.BLACK.toIntColor()
+          color = R.color.material_grey300.toIntColor()
+          style = LineStyle.SPARSE_DOTTED
         }
         horzLines = gridLineOptions {
-          color = Color.BLACK.toIntColor()
+          color = R.color.material_grey300.toIntColor()
+          style = LineStyle.SPARSE_DOTTED
         }
       }
       handleScroll = handleScrollOptions {
@@ -178,7 +189,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
       }
       localization = localizationOptions {
         locale = Locale.getDefault().toLanguageTag()
-        priceFormatter = PriceFormatter(template = "{price:#2:#3}$")
+        priceFormatter = PriceFormatter(template = "\${price}")
         timeFormatter = TimeFormatter(
           locale = Locale.getDefault().toLanguageTag(),
           dateTimeFormat = DateTimeFormat.DATE_TIME
@@ -212,6 +223,46 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
           response.data?.let {
             val symbolInfo = it.data.transform()
             binding.tvTitle.text = "${symbolInfo.baseAsset}/${symbolInfo.quoteAsset}"
+          }
+          showLoading(false)
+        }
+        is ApiResource.Error -> {
+          showToast(response.message ?: "api error")
+          showLoading(false)
+        }
+      }
+    }
+    viewModel.getSeries()
+    viewModel.series.observe(
+      viewLifecycleOwner
+    ) { response ->
+      when (response) {
+        is ApiResource.Loading -> {
+          showLoading(true)
+        }
+        is ApiResource.Success -> {
+          response.data?.let {
+            var series: MutableList<BarData> = mutableListOf()
+            it.data.forEach{ item ->
+              series.add(0, BarData(
+                Time.Utc(item[4].toLong() / 1000),
+                item[0],
+                item[1],
+                item[2],
+                item[3],
+              ))
+            }
+            binding.klineChart.api.addCandlestickSeries(
+              options = candlestickSeriesOptions {
+                wickUpColor = R.color.material_green300.toIntColor()
+//                upColor = R.color.material_green300.toIntColor()
+                wickDownColor = R.color.material_red300.toIntColor()
+//                downColor = R.color.material_red300.toIntColor()
+              },
+              onSeriesCreated = { api ->
+                api.setData(series)
+              }
+            )
           }
           showLoading(false)
         }

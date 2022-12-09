@@ -93,8 +93,8 @@ abstract class BaseFragment<B:ViewBinding> : Fragment() {
 
   protected open fun bindStorageUseCases() {}
 
-  override fun onDestroyView() {
-    super.onDestroyView()
+  override fun onDestroy() {
+    super.onDestroy()
     _binding = null
   }
 }

@@ -13,6 +13,7 @@ import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.Gr
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.SymbolsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
+import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.KlinesRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.OrdersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.plans.DailyRepository as PlansReposioty
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.tradings.GridsRepository
@@ -29,17 +30,26 @@ import kotlin.math.round
 class TradeViewModel @Inject constructor(
   private val symbolsRepository: SymbolsRepository,
   private val tickersRepository: TickersRepository,
+  private val klinesRepository: KlinesRepository,
   private val ordersRepository: OrdersRepository,
   private val plansRepository: PlansReposioty,
   private val gridsRepository: GridsRepository,
 ) : BaseViewModel() {
+  private val _symbolInfo = MutableLiveData<ApiResource<DtoResponse<SymbolInfoDto>>>()
+  val symbolInfo: LiveData<ApiResource<DtoResponse<SymbolInfoDto>>>
+    get() = _symbolInfo
+
   private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
   val tickers: Map<String, TickerInfo>
     get() = _tickers
 
-  private val _symbolInfo = MutableLiveData<ApiResource<DtoResponse<SymbolInfoDto>>>()
-  val symbolInfo: LiveData<ApiResource<DtoResponse<SymbolInfoDto>>>
-    get() = _symbolInfo
+  var symbol = ""
+    set(value) { field=value; _tickers[symbol] = TickerInfo(0f, 0f, 0, 0f, 0) }
+
+  private val _series
+      = MutableLiveData<ApiResource<DtoResponse<List<FloatArray>>>>()
+  val series: LiveData<ApiResource<DtoResponse<List<FloatArray>>>>
+    get() = _series
 
   private val _ordersPaginate
       = MutableLiveData<ApiResource<DtoPaginate<OrderInfoDto>>>()
@@ -55,9 +65,6 @@ class TradeViewModel @Inject constructor(
       = MutableLiveData<ApiResource<DtoPaginate<GridInfoDto>>>()
   val gridsPaginate: LiveData<ApiResource<DtoPaginate<GridInfoDto>>>
     get() = _gridsPaginate
-
-  var symbol = ""
-    set(value) { field=value; _tickers[symbol] = TickerInfo(0f, 0f, 0, 0f, 0) }
 
   fun getSymbolInfo() {
     viewModelScope.launch {
@@ -132,6 +139,22 @@ class TradeViewModel @Inject constructor(
             }
           }
           callback()
+        }
+      }
+    }
+  }
+
+  fun getSeries() {
+    viewModelScope.launch {
+      klinesRepository.series(symbol, "1d", 100).onStart {
+        _series.postValue(ApiResource.Loading())
+      }.catch {
+        it.message?.let { message ->
+          _series.postValue(ApiResource.Error(message))
+        }
+      }.collect { response ->
+        response.data.let {
+          _series.postValue(ApiResource.Success(it))
         }
       }
     }
