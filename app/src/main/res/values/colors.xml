@@ -34,6 +34,8 @@
 
     <color name="darkCard">#1f2b35</color>
 
+    <color name="ripple_color">#80015256</color>
+
     <color name="material_grey200">#ffeeeeee</color>
     <color name="material_grey300">#ffe0e0e0</color>
     <color name="material_grey800">#ff424242</color>

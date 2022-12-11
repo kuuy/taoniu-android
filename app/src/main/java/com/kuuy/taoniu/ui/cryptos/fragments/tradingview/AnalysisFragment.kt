@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -48,6 +49,7 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   }
 
   override fun onBind() {
+    initSearchView()
     initTabPager()
     initViewModel()
   }
@@ -76,6 +78,19 @@ class AnalysisFragment : BaseFragment<FragmentCryptosTradingviewAnalysisBinding>
   private fun initTabPager() {
     binding.pager.adapter = pagerAdapter
     binding.pager.tabs(tabs, TabLayout.MODE_SCROLLABLE, viewLifecycleOwner)
+  }
+
+  private fun initSearchView() {
+    binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+      }
+
+      override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.filter.filter(newText)
+        return false
+      }
+    })
   }
 
   private fun initRecyclerView(rvListings: RecyclerView, position: Int) {

@@ -1,8 +1,7 @@
 package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.plans
 
-import android.os.Handler
-import android.os.Looper
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -20,7 +19,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>() {
-  private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<DailyViewModel>()
   private val adapter by lazy { DailyAdapter{ model ->
     val action = DailyFragmentDirections
@@ -41,21 +39,22 @@ class DailyFragment : BaseFragment<FragmentCryptosBinanceSpotPlansDailyBinding>(
   }
 
   override fun onBind() {
+    initSearchView()
     initRecycler()
     initViewModel()
   }
 
-  override fun onResume() {
-    super.onResume()
-  }
+  private fun initSearchView() {
+    binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+      }
 
-  override fun onPause() {
-    super.onPause()
-  }
-
-  private val flushDaily = object : Runnable {
-    override fun run() {
-    }
+      override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.filter.filter(newText)
+        return false
+      }
+    })
   }
 
   private fun initRecycler() {

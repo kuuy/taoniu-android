@@ -3,6 +3,7 @@ package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated.tradin
 import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -41,7 +42,8 @@ class GridsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedTradi
   }
 
   override fun onBind() {
-    initRecycler()
+    initSearchView()
+    initRecyclerView()
     initViewModel()
   }
 
@@ -58,7 +60,20 @@ class GridsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedTradi
     }
   }
 
-  private fun initRecycler() {
+  private fun initSearchView() {
+    binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+      }
+
+      override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.filter.filter(newText)
+        return false
+      }
+    })
+  }
+
+  private fun initRecyclerView() {
     viewModel.listings(current, pageSize)
     binding.rvListings.apply {
       adapter = this@GridsFragment.adapter
