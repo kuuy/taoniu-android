@@ -46,8 +46,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
   }
 
   kotlinOptions {
@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
     //Dagger - Hilt
     implementation 'com.google.dagger:hilt-android:2.42'
@@ -111,7 +111,7 @@ dependencies {
     implementation 'io.coil-kt:coil-svg:2.1.0'
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.9.1'
 
     // Jsoup
     implementation 'org.jsoup:jsoup:1.15.1'
@@ -126,12 +126,12 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     // Barcode
-    implementation 'com.google.mlkit:barcode-scanning:17.0.2'
+    implementation 'com.google.mlkit:barcode-scanning:17.0.3'
 
     // CameraX
-    implementation 'androidx.camera:camera-camera2:1.3.0-alpha01'
-    implementation 'androidx.camera:camera-lifecycle:1.3.0-alpha01'
-    implementation 'androidx.camera:camera-view:1.3.0-alpha01'
+    implementation 'androidx.camera:camera-camera2:1.3.0-alpha02'
+    implementation 'androidx.camera:camera-lifecycle:1.3.0-alpha02'
+    implementation 'androidx.camera:camera-view:1.3.0-alpha02'
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
 

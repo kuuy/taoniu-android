@@ -30,7 +30,7 @@ class TabPager<T> @JvmOverloads constructor(
   private val viewPager by lazy {
     ViewPager2(context).apply {
       id = View.generateViewId()
-      layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+      layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 0)
     }
   }
   var adapter: BaseTabPagerAdapter<*>? = null
@@ -48,6 +48,7 @@ class TabPager<T> @JvmOverloads constructor(
     tabLayout.apply {
       (layoutParams as LayoutParams).topToTop = LayoutParams.PARENT_ID
       (layoutParams as LayoutParams).bottomToTop = viewPager.id
+      (layoutParams as LayoutParams).verticalBias = 0f
     }
     viewPager.apply {
       (layoutParams as LayoutParams).topToBottom = tabLayout.id
