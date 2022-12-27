@@ -15,17 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
+import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.margin.isolated.tradings.transform
 import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.margin.transform
 import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.plans.transform
 import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.transform
-import com.kuuy.taoniu.data.cryptos.mappings.binance.spot.margin.isolated.tradings.transform
 import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotTradeBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
-import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated.tradings.GridsAdapter
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.OrdersAdapter
-import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.plans.DailyAdapter as PlansAdapter
+import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated.tradings.GridsAdapter
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.trade.TabPagerAdapter
-import com.kuuy.taoniu.utils.OnScrollListener
 import com.kuuy.taoniu.utils.*
 import com.tradingview.lightweightcharts.api.chart.models.color.toIntColor
 import com.tradingview.lightweightcharts.api.options.models.*
@@ -36,7 +34,12 @@ import com.tradingview.lightweightcharts.runtime.plugins.DateTimeFormat
 import com.tradingview.lightweightcharts.runtime.plugins.PriceFormatter
 import com.tradingview.lightweightcharts.runtime.plugins.TimeFormatter
 import dagger.hilt.android.AndroidEntryPoint
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.core.MarkwonTheme
 import java.util.*
+import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.plans.DailyAdapter as PlansAdapter
+
 
 @AndroidEntryPoint
 class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
@@ -47,6 +50,18 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
   private val ordersAdapter by lazy { OrdersAdapter{} }
   private val plansAdapter by lazy { PlansAdapter{} }
   private val gridsAdapter by lazy { GridsAdapter{} }
+  private val markdown by lazy {
+    Markwon.builder(requireContext()).usePlugin(
+      object: AbstractMarkwonPlugin(){
+        override fun configureTheme(builder: MarkwonTheme.Builder) {
+          builder
+            .codeTextColor(Color.BLACK)
+            .codeBackgroundColor(Color.GREEN)
+        }
+      }
+    ).build()
+  }
+  private var about = ""
   private val tabs = arrayOf("订单", "计划", "网格", "详情")
   private var isLoading = false
   private var current = 1
@@ -161,6 +176,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
   }
 
   private fun initTextView(textView: TextView, position: Int) {
+    markdown.setMarkdown(textView, about)
   }
 
   private fun initKlineChart() {
@@ -223,12 +239,29 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
           response.data?.let {
             val symbolInfo = it.data.transform()
             binding.tvTitle.text = "${symbolInfo.baseAsset}/${symbolInfo.quoteAsset}"
+            viewModel.getAbout(symbolInfo.baseAsset)
           }
           showLoading(false)
         }
         is ApiResource.Error -> {
           showToast(response.message ?: "api error")
           showLoading(false)
+        }
+      }
+    }
+    viewModel.about.observe(
+      viewLifecycleOwner
+    ) { response ->
+      when (response) {
+        is ApiResource.Loading -> {
+        }
+        is ApiResource.Success -> {
+          response.data?.let {
+            about = it.data
+          }
+        }
+        is ApiResource.Error -> {
+          showToast(response.message ?: "api error")
         }
       }
     }

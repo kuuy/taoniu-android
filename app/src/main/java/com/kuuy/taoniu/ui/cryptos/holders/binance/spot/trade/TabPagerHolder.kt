@@ -1,11 +1,13 @@
 package com.kuuy.taoniu.ui.cryptos.holders.binance.spot.trade
 
+import android.graphics.Color
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.kuuy.taoniu.databinding.WidgesCryptosBinanceSpotTradeTabPagerBinding
 import com.kuuy.taoniu.ui.base.BaseListViewHolder
+import com.kuuy.taoniu.utils.DensityUtil
 
 class TabPagerHolder(
   private val binding: WidgesCryptosBinanceSpotTradeTabPagerBinding,
@@ -51,7 +53,13 @@ class TabPagerHolder(
         ConstraintLayout.LayoutParams.MATCH_PARENT,
         ConstraintLayout.LayoutParams.MATCH_PARENT
       )
-      (layoutParams as ConstraintLayout.LayoutParams).bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+      (layoutParams as ConstraintLayout.LayoutParams).apply {
+        var paddingSize = DensityUtil.dp2px(binding.root.context, 5f)
+        setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
+        textSize = DensityUtil.sp2px(binding.root.context, 14f)
+        setBackgroundColor(Color.WHITE)
+        bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+      }
       text = "虚似币详解..."
     }
     binding.root.addView(textview)

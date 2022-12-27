@@ -11,6 +11,7 @@ import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.OrderInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.plans.DailyInfoDto as PlanInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.GridInfoDto
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.repositories.currencies.AboutRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.SymbolsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.KlinesRepository
@@ -28,6 +29,7 @@ import kotlin.math.round
 
 @HiltViewModel
 class TradeViewModel @Inject constructor(
+  private val aboutRepository: AboutRepository,
   private val symbolsRepository: SymbolsRepository,
   private val tickersRepository: TickersRepository,
   private val klinesRepository: KlinesRepository,
@@ -38,6 +40,10 @@ class TradeViewModel @Inject constructor(
   private val _symbolInfo = MutableLiveData<ApiResource<DtoResponse<SymbolInfoDto>>>()
   val symbolInfo: LiveData<ApiResource<DtoResponse<SymbolInfoDto>>>
     get() = _symbolInfo
+
+  private val _about = MutableLiveData<ApiResource<DtoResponse<String>>>()
+  val about: LiveData<ApiResource<DtoResponse<String>>>
+    get() = _about
 
   private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
   val tickers: Map<String, TickerInfo>
@@ -65,6 +71,31 @@ class TradeViewModel @Inject constructor(
       = MutableLiveData<ApiResource<DtoPaginate<GridInfoDto>>>()
   val gridsPaginate: LiveData<ApiResource<DtoPaginate<GridInfoDto>>>
     get() = _gridsPaginate
+
+  fun getAbout(currency: String) {
+    viewModelScope.launch {
+      aboutRepository.get(currency)
+        .onStart {
+          _symbolInfo.postValue(ApiResource.Loading())
+        }.catch {
+          var code: Int = 0
+          if (it is HttpException) {
+            code = it.code()
+          }
+          it.message?.let { message ->
+            _about.postValue(
+              ApiResource.Error(
+                message,
+                code,
+              ))
+          }
+        }.collect { response ->
+          response.data.let {
+            _about.postValue(ApiResource.Success(it))
+          }
+        }
+    }
+  }
 
   fun getSymbolInfo() {
     viewModelScope.launch {

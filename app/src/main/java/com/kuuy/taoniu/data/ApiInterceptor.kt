@@ -57,7 +57,7 @@ class ApiInterceptor constructor(
       .build()
 
     val response = client.newCall(request).execute()
-    if (response.code == 401) {
+    if (response.code == 401 || response.code == 403) {
       accessToken = ""
       authPreferences.edit().apply{
         remove("ACCESS_TOKEN")

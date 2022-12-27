@@ -122,6 +122,9 @@ dependencies {
     // Tradingview
     implementation 'com.tradingview:lightweightcharts:3.8.0'
 
+    // Markdown
+    implementation "io.noties.markwon:core:4.6.2"
+
     // Shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
 

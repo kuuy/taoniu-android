@@ -12,6 +12,7 @@ import javax.inject.Singleton
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.cryptos.api.OrderApi
 import com.kuuy.taoniu.data.cryptos.api.StrategyApi
+import com.kuuy.taoniu.data.cryptos.api.currencies.AboutApi as CurrenciesAboutApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.SymbolsApi as BinanceSpotSymbolsApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.TickersApi as BinanceSpotTickersApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.KlinesApi as BinanceSpotKlinesApi
@@ -45,6 +46,18 @@ object CryptosModule {
       okHttpClient,
       gsonConverterFactory,
     ).create(StrategyApi::class.java)
+  }
+
+  @Provides
+  @Singleton
+  fun provideCurrenciesAboutApi(
+    okHttpClient: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory,
+  ): CurrenciesAboutApi {
+    return getDynamicRetrofitClient(
+      okHttpClient,
+      gsonConverterFactory,
+    ).create(CurrenciesAboutApi::class.java)
   }
 
   @Provides

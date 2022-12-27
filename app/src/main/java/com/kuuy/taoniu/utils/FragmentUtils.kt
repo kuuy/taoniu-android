@@ -45,14 +45,6 @@ fun Fragment.showOptionsDialog(
   }
 }
 
-fun Fragment.sp2px(sp: Float): Float {
-  return TypedValue.applyDimension(
-    TypedValue.COMPLEX_UNIT_SP,
-    sp,
-    resources.displayMetrics,
-  )
-}
-
 fun Fragment.md5(input:String): String {
   val md = MessageDigest.getInstance("MD5")
   return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
