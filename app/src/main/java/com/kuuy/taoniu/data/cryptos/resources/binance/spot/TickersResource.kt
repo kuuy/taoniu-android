@@ -20,6 +20,6 @@ class TickersResource @Inject constructor(
     return flow {
       val response = tickersApi.gets(symbols.joinToString(","), fields.joinToString(","))
       emit(ApiResponse.Success(response))
-    }.catch {}.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO)
   }
 }

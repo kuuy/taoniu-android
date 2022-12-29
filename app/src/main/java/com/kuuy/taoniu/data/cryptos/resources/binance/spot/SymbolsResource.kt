@@ -20,7 +20,7 @@ class SymbolsResource @Inject constructor(
     return flow {
       val response = symbolsApi.get(symbol)
       emit(ApiResponse.Success(response))
-    }.catch {}.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO)
   }
 
   suspend fun gets(
@@ -29,6 +29,6 @@ class SymbolsResource @Inject constructor(
     return flow {
       val response = symbolsApi.gets(symbols.joinToString(","))
       emit(ApiResponse.Success(response))
-    }.catch {}.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO)
   }
 }

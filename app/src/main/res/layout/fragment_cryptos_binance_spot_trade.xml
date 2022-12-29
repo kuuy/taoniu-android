@@ -2,6 +2,7 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -111,21 +112,171 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/summaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/tickerLayout"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tvSummaryBuy"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:text="--"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_rounded_summary_red"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvSummaryNeutral"
+                app:layout_constraintHorizontal_weight="1" />
+
+            <TextView
+                android:id="@+id/tvSummaryNeutral"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="--"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_rounded_summary_grey"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvSummaryBuy"
+                app:layout_constraintEnd_toStartOf="@id/tvSummarySell"
+                app:layout_constraintHorizontal_weight="1" />
+
+            <TextView
+                android:id="@+id/tvSummarySell"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_rounded_summary_green"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvSummaryNeutral"
+                app:layout_constraintEnd_toStartOf="@id/tvSummaryRecommendation"
+                app:layout_constraintHorizontal_weight="1" />
+
+            <TextView
+                android:id="@+id/tvSummaryRecommendation"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_rounded_summary_grey"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvSummarySell"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_weight="2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.tradingview.lightweightcharts.view.ChartsView
             android:id="@+id/klineChart"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/tickerLayout"
+            app:layout_constraintTop_toBottomOf="@id/summaryLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/slippageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/klineChart"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tvSlippageAsks01"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/material_green300"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvSlippageBids01"
+                app:layout_constraintWidth_percent=".5" />
+
+            <TextView
+                android:id="@+id/tvSlippageBids01"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/material_red300"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvSlippageAsks01"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent=".5" />
+
+            <TextView
+                android:id="@+id/tvSlippageAsks02"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/material_green300"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/tvSlippageAsks01"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvSlippageBids02"
+                app:layout_constraintWidth_percent=".5" />
+
+            <TextView
+                android:id="@+id/tvSlippageBids02"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/material_red300"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/tvSlippageBids01"
+                app:layout_constraintStart_toEndOf="@id/tvSlippageAsks02"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent=".5" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.kuuy.taoniu.ui.widgets.pager.TabPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/klineChart"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/slippageLayout"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="0dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

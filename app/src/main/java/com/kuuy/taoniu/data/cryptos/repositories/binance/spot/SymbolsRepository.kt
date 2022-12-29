@@ -18,17 +18,19 @@ class SymbolsRepository @Inject constructor(
   ) : Flow<ApiResource<DtoResponse<SymbolInfoDto>>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = resource.get(symbol).first()) {
-        is ApiResponse.Success -> {
-          emit(ApiResource.Success(response.data))
+      try {
+        when (val response = resource.get(symbol).first()) {
+          is ApiResponse.Success -> {
+            emit(ApiResource.Success(response.data))
+          }
+          is ApiResponse.Empty -> {
+            emit(ApiResource.Success(null))
+          }
+          is ApiResponse.Error -> {
+            emit(ApiResource.Error(response.errorMessage))
+          }
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
-        is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
-        }
-      }
+      } catch(e: Exception) {}
     }
   }
 
@@ -37,17 +39,19 @@ class SymbolsRepository @Inject constructor(
   ) : Flow<ApiResource<DtoResponse<List<String>>>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = resource.gets(symbols).first()) {
-        is ApiResponse.Success -> {
-          emit(ApiResource.Success(response.data))
+      try {
+        when (val response = resource.gets(symbols).first()) {
+          is ApiResponse.Success -> {
+            emit(ApiResource.Success(response.data))
+          }
+          is ApiResponse.Empty -> {
+            emit(ApiResource.Success(null))
+          }
+          is ApiResponse.Error -> {
+            emit(ApiResource.Error(response.errorMessage))
+          }
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
-        is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
-        }
-      }
+      } catch(e: Exception) {}
     }
   }
 }

@@ -10,8 +10,12 @@ import com.kuuy.taoniu.data.cryptos.dto.binance.spot.SymbolInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.OrderInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.plans.DailyInfoDto as PlanInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.GridInfoDto
+import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisSummaryDto
+import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisSummary
 import com.kuuy.taoniu.data.cryptos.repositories.currencies.AboutRepository
+import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.SymbolsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.KlinesRepository
@@ -30,6 +34,7 @@ import kotlin.math.round
 @HiltViewModel
 class TradeViewModel @Inject constructor(
   private val aboutRepository: AboutRepository,
+  private val analysisRepository: AnalysisRepository,
   private val symbolsRepository: SymbolsRepository,
   private val tickersRepository: TickersRepository,
   private val klinesRepository: KlinesRepository,
@@ -45,9 +50,17 @@ class TradeViewModel @Inject constructor(
   val about: LiveData<ApiResource<DtoResponse<String>>>
     get() = _about
 
+  private var _summaryInfo = AnalysisSummary(0, 0, 0, "--")
+  val summaryInfo: AnalysisSummary
+    get() = _summaryInfo
+
   private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
   val tickers: Map<String, TickerInfo>
     get() = _tickers
+
+  private val _slippages: MutableMap<String, Float> = mutableMapOf()
+  val slippages: Map<String, Float>
+    get() = _slippages
 
   var symbol = ""
     set(value) { field=value; _tickers[symbol] = TickerInfo(0f, 0f, 0, 0f, 0) }
@@ -76,7 +89,7 @@ class TradeViewModel @Inject constructor(
     viewModelScope.launch {
       aboutRepository.get(currency)
         .onStart {
-          _symbolInfo.postValue(ApiResource.Loading())
+          _about.postValue(ApiResource.Loading())
         }.catch {
           var code: Int = 0
           if (it is HttpException) {
@@ -169,6 +182,41 @@ class TradeViewModel @Inject constructor(
               ticker.change = change
             }
           }
+          callback()
+        }
+      }
+    }
+  }
+
+  fun flushSlippages(callback: () -> Unit) {
+    var fields = listOf("slippage@1%","slippage@-1%","slippage@2%","slippage@-2%")
+
+    viewModelScope.launch {
+      tickersRepository.gets(listOf(symbol), fields).collect { response ->
+        response.data?.let {
+          it.data.forEachIndexed { _, values ->
+            val data = values.split(",")
+            if (data.size != fields.size) {
+              return@forEachIndexed
+            }
+            fields.forEachIndexed { i, field ->
+              if (data[i].isEmpty()) {
+                return@forEachIndexed
+              }
+              _slippages[field] = data[i].toFloat()
+            }
+          }
+          callback()
+        }
+      }
+    }
+  }
+
+  fun flushSummary(callback: () -> Unit) {
+    viewModelScope.launch {
+      analysisRepository.summary("BINANCE", symbol, "1m").collect { response ->
+        response.data?.let {
+          _summaryInfo = it.data.transform()
           callback()
         }
       }

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -38,8 +39,8 @@ import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.core.MarkwonTheme
 import java.util.*
+import kotlin.math.ceil
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.plans.DailyAdapter as PlansAdapter
-
 
 @AndroidEntryPoint
 class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
@@ -78,12 +79,16 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
 
   override fun onResume() {
     super.onResume()
+    mainHandler.post(flushSummary)
     mainHandler.post(flushTickers)
+    mainHandler.post(flushSlippages)
   }
 
   override fun onPause() {
     super.onPause()
+    mainHandler.removeCallbacks(flushSummary)
     mainHandler.removeCallbacks(flushTickers)
+    mainHandler.removeCallbacks(flushSlippages)
   }
 
   private val flushTickers: Runnable by lazy {
@@ -112,6 +117,71 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         }
       }
       mainHandler.postDelayed(flushTickers, 5000)
+    }
+  }
+
+  private val flushSlippages: Runnable by lazy {
+    Runnable {
+      viewModel.flushSlippages(){
+        var percent01 = ceil(viewModel.slippages["slippage@1%"]!!*100 /
+            viewModel.slippages["slippage@1%"]!!.plus(viewModel.slippages["slippage@-1%"]!!)) / 100
+        var percent02 = ceil(viewModel.slippages["slippage@2%"]!!*100 /
+            viewModel.slippages["slippage@2%"]!!.plus(viewModel.slippages["slippage@-2%"]!!)) / 100
+
+        binding.tvSlippageAsks01.apply{
+          text = viewModel.slippages["slippage@1%"]!!.format()
+          (layoutParams as ConstraintLayout.LayoutParams).apply {
+            matchConstraintPercentWidth = percent01
+          }
+          requestLayout()
+        }
+
+        binding.tvSlippageBids01.apply{
+          text = viewModel.slippages["slippage@-1%"]!!.format()
+          (layoutParams as ConstraintLayout.LayoutParams).apply {
+            matchConstraintPercentWidth = 1 - percent01
+          }
+          requestLayout()
+        }
+
+        binding.tvSlippageAsks02.apply{
+          text = viewModel.slippages["slippage@2%"]!!.format()
+          (layoutParams as ConstraintLayout.LayoutParams).apply {
+            matchConstraintPercentWidth = percent02
+          }
+          requestLayout()
+        }
+
+        binding.tvSlippageBids02.apply{
+          text = viewModel.slippages["slippage@-2%"]!!.format()
+          (layoutParams as ConstraintLayout.LayoutParams).apply {
+            matchConstraintPercentWidth = 1 - percent02
+          }
+          requestLayout()
+        }
+      }
+      mainHandler.postDelayed(flushSlippages, 5000)
+    }
+  }
+
+  private val flushSummary: Runnable by lazy {
+    Runnable {
+      viewModel.flushSummary(){
+        binding.tvSummaryBuy.text = viewModel.summaryInfo.buy.toString()
+        binding.tvSummarySell.text = viewModel.summaryInfo.sell.toString()
+        binding.tvSummaryNeutral.text = viewModel.summaryInfo.neutral.toString()
+        binding.tvSummaryRecommendation.apply{
+          text = viewModel.summaryInfo.recommendation
+          if (viewModel.summaryInfo.recommendation == "BUY" || viewModel.summaryInfo.recommendation == "STRONG_BUY") {
+            setBackgroundColor(context.getColor(R.color.material_red300))
+          } else if (viewModel.summaryInfo.recommendation == "SELL" || viewModel.summaryInfo.recommendation == "STRONG_SELL") {
+            setBackgroundColor(context.getColor(R.color.material_green300))
+          } else {
+            setBackgroundColor(context.getColor(R.color.material_grey300))
+          }
+        }
+      }
+      mainHandler.postDelayed(flushSummary, 5000)
     }
   }
 
