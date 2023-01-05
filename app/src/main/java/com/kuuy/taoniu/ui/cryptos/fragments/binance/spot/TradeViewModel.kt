@@ -128,7 +128,10 @@ class TradeViewModel @Inject constructor(
             ))
           }
         }.collect { response ->
-          response.data.let {
+          response.data?.let {
+            if (!it.success) {
+              return@collect
+            }
             _symbolInfo.postValue(ApiResource.Success(it))
           }
         }
@@ -146,6 +149,9 @@ class TradeViewModel @Inject constructor(
     viewModelScope.launch {
       tickersRepository.gets(symbols, fields).collect { response ->
         response.data?.let {
+          if (!it.success) {
+            return@collect
+          }
           it.data.forEachIndexed { i, values ->
             val symbol = symbols[i]
             val data = values.split(",")
@@ -194,6 +200,9 @@ class TradeViewModel @Inject constructor(
     viewModelScope.launch {
       tickersRepository.gets(listOf(symbol), fields).collect { response ->
         response.data?.let {
+          if (!it.success) {
+            return@collect
+          }
           it.data.forEachIndexed { _, values ->
             val data = values.split(",")
             if (data.size != fields.size) {
@@ -216,6 +225,9 @@ class TradeViewModel @Inject constructor(
     viewModelScope.launch {
       analysisRepository.summary("BINANCE", symbol, "1m").collect { response ->
         response.data?.let {
+          if (!it.success) {
+            return@collect
+          }
           _summaryInfo = it.data.transform()
           callback()
         }

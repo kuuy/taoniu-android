@@ -2,7 +2,6 @@ package com.kuuy.taoniu.ui.cryptos.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.dto.StrategyListingsDto
