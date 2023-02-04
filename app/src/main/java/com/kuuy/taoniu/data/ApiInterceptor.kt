@@ -72,7 +72,9 @@ class ApiInterceptor constructor(
           accessToken = token.access
           authPreferences.edit().putString("ACCESS_TOKEN", accessToken).apply()
         }
-      } catch (t: Throwable) { }
+      } catch (t: Throwable) {
+        refreshToken()
+      }
     }
   }
 }
