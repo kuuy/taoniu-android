@@ -38,4 +38,15 @@ class AnalysisResource @Inject constructor(
       emit(ApiResponse.Success(response))
     }.catch {}.flowOn(Dispatchers.IO)
   }
+
+  suspend fun gets(
+    exchange: String,
+    symbols: String,
+    interval: String,
+  ) : Flow<ApiResponse<DtoResponse<List<AnalysisInfoDto>>>> {
+    return flow {
+      val response = analysisApi.gets(exchange, symbols, interval)
+      emit(ApiResponse.Success(response))
+    }.catch {}.flowOn(Dispatchers.IO)
+  }
 }

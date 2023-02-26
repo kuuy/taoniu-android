@@ -23,4 +23,11 @@ interface AnalysisApi {
     @Query("current") current: Int,
     @Query("page_size") pageSize: Int
   ): DtoPaginate<AnalysisInfoDto>
+
+  @GET("v1/tradingview/analysis/gets")
+  suspend fun gets(
+    @Query("exchange") exchange: String,
+    @Query("symbols") symbol: String,
+    @Query("interval") interval: String,
+  ): DtoResponse<List<AnalysisInfoDto>>
 }

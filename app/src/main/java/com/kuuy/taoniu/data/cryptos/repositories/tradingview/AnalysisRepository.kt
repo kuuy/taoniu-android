@@ -57,4 +57,25 @@ class AnalysisRepository @Inject constructor(
       }
     }
   }
+
+  suspend fun gets(
+    exchange: String,
+    symbols: List<String>,
+    interval: String,
+  ) : Flow<ApiResource<DtoResponse<List<AnalysisInfoDto>>>> {
+    return flow {
+      emit(ApiResource.Loading())
+      when (val response = resource.gets(exchange, symbols.joinToString(","), interval).first()) {
+        is ApiResponse.Success -> {
+          emit(ApiResource.Success(response.data))
+        }
+        is ApiResponse.Empty -> {
+          emit(ApiResource.Success(null))
+        }
+        is ApiResponse.Error -> {
+          emit(ApiResource.Error(response.errorMessage))
+        }
+      }
+    }
+  }
 }

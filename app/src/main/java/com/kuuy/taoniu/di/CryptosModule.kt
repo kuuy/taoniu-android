@@ -18,6 +18,7 @@ import com.kuuy.taoniu.data.cryptos.api.binance.spot.TickersApi as BinanceSpotTi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.KlinesApi as BinanceSpotKlinesApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.plans.DailyApi as BinanceSpotPlansDailyApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.OrdersApi as BinanceSpotMarginOrdersApi
+import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.isolated.SymbolsApi as BinanceSpotMarginIsolatedSymbolsApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.isolated.tradings.GridsApi as BinanceSpotMarginIsolatedTradingsGridsApi
 import com.kuuy.taoniu.data.cryptos.api.tradingview.AnalysisApi as TradingviewAnalysisApi
 
@@ -118,6 +119,18 @@ object CryptosModule {
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotMarginOrdersApi::class.java)
+  }
+
+  @Provides
+  @Singleton
+  fun provideBinanceSpotMarginIsolatedSymbolsApi(
+    okHttpClient: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory,
+  ): BinanceSpotMarginIsolatedSymbolsApi {
+    return getDynamicRetrofitClient(
+      okHttpClient,
+      gsonConverterFactory,
+    ).create(BinanceSpotMarginIsolatedSymbolsApi::class.java)
   }
 
   @Provides
