@@ -57,7 +57,7 @@ class TabPagerHolder(
       (layoutParams as ConstraintLayout.LayoutParams).apply {
         var paddingSize = DensityUtil.dp2px(binding.root.context, 5f)
         setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 20f)
         setBackgroundColor(Color.WHITE)
         bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
       }

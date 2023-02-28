@@ -129,7 +129,7 @@
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:background="@drawable/bg_rounded_summary_red"
+                android:background="@drawable/bg_rounded_summary_green"
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +162,7 @@
                 android:textStyle="bold"
                 android:textSize="26sp"
                 android:textColor="@color/white"
-                android:background="@drawable/bg_rounded_summary_green"
+                android:background="@drawable/bg_rounded_summary_red"
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/tvSummaryNeutral"
@@ -206,7 +206,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/tvSlippageAsks01"
+                android:id="@+id/tvSlippageBids01"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:text="--"
@@ -217,11 +217,11 @@
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvSlippageBids01"
+                app:layout_constraintEnd_toStartOf="@id/tvSlippageAsks01"
                 app:layout_constraintWidth_percent=".5" />
 
             <TextView
-                android:id="@+id/tvSlippageBids01"
+                android:id="@+id/tvSlippageAsks01"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:text="--"
@@ -231,24 +231,8 @@
                 android:background="@color/material_red300"
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvSlippageAsks01"
+                app:layout_constraintStart_toEndOf="@id/tvSlippageBids01"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent=".5" />
-
-            <TextView
-                android:id="@+id/tvSlippageAsks02"
-                android:layout_width="0dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="8dp"
-                android:text="--"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:textColor="@color/white"
-                android:background="@color/material_green300"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/tvSlippageAsks01"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvSlippageBids02"
                 app:layout_constraintWidth_percent=".5" />
 
             <TextView
@@ -260,10 +244,26 @@
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/white"
-                android:background="@color/material_red300"
+                android:background="@color/material_green300"
                 android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/tvSlippageBids01"
-                app:layout_constraintStart_toEndOf="@id/tvSlippageAsks02"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvSlippageAsks02"
+                app:layout_constraintWidth_percent=".5" />
+
+            <TextView
+                android:id="@+id/tvSlippageAsks02"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:text="--"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:background="@color/material_red300"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/tvSlippageAsks01"
+                app:layout_constraintStart_toEndOf="@id/tvSlippageBids02"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintWidth_percent=".5" />
 
