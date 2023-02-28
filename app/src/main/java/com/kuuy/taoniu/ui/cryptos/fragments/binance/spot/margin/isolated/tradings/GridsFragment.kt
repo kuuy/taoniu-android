@@ -47,14 +47,6 @@ class GridsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedTradi
     initViewModel()
   }
 
-  override fun onResume() {
-    super.onResume()
-  }
-
-  override fun onPause() {
-    super.onPause()
-  }
-
   private val flushGrids = object : Runnable {
     override fun run() {
     }

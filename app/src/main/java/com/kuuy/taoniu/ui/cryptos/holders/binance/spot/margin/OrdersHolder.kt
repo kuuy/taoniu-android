@@ -15,12 +15,12 @@ class OrdersHolder(
     if (model.side == "BUY") {
       binding.tvRecommendation.let{
         it.text = "\ue621"
-        it.setTextColor(it.context.getColor(R.color.material_red300))
+        it.setTextColor(it.context.getColor(R.color.material_green300))
       }
     } else if (model.side == "SELL") {
       binding.tvRecommendation.let{
         it.text = "\ue622"
-        it.setTextColor(it.context.getColor(R.color.material_green300))
+        it.setTextColor(it.context.getColor(R.color.material_red300))
       }
     }
     binding.tvPrice.text = "${model.price}x${model.quantity*model.price}"

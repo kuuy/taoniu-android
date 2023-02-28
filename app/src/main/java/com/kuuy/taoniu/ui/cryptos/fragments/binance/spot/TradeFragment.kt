@@ -173,9 +173,9 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         binding.tvSummaryRecommendation.apply{
           text = viewModel.summaryInfo.recommendation
           if (viewModel.summaryInfo.recommendation == "BUY" || viewModel.summaryInfo.recommendation == "STRONG_BUY") {
-            setBackgroundColor(context.getColor(R.color.material_red300))
-          } else if (viewModel.summaryInfo.recommendation == "SELL" || viewModel.summaryInfo.recommendation == "STRONG_SELL") {
             setBackgroundColor(context.getColor(R.color.material_green300))
+          } else if (viewModel.summaryInfo.recommendation == "SELL" || viewModel.summaryInfo.recommendation == "STRONG_SELL") {
+            setBackgroundColor(context.getColor(R.color.material_red300))
           } else {
             setBackgroundColor(context.getColor(R.color.material_grey300))
           }

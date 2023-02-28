@@ -5,15 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.recyclerview.widget.DiffUtil
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.SymbolFilterInfo
-import com.kuuy.taoniu.data.cryptos.models.binance.spot.margin.OrderInfo
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.margin.isolated.tradings.GridInfo
-import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotMarginIsolatedTradingsGridsBinding
 import com.kuuy.taoniu.ui.base.BaseListAdapter
 import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.margin.isolated.tradings.GridsHolder
-import com.kuuy.taoniu.utils.DiffUtils
 
 class GridsAdapter(
   private val onItemClicked: (GridInfo) -> Unit,

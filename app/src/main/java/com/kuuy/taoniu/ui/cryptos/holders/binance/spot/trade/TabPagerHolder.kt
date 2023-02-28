@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.ui.cryptos.holders.binance.spot.trade
 
 import android.graphics.Color
+import android.util.TypedValue
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
@@ -56,7 +57,7 @@ class TabPagerHolder(
       (layoutParams as ConstraintLayout.LayoutParams).apply {
         var paddingSize = DensityUtil.dp2px(binding.root.context, 5f)
         setPadding(paddingSize, paddingSize, paddingSize, paddingSize)
-        textSize = DensityUtil.sp2px(binding.root.context, 14f)
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)
         setBackgroundColor(Color.WHITE)
         bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
       }
