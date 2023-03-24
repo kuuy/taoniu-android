@@ -31,4 +31,11 @@ class SymbolsResource @Inject constructor(
       emit(ApiResponse.Success(response))
     }.flowOn(Dispatchers.IO)
   }
+
+  suspend fun scan() : Flow<ApiResponse<DtoResponse<List<String>>>> {
+    return flow {
+      val response = symbolsApi.scan()
+      emit(ApiResponse.Success(response))
+    }.catch {}.flowOn(Dispatchers.IO)
+  }
 }

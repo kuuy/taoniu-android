@@ -97,6 +97,8 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         viewModel.flushTickers(){
           viewModel.tickers[args.symbol]?.let { ticker ->
             binding.tvPrice.text = ticker.price.toString()
+            binding.lbHigh.value = ticker.high
+            binding.lbLow.value = ticker.low
             if (ticker.change > 0) {
               binding.tvPercent.let{
                 it.text ="+%.2f%%".format(ticker.change)

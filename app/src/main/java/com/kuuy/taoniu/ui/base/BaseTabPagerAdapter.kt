@@ -11,6 +11,7 @@ abstract class BaseTabPagerAdapter<VH : RecyclerView.ViewHolder>
 
   @SuppressLint("NotifyDataSetChanged")
   fun size(size: Int, lifecycle: LifecycleOwner) {
+    listings.clear()
     (0 until size).map {
       listings.add(false)
     }

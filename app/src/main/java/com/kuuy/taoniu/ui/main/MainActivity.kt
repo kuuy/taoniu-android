@@ -36,12 +36,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
           navController.navigate(R.id.binanceSpotPlansDailyFragment)
         }
         R.id.navOrderHome -> {
-          navController.navigate(R.id.binanceSpotAnalysisMarginIsolatedTradingsFishersGridsFragment)
+          navController.navigate(R.id.binanceSpotAnalysisTradingsFishersGridsFragment)
 //          navController.navigate(R.id.tradingviewAnalysisFragment)
 //          navController.navigate(R.id.orderHomeFragment)
         }
         R.id.navCounter -> {
-          navController.navigate(R.id.binanceSpotMarginIsolatedSymbolsFragment)
+          navController.navigate(R.id.binanceSpotTradingsSymbolsFragment)
 //          navController.navigate(R.id.counterFragment)
         }
         R.id.navScanner -> {

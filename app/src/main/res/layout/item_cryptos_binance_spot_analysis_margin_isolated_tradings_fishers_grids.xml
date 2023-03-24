@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.kuuy.taoniu.ui.widgets.LabelCell
+    <com.kuuy.taoniu.ui.widgets.LabelItem
         android:id="@+id/lcBuysCount"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toStartOf="@id/lcBuysAmount"
         app:layout_constraintHorizontal_weight="1" />
 
-    <com.kuuy.taoniu.ui.widgets.LabelCell
+    <com.kuuy.taoniu.ui.widgets.LabelItem
         android:id="@+id/lcBuysAmount"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1" />
 
-    <com.kuuy.taoniu.ui.widgets.LabelCell
+    <com.kuuy.taoniu.ui.widgets.LabelItem
         android:id="@+id/lcSellsCount"
         android:layout_width="0dp"
         android:layout_height="35dp"
@@ -53,7 +53,7 @@
         app:layout_constraintEnd_toStartOf="@id/lcSellsAmount"
         app:layout_constraintHorizontal_weight="1" />
 
-    <com.kuuy.taoniu.ui.widgets.LabelCell
+    <com.kuuy.taoniu.ui.widgets.LabelItem
         android:id="@+id/lcSellsAmount"
         android:layout_width="0dp"
         android:layout_height="35dp"

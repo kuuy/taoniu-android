@@ -1,4 +1,4 @@
-package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated
+package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.tradings
 
 import android.os.Handler
 import android.os.Looper
@@ -9,19 +9,22 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
-import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotMarginIsolatedSymbolsBinding
+import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotTradingsSymbolsBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
-import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated.SymbolsAdapter
+import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.tradings.TabPagerAdapter
+import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.tradings.SymbolsAdapter
 import com.kuuy.taoniu.ui.cryptos.fragments.tradingview.AnalysisFragmentDirections
 import com.kuuy.taoniu.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedSymbolsBinding>() {
+class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotTradingsSymbolsBinding>() {
   private val mainHandler by lazy { Handler(Looper.getMainLooper()) }
   private val viewModel by viewModels<SymbolsViewModel>()
   private val adapter by lazy { SymbolsAdapter(::ticker){ model ->
@@ -29,11 +32,13 @@ class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedSym
       .toTrade(model.symbol)
     findNavController().navigate(action)
   } }
+  private val pagerAdapter by lazy { TabPagerAdapter(::initRecyclerView) }
+  private val tabs = arrayOf("现货", "杠杆")
   private var isLoading = false
 
   override fun viewBinding(container: ViewGroup?)
-      : FragmentCryptosBinanceSpotMarginIsolatedSymbolsBinding {
-    return FragmentCryptosBinanceSpotMarginIsolatedSymbolsBinding.inflate(
+      : FragmentCryptosBinanceSpotTradingsSymbolsBinding {
+    return FragmentCryptosBinanceSpotTradingsSymbolsBinding.inflate(
       layoutInflater,
       container,
       false
@@ -42,7 +47,7 @@ class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedSym
 
   override fun onBind() {
     initSearchView()
-    initRecyclerView()
+    initTabPager()
     initViewModel()
   }
 
@@ -80,28 +85,46 @@ class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedSym
     })
   }
 
-  private fun initRecyclerView() {
+  private fun initTabPager() {
+    binding.pager.adapter = pagerAdapter
+    binding.pager.tabs(tabs, TabLayout.MODE_FIXED, viewLifecycleOwner)
+  }
+
+  private fun initRecyclerView(rvListings: RecyclerView, position: Int) {
     adapter.clear()
-    viewModel.scan{
-      viewModel.analysis("BINANCE", "1m"){
-        adapter.clear()
+    when (position) {
+      0 -> {
+        viewModel.scan{
+          viewModel.analysis("BINANCE", "1m"){
+            adapter.clear()
+          }
+        }
+      }
+      1 -> {
+        viewModel.scanMarginIsolated{
+          viewModel.analysis("BINANCE", "1m"){
+            adapter.clear()
+          }
+        }
       }
     }
-    binding.rvListings.apply {
-      adapter = this@SymbolsFragment.adapter
-      layoutManager = LinearLayoutManager(requireContext())
-      val divider = DividerItemDecoration(
-        requireContext(),
-        DividerItemDecoration.VERTICAL
-      )
-      ContextCompat.getDrawable(
-        requireContext(),
-        R.drawable.divider_transparent
-      )?.let {
-        divider.setDrawable(it)
+    rvListings.apply {
+      layoutManager ?: run {
+        adapter = this@SymbolsFragment.adapter
+        layoutManager = LinearLayoutManager(requireContext())
+        val divider = DividerItemDecoration(
+          requireContext(),
+          DividerItemDecoration.VERTICAL
+        )
+        ContextCompat.getDrawable(
+          requireContext(),
+          R.drawable.divider_transparent
+        )?.let {
+          divider.setDrawable(it)
+        }
+        addItemDecoration(divider)
+        setHasFixedSize(true)
       }
-      addItemDecoration(divider)
-      setHasFixedSize(true)
     }
   }
 

@@ -1,9 +1,9 @@
-package com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated
+package com.kuuy.taoniu.data.cryptos.repositories.binance.spot.tradings
 
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoResponse
-import com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.isolated.SymbolsResource
+import com.kuuy.taoniu.data.cryptos.resources.binance.spot.tradings.SymbolsResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow

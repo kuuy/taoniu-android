@@ -1,15 +1,15 @@
-package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated
+package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.tradings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
-import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
-import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.SymbolsRepository
+import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.tradings.SymbolsRepository
+import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.tradings.SymbolsRepository as MarginIsolatedSymbolsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
 import com.kuuy.taoniu.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,8 @@ import kotlin.math.round
 
 @HiltViewModel
 class SymbolsViewModel @Inject constructor(
-  private val repository: SymbolsRepository,
+  private val symbolsRepository: SymbolsRepository,
+  private val marginIsolatedSymbolsRepository: MarginIsolatedSymbolsRepository,
   private val tickersRepository: TickersRepository,
   private val analysisRepository: AnalysisRepository,
 ) : BaseViewModel() {
@@ -36,13 +37,32 @@ class SymbolsViewModel @Inject constructor(
 
   fun scan(callback: () -> Unit) {
     viewModelScope.launch {
-      repository.scan().onStart {
+      symbolsRepository.scan().onStart {
+        _tickers.clear()
       }.catch {
       }.collect { response ->
         response.data?.let {
           it?.data?.forEach { symbol ->
             if (!_tickers.containsKey(symbol)) {
-              _tickers[symbol] = TickerInfo(0f, 0f, 0, 0f, 0)
+              _tickers[symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
+            }
+          }
+        }
+        callback()
+      }
+    }
+  }
+
+  fun scanMarginIsolated(callback: () -> Unit) {
+    viewModelScope.launch {
+      marginIsolatedSymbolsRepository.scan().onStart {
+        _tickers.clear()
+      }.catch {
+      }.collect { response ->
+        response.data?.let {
+          it?.data?.forEach { symbol ->
+            if (!_tickers.containsKey(symbol)) {
+              _tickers[symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
             }
           }
         }

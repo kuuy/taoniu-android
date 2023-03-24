@@ -16,4 +16,7 @@ interface SymbolsApi {
   suspend fun gets(
     @Query("symbols") symbols: String,
   ): DtoResponse<List<String>>
+
+  @GET("v1/binance/spot/symbols/scan")
+  suspend fun scan(): DtoResponse<List<String>>
 }

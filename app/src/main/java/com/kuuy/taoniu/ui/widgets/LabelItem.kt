@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.kuuy.taoniu.R
 
-class LabelCell @JvmOverloads constructor(
+class LabelItem @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet?,
   defStyleAttr: Int = 0

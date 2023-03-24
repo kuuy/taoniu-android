@@ -1,12 +1,12 @@
-package com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.analysis.margin.isolated.tradings.fishers
+package com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.analysis.tradings.fishers
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.SymbolFilterInfo
-import com.kuuy.taoniu.data.cryptos.models.binance.spot.analysis.margin.isolated.tradings.fishers.GridInfo
-import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotAnalysisMarginIsolatedTradingsFishersGridsBinding
+import com.kuuy.taoniu.data.cryptos.models.binance.spot.analysis.tradings.fishers.GridInfo
+import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotAnalysisTradingsFishersGridsBinding
 import com.kuuy.taoniu.ui.base.BaseListAdapter
-import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.analysis.margin.isolated.tradings.fishers.GridsHolder
+import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.analysis.tradings.fishers.GridsHolder
 
 class GridsAdapter: BaseListAdapter<GridInfo, GridsHolder>() {
   var filterListings: ArrayList<SymbolFilterInfo>? = null
@@ -19,7 +19,7 @@ class GridsAdapter: BaseListAdapter<GridInfo, GridsHolder>() {
   }
 
   override fun viewHolder(parent: ViewGroup): GridsHolder {
-    var binding = ItemCryptosBinanceSpotAnalysisMarginIsolatedTradingsFishersGridsBinding.inflate(
+    var binding = ItemCryptosBinanceSpotAnalysisTradingsFishersGridsBinding.inflate(
       LayoutInflater.from(parent.context),
       parent,
       false

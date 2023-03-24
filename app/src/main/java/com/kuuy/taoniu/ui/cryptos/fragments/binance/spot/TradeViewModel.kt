@@ -10,7 +10,6 @@ import com.kuuy.taoniu.data.cryptos.dto.binance.spot.SymbolInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.OrderInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.plans.DailyInfoDto as PlanInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.GridInfoDto
-import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisSummaryDto
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisSummary
@@ -63,7 +62,7 @@ class TradeViewModel @Inject constructor(
     get() = _slippages
 
   var symbol = ""
-    set(value) { field=value; _tickers[symbol] = TickerInfo(0f, 0f, 0, 0f, 0) }
+    set(value) { field=value; _tickers[symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0) }
 
   private val _series
       = MutableLiveData<ApiResource<DtoResponse<List<FloatArray>>>>()
@@ -140,7 +139,7 @@ class TradeViewModel @Inject constructor(
 
   fun flushTickers(callback: () -> Unit) {
     var symbols = tickers.keys.toList()
-    var fields = listOf("open","price")
+    var fields = listOf("open","price", "high", "low", "volume", "quota")
 
     if (symbols.isEmpty()) {
       return
@@ -175,6 +174,14 @@ class TradeViewModel @Inject constructor(
                     ticker.state = 0
                   }
                   ticker.price = price
+                } else if (field == "high") {
+                  ticker.high = data[j].toFloat()
+                } else if (field == "low") {
+                  ticker.low = data[j].toFloat()
+                } else if (field == "volume") {
+                  ticker.volume = data[j].toFloat()
+                } else if (field == "quota") {
+                  ticker.quota = data[j].toFloat()
                 }
               }
               var change = round((ticker.price - ticker.open)*10000/ticker.open) /100

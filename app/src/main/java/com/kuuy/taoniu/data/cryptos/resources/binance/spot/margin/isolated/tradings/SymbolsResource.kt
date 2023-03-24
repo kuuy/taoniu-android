@@ -1,4 +1,4 @@
-package com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.isolated
+package com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.isolated.tradings
 
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoResponse

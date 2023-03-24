@@ -1,4 +1,4 @@
-package com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.margin.isolated
+package com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.tradings
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import android.widget.Filterable
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.SymbolFilterInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
-import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotMarginIsolatedSymbolsBinding
+import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotTradingsSymbolsBinding
 import com.kuuy.taoniu.ui.base.BaseListAdapter
-import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.margin.isolated.SymbolsHolder
+import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.tradings.SymbolsHolder
 
 class SymbolsAdapter(
   private val ticker: (String, (TickerInfo) -> Unit) -> Unit,
@@ -26,7 +26,7 @@ class SymbolsAdapter(
   }
 
   override fun viewHolder(parent: ViewGroup): SymbolsHolder {
-    var binding = ItemCryptosBinanceSpotMarginIsolatedSymbolsBinding.inflate(
+    var binding = ItemCryptosBinanceSpotTradingsSymbolsBinding.inflate(
       LayoutInflater.from(parent.context),
       parent,
       false

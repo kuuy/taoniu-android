@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tvDay"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:paddingStart="12dp"
+        android:gravity="end|center_vertical"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.kuuy.taoniu.ui.widgets.LabelItem
+        android:id="@+id/lcBuysCount"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:paddingStart="12dp"
+        app:label="买入笔数"
+        app:layout_constraintTop_toBottomOf="@id/tvDay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lcBuysAmount"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <com.kuuy.taoniu.ui.widgets.LabelItem
+        android:id="@+id/lcBuysAmount"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        app:label="买入金额"
+        app:layout_constraintTop_toBottomOf="@id/tvDay"
+        app:layout_constraintStart_toEndOf="@id/lcBuysCount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <com.kuuy.taoniu.ui.widgets.LabelItem
+        android:id="@+id/lcSellsCount"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:paddingStart="12dp"
+        app:label="卖出笔数"
+        app:layout_constraintTop_toBottomOf="@id/lcBuysCount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lcSellsAmount"
+        app:layout_constraintHorizontal_weight="1" />
+
+    <com.kuuy.taoniu.ui.widgets.LabelItem
+        android:id="@+id/lcSellsAmount"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        app:label="卖出金额"
+        app:layout_constraintTop_toBottomOf="@id/lcBuysCount"
+        app:layout_constraintStart_toEndOf="@id/lcSellsCount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

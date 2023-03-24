@@ -44,7 +44,6 @@
             app:argType="com.kuuy.taoniu.data.model.ArticlesItem" />
     </fragment>
 
-
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.kuuy.taoniu.ui.article.ArticleFragment"
@@ -100,10 +99,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/binanceSpotAnalysisMarginIsolatedTradingsFishersGridsFragment"
-        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.analysis.margin.isolated.tradings.fishers.GridsFragment"
-        android:label="BinanceSpotAnalysisMarginIsolatedTradingsFishersGrids"
-        tools:layout="@layout/fragment_cryptos_binance_spot_analysis_margin_isolated_tradings_fishers_grids">
+        android:id="@+id/binanceSpotAnalysisTradingsFishersGridsFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.analysis.tradings.fishers.GridsFragment"
+        android:label="BinanceSpotAnalysisTradingsFishersGrids"
+        tools:layout="@layout/fragment_cryptos_binance_spot_analysis_tradings_fishers_grids">
     </fragment>
 
     <fragment
@@ -117,10 +116,10 @@
     </fragment>
 
     <fragment
-        android:id="@+id/binanceSpotMarginIsolatedSymbolsFragment"
-        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated.SymbolsFragment"
+        android:id="@+id/binanceSpotTradingsSymbolsFragment"
+        android:name="com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.tradings.SymbolsFragment"
         android:label="BinanceSpotMarginIsolatedSymbols"
-        tools:layout="@layout/fragment_cryptos_binance_spot_margin_isolated_symbols">
+        tools:layout="@layout/fragment_cryptos_binance_spot_tradings_symbols">
         <action
             android:id="@+id/toTrade"
             app:destination="@id/binanceSpotTradeFragment"

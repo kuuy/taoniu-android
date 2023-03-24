@@ -1,17 +1,17 @@
-package com.kuuy.taoniu.ui.cryptos.holders.binance.spot.margin.isolated
+package com.kuuy.taoniu.ui.cryptos.holders.binance.spot.tradings
 
 import android.graphics.Typeface
 import android.view.animation.AnimationUtils
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.cryptos.models.TickerInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
-import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotMarginIsolatedSymbolsBinding
+import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotTradingsSymbolsBinding
 import com.kuuy.taoniu.ui.base.BaseListViewHolder
 
 class SymbolsHolder(
-  private val binding: ItemCryptosBinanceSpotMarginIsolatedSymbolsBinding,
+  private val binding: ItemCryptosBinanceSpotTradingsSymbolsBinding,
   private val ticker: (String, (TickerInfo) -> Unit) -> Unit,
-) : BaseListViewHolder<AnalysisInfo, ItemCryptosBinanceSpotMarginIsolatedSymbolsBinding>(binding) {
+) : BaseListViewHolder<AnalysisInfo, ItemCryptosBinanceSpotTradingsSymbolsBinding>(binding) {
   override fun onBind(model: AnalysisInfo, position: Int) {
     binding.tvSymbol.text = model.symbol
 

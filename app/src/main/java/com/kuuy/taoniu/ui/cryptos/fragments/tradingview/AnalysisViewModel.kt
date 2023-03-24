@@ -106,7 +106,7 @@ class AnalysisViewModel @Inject constructor(
         response.data.let {
           it?.data?.forEach { item ->
             if (!_tickers.containsKey(item.symbol)) {
-              _tickers[item.symbol] = TickerInfo(0f, 0f, 0, 0f, 0)
+              _tickers[item.symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0)
             }
           }
           _analysisPaginate.postValue(ApiResource.Success(it))
