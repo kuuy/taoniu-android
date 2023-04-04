@@ -2,15 +2,14 @@ package com.kuuy.taoniu.ui.cryptos.fragments
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
-import com.google.android.material.snackbar.Snackbar
 import com.kuuy.taoniu.R
 import dagger.hilt.android.AndroidEntryPoint
-
 
 import com.kuuy.taoniu.utils.*
 import com.kuuy.taoniu.data.ApiResource
@@ -21,12 +20,10 @@ import com.kuuy.taoniu.ui.cryptos.adapters.StrategyListAdapter
 
 @AndroidEntryPoint
 class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() {
-
   private val viewModel by viewModels<StrategyViewModel>()
   private val adapter by lazy { StrategyListAdapter() }
-  private var snackBar: Snackbar? = null
 
-  protected override fun viewBinding(container: ViewGroup?)
+  override fun viewBinding(container: ViewGroup?)
       : FragmentCryptosStrategyHomeBinding {
     return FragmentCryptosStrategyHomeBinding.inflate(
       layoutInflater,
@@ -35,7 +32,8 @@ class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() 
     )
   }
 
-  protected override fun onBind() {
+  override fun onBind() {
+    initSearchView()
     initRecycler()
     initViewModel()
     binding.swipeRefreshLayout.setOnRefreshListener {
@@ -43,8 +41,21 @@ class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() 
     }
   }
 
+  private fun initSearchView() {
+    binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+      override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+      }
+
+      override fun onQueryTextChange(newText: String?): Boolean {
+        adapter.filter.filter(newText)
+        return false
+      }
+    })
+  }
+
   private fun initRecycler() {
-    binding.rvStrategyList.apply {
+    binding.rvListings.apply {
       adapter = this@StrategyHomeFragment.adapter
       layoutManager = LinearLayoutManager(requireContext())
       val divider = DividerItemDecoration(
@@ -69,18 +80,18 @@ class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() 
     ) { response->
       when (response) {
         is ApiResource.Loading -> {
-          binding.rvStrategyList.visibility = View.GONE
+          binding.rvListings.visibility = View.GONE
           showLoading(true)
         }
         is ApiResource.Success -> {
           response.data?.let {
-            adapter.setData(it.transform().data)
+            adapter.addDatas(it.transform().data)
           }
-          binding.rvStrategyList.visibility = View.VISIBLE
+          binding.rvListings.visibility = View.VISIBLE
           showLoading(false)
         }
         is ApiResource.Error -> {
-          binding.rvStrategyList.visibility = View.GONE
+          binding.rvListings.visibility = View.GONE
           showLoading(false)
         }
       }
@@ -89,5 +100,5 @@ class StrategyHomeFragment : BaseFragment<FragmentCryptosStrategyHomeBinding>() 
 
   private fun showLoading(isLoading: Boolean) {
     binding.swipeRefreshLayout.isRefreshing = isLoading
-  } 
+  }
 }
