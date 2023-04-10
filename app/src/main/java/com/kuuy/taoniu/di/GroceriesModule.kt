@@ -15,6 +15,7 @@ import android.content.Context
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.groceries.api.ProductApi
 import com.kuuy.taoniu.data.groceries.resources.ProductResource
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,7 +23,7 @@ object GroceriesModule {
   @Provides
   @Singleton
   fun provideProductApi(
-    okHttpClient: OkHttpClient,
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): ProductApi {
     return getDynamicRetrofitClient(
@@ -32,7 +33,7 @@ object GroceriesModule {
   }
 
   private fun getDynamicRetrofitClient(
-    client: OkHttpClient,
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): Retrofit {
     return Retrofit.Builder()

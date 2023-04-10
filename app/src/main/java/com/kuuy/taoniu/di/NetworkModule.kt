@@ -2,6 +2,8 @@ package com.kuuy.taoniu.di
 
 import android.content.SharedPreferences
 import com.kuuy.taoniu.data.ApiInterceptor
+import com.kuuy.taoniu.data.AuthInterceptor
+import com.kuuy.taoniu.data.AuthToken
 import com.kuuy.taoniu.data.network.ApiService
 import com.kuuy.taoniu.utils.Constants.BASE_URL
 import dagger.Module
@@ -19,6 +21,9 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+  const val HTTP_CLIENT = "http_client"
+  const val AUTH_HTTP_CLIENT = "auth_http_client"
+
   @Provides
   @Singleton
   fun providesLoggingInterceptor(): HttpLoggingInterceptor =
@@ -28,12 +33,25 @@ object NetworkModule {
 
   @Singleton
   @Provides
-  fun providesHttpClient(
+  @Named(HTTP_CLIENT)
+  fun providesHttpClient(): OkHttpClient {
+    return OkHttpClient.Builder()
+      .readTimeout(15, TimeUnit.SECONDS)
+      .writeTimeout(20, TimeUnit.SECONDS)
+      .connectTimeout(15, TimeUnit.SECONDS)
+      .build()
+  }
+
+  @Singleton
+  @Provides
+  @Named(AUTH_HTTP_CLIENT)
+  fun providesAuthHttpClient(
     loggingInterceptor: HttpLoggingInterceptor,
-    @Named(PreferencesModule.AUTH_PREFERENCES) authPreferences: SharedPreferences
+    authToken: AuthToken,
   ): OkHttpClient {
     return OkHttpClient.Builder()
-      .addInterceptor(ApiInterceptor(authPreferences))
+      .addInterceptor(ApiInterceptor(authToken))
+      .addInterceptor(AuthInterceptor(authToken))
       .addNetworkInterceptor(loggingInterceptor)
       .readTimeout(15, TimeUnit.SECONDS)
       .writeTimeout(20, TimeUnit.SECONDS)
@@ -50,12 +68,12 @@ object NetworkModule {
   @Singleton
   @Provides
   fun providesRetrofitInstance(
-    okHttpClient: OkHttpClient,
+    @Named(HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory
   ): Retrofit {
     return Retrofit.Builder()
       .baseUrl(BASE_URL)
-      .client(okHttpClient)
+      .client(client)
       .addConverterFactory(gsonConverterFactory)
       .build()
   }
@@ -66,4 +84,12 @@ object NetworkModule {
     return retrofit.create(ApiService::class.java)
   }
 
+  @Singleton
+  @Provides
+  fun providesAuthToken(
+    @Named(HTTP_CLIENT) client: OkHttpClient,
+    @Named(PreferencesModule.AUTH_PREFERENCES) authPreferences: SharedPreferences
+  ): AuthToken {
+    return AuthToken(client, authPreferences)
+  }
 }

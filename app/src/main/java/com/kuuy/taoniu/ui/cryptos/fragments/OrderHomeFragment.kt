@@ -28,7 +28,7 @@ class OrderHomeFragment : BaseFragment<FragmentCryptosOrderHomeBinding>() {
   private val mAdapter by lazy { OrderListAdapter() }
   private var snackBar: Snackbar? = null
 
-  protected override fun viewBinding(container: ViewGroup?)
+  override fun viewBinding(container: ViewGroup?)
       : FragmentCryptosOrderHomeBinding {
     return FragmentCryptosOrderHomeBinding.inflate(
       layoutInflater,
@@ -37,7 +37,7 @@ class OrderHomeFragment : BaseFragment<FragmentCryptosOrderHomeBinding>() {
     )
   }
 
-  protected override fun onBind() {
+  override fun onBind() {
     initRecycler()
     initViewModel()
     binding.swipeRefreshLayout.setOnRefreshListener {

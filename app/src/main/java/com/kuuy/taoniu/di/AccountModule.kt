@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -17,8 +18,8 @@ import javax.inject.Singleton
 object AccountModule {
   @Provides
   @Singleton
-  fun providrAuthApi(
-    okHttpClient: OkHttpClient,
+  fun provideAuthApi(
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): AuthApi {
     return getDynamicRetrofitClient(
@@ -30,7 +31,7 @@ object AccountModule {
   @Provides
   @Singleton
   fun provideTokenApi(
-    okHttpClient: OkHttpClient,
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): TokenApi {
     return getDynamicRetrofitClient(
@@ -40,7 +41,7 @@ object AccountModule {
   }
 
   private fun getDynamicRetrofitClient(
-    client: OkHttpClient,
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): Retrofit {
     return Retrofit.Builder()

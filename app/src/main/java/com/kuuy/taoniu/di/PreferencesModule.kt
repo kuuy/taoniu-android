@@ -11,7 +11,10 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class PreferencesModule {
+object PreferencesModule {
+  const val AUTH_PREFERENCES = "auth_preferences"
+  const val SETTINGS_PREFERENCES = "settings_preferences"
+
   @Provides
   @Singleton
   @Named(SETTINGS_PREFERENCES)
@@ -23,9 +26,4 @@ class PreferencesModule {
   @Named(AUTH_PREFERENCES)
   fun provideAuthPreferences(context: Context): SharedPreferences =
       context.getSharedPreferences(AUTH_PREFERENCES, Context.MODE_PRIVATE)
-
-  companion object {
-    const val AUTH_PREFERENCES = "auth_preferences"
-    const val SETTINGS_PREFERENCES = "settings_preferences"
-  }
 }

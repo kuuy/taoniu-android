@@ -12,6 +12,7 @@ import javax.inject.Singleton
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.images.api.ImageApi
 import com.kuuy.taoniu.data.images.resources.ImageResource
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -19,7 +20,7 @@ object ImagesModule {
   @Provides
   @Singleton
   fun provideImageApi(
-    okHttpClient: OkHttpClient,
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): ImageApi {
     return getDynamicRetrofitClient(
@@ -29,7 +30,7 @@ object ImagesModule {
   }
 
   private fun getDynamicRetrofitClient(
-    client: OkHttpClient,
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): Retrofit {
     return Retrofit.Builder()

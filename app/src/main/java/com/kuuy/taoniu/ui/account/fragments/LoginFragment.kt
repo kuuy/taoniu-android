@@ -1,6 +1,8 @@
 package com.kuuy.taoniu.ui.account.fragments
 
+import android.os.Build
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.kuuy.taoniu.data.ApiResource
@@ -8,6 +10,7 @@ import com.kuuy.taoniu.databinding.FragmentAccountLoginBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.Duration
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
@@ -39,10 +42,11 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
         is ApiResource.Success -> {
           showLoading(false)
           response.data?.let{
-            authPreferences.edit().apply {
-              putString("ACCESS_TOKEN", it.access)
-              putString("REFRESH_TOKEN", it.refresh)
-            }.apply()
+            authPreferences.edit()
+              .putString("ACCESS_TOKEN", it.access)
+              .putString("REFRESH_TOKEN", it.refresh)
+              .putLong("EXPIRED_AT", System.currentTimeMillis() + 895000)
+              .apply()
             showToast(response.message ?: "login success")
             val action = LoginFragmentDirections.toHomeFragment()
             findNavController().navigate(action)
