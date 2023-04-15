@@ -26,7 +26,7 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun providesLoggingInterceptor(): HttpLoggingInterceptor =
+  fun provideLoggingInterceptor(): HttpLoggingInterceptor =
     HttpLoggingInterceptor().apply {
       level = HttpLoggingInterceptor.Level.BODY
     }
@@ -34,7 +34,7 @@ object NetworkModule {
   @Singleton
   @Provides
   @Named(HTTP_CLIENT)
-  fun providesHttpClient(): OkHttpClient {
+  fun provideHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
       .readTimeout(15, TimeUnit.SECONDS)
       .writeTimeout(20, TimeUnit.SECONDS)
@@ -45,7 +45,7 @@ object NetworkModule {
   @Singleton
   @Provides
   @Named(AUTH_HTTP_CLIENT)
-  fun providesAuthHttpClient(
+  fun provideAuthHttpClient(
     loggingInterceptor: HttpLoggingInterceptor,
     authToken: AuthToken,
   ): OkHttpClient {
@@ -61,13 +61,13 @@ object NetworkModule {
 
   @Singleton
   @Provides
-  fun providesGsonConverterFactory(): GsonConverterFactory {
+  fun provideGsonConverterFactory(): GsonConverterFactory {
     return GsonConverterFactory.create()
   }
 
   @Singleton
   @Provides
-  fun providesRetrofitInstance(
+  fun provideRetrofitInstance(
     @Named(HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory
   ): Retrofit {
@@ -80,13 +80,13 @@ object NetworkModule {
 
   @Singleton
   @Provides
-  fun providesApiService(retrofit: Retrofit): ApiService {
+  fun provideApiService(retrofit: Retrofit): ApiService {
     return retrofit.create(ApiService::class.java)
   }
 
   @Singleton
   @Provides
-  fun providesAuthToken(
+  fun provideAuthToken(
     @Named(HTTP_CLIENT) client: OkHttpClient,
     @Named(PreferencesModule.AUTH_PREFERENCES) authPreferences: SharedPreferences
   ): AuthToken {

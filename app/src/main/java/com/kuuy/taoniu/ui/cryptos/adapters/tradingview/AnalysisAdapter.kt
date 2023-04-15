@@ -5,18 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import androidx.recyclerview.widget.DiffUtil
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.SymbolFilterInfo
-import com.kuuy.taoniu.data.cryptos.models.binance.spot.plans.DailyInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosTradingviewAnalysisBinding
 import com.kuuy.taoniu.ui.base.BaseListAdapter
 import com.kuuy.taoniu.ui.cryptos.holders.tradingview.AnalysisHolder
-import com.kuuy.taoniu.utils.DiffUtils
 
 class AnalysisAdapter(
-  private val ticker: (String, (TickerInfo) -> Unit) -> Unit,
+  private val ticker: (String, (Ticker) -> Unit) -> Unit,
   private val onItemClicked: (AnalysisInfo) -> Unit,
 ): BaseListAdapter<AnalysisInfo, AnalysisHolder>(), Filterable {
   var filterListings: ArrayList<SymbolFilterInfo>? = null

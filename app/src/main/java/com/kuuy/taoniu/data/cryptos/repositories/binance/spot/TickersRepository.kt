@@ -1,8 +1,8 @@
 package com.kuuy.taoniu.data.cryptos.repositories.binance.spot
 
-import com.kuuy.taoniu.data.ApiResource
-import com.kuuy.taoniu.data.ApiResponse
-import com.kuuy.taoniu.data.DtoResponse
+import com.kuuy.taoniu.data.*
+import com.kuuy.taoniu.data.cryptos.dao.binance.spot.TickerDao
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.resources.binance.spot.TickersResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class TickersRepository @Inject constructor(
-  private val resource: TickersResource
+  private val resource: TickersResource,
+  private val dao: TickerDao,
 ) {
   suspend fun gets(
     symbols: List<String>,
@@ -31,6 +32,24 @@ class TickersRepository @Inject constructor(
           }
         }
       } catch(e: Exception) {}
+    }
+  }
+
+  suspend fun save(symbol: String, ticker: Ticker) : Flow<DbResource<Nothing?>> {
+    return flow {
+      emit(DbResource.Loading())
+      when (val result = dao.save(symbol, ticker).first()) {
+        is DbResult.Success -> {
+          val data = result.data
+          emit(DbResource.Success(data))
+        }
+        is DbResult.Empty -> {
+          emit(DbResource.Success(null))
+        }
+        is DbResult.Error -> {
+          emit(DbResource.Error(result.errorMessage))
+        }
+      }
     }
   }
 }

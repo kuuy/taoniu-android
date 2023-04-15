@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GridsRepository @Inject constructor(
-  private val resource: GridsResource
+  private val resource: GridsResource,
 ) {
   suspend fun listings(
     current: Int,

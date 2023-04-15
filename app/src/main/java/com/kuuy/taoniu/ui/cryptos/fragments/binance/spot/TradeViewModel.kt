@@ -11,7 +11,7 @@ import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.OrderInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.plans.DailyInfoDto as PlanInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.GridInfoDto
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisSummary
 import com.kuuy.taoniu.data.cryptos.repositories.currencies.AboutRepository
 import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
@@ -53,8 +53,8 @@ class TradeViewModel @Inject constructor(
   val summaryInfo: AnalysisSummary
     get() = _summaryInfo
 
-  private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
-  val tickers: Map<String, TickerInfo>
+  private val _tickers: MutableMap<String, Ticker> = mutableMapOf()
+  val tickers: Map<String, Ticker>
     get() = _tickers
 
   private val _slippages: MutableMap<String, Float> = mutableMapOf()
@@ -62,7 +62,7 @@ class TradeViewModel @Inject constructor(
     get() = _slippages
 
   var symbol = ""
-    set(value) { field=value; _tickers[symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0) }
+    set(value) { field=value; _tickers[symbol] = Ticker(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0) }
 
   private val _series
       = MutableLiveData<ApiResource<DtoResponse<List<FloatArray>>>>()

@@ -1,6 +1,6 @@
 package com.kuuy.taoniu.data.cryptos.models
 
-data class TickerInfo(
+data class Ticker(
   var open : Float,
   var price : Float,
   var high: Float,

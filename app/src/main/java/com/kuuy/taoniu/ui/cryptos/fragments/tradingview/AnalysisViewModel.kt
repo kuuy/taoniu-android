@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
 import com.kuuy.taoniu.ui.base.BaseViewModel
@@ -22,8 +22,8 @@ class AnalysisViewModel @Inject constructor(
   private val repository: AnalysisRepository,
   private val tickersRepository: TickersRepository
 ) : BaseViewModel() {
-  private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
-  val tickers: Map<String, TickerInfo>
+  private val _tickers: MutableMap<String, Ticker> = mutableMapOf()
+  val tickers: Map<String, Ticker>
     get() = _tickers
 
   private val _analysisPaginate
@@ -106,7 +106,7 @@ class AnalysisViewModel @Inject constructor(
         response.data.let {
           it?.data?.forEach { item ->
             if (!_tickers.containsKey(item.symbol)) {
-              _tickers[item.symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0)
+              _tickers[item.symbol] = Ticker(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0)
             }
           }
           _analysisPaginate.postValue(ApiResource.Success(it))

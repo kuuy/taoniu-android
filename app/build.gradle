@@ -32,12 +32,31 @@ android {
     buildConfigField("String", "GROCERIES_ASSETS_URL", project.properties["GROCERIES_ASSETS_URL"])
     buildConfigField("String", "IMAGES_API_URL", project.properties["IMAGES_API_URL"])
     buildConfigField("String", "PHOTOES_API_URL", project.properties["PHOTOES_API_URL"])
+    buildConfigField("String", "GOOGLE_AUTH_CLIENT_ID", project.properties["GOOGLE_AUTH_CLIENT_ID"])
+  }
+
+  signingConfigs {
+    def keystorePropertiesFile = rootProject.file("app/keystore.properties")
+    def keystoreProperties = new Properties()
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    release {
+      storeFile file(keystoreProperties['storeFile'])
+      storePassword keystoreProperties['storePassword']
+      keyAlias 'taoniu'
+      keyPassword keystoreProperties['storePassword']
+    }
   }
 
   buildTypes {
     release {
-      minifyEnabled false
+      minifyEnabled true
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      signingConfig signingConfigs.release
+    }
+    debug {
+      minifyEnabled false
+      signingConfig signingConfigs.release
     }
   }
 
@@ -53,100 +72,101 @@ android {
   kotlinOptions {
     jvmTarget = '1.8'
   }
-
 }
 
 dependencies {
+  implementation 'androidx.core:core-ktx:1.10.0'
+  implementation 'androidx.appcompat:appcompat:1.6.1'
+  implementation 'com.google.android.material:material:1.8.0'
+  implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+  implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+  implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+  implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+  implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+  testImplementation 'junit:junit:4.13.2'
+  androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+  androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+  // Scalable Size Unit
+  implementation 'com.intuit.sdp:sdp-android:1.0.6'
+  implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
-    // Scalable Size Unit
-    implementation 'com.intuit.sdp:sdp-android:1.0.6'
-    implementation 'com.intuit.ssp:ssp-android:1.0.6'
+  // Navigation Component
+  implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+  implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
-    // Navigation Component
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+  // Recyclerview
+  implementation 'androidx.recyclerview:recyclerview:1.3.0'
 
-    // Recyclerview
-    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+  implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+  // Retrofit
+  implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+  implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+  implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+  //Dagger - Hilt
+  implementation 'com.google.dagger:hilt-android:2.45'
+  kapt 'com.google.dagger:hilt-android-compiler:2.45'
 
-    //Dagger - Hilt
-    implementation 'com.google.dagger:hilt-android:2.45'
-    kapt 'com.google.dagger:hilt-android-compiler:2.45'
+  // Coroutines
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+  //Database
+  implementation 'io.realm.kotlin:library-base:1.6.1'
 
-    //Database
-    implementation 'io.realm.kotlin:library-base:1.6.1'
+  // Lifecycle
+  implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+  implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+  implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+  implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
 
-    // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+  // Image Loading library Coil
+  implementation 'io.coil-kt:coil:2.1.0'
+  implementation 'io.coil-kt:coil-svg:2.1.0'
 
-    // Image Loading library Coil
-    implementation 'io.coil-kt:coil:2.1.0'
-    implementation 'io.coil-kt:coil-svg:2.1.0'
+  // Gson
+  implementation 'com.google.code.gson:gson:2.9.1'
 
-    // Gson
-    implementation 'com.google.code.gson:gson:2.9.1'
+  // Jsoup
+  implementation 'org.jsoup:jsoup:1.15.1'
 
-    // Jsoup
-    implementation 'org.jsoup:jsoup:1.15.1'
+  // Rounded Image View
+  implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    // Rounded Image View
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+  // Tradingview
+  implementation 'com.tradingview:lightweightcharts:3.8.0'
 
-    // Tradingview
-    implementation 'com.tradingview:lightweightcharts:3.8.0'
+  // Markdown
+  implementation "io.noties.markwon:core:4.6.2"
 
-    // Markdown
-    implementation "io.noties.markwon:core:4.6.2"
+  // libtorrent
+  implementation "org.libtorrent4j:libtorrent4j-android-arm64:2.0.1-9"
+  implementation "org.libtorrent4j:libtorrent4j-android-x86:2.0.1-9"
 
-    // libtorrent
-    implementation "org.libtorrent4j:libtorrent4j-android-arm64:2.0.1-9"
-    implementation "org.libtorrent4j:libtorrent4j-android-x86:2.0.1-9"
+  // MPAndroidChart
+  implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
-    // MPAndroidChart
-    implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
+  // ExoPlayer
+  implementation "androidx.media3:media3-exoplayer:1.0.0"
+  implementation "androidx.media3:media3-exoplayer-dash:1.0.0"
+  implementation "androidx.media3:media3-ui:1.0.0"
 
-    // ExoPlayer
-    implementation "androidx.media3:media3-exoplayer:1.0.0"
-    implementation "androidx.media3:media3-exoplayer-dash:1.0.0"
-    implementation "androidx.media3:media3-ui:1.0.0"
+  // Shimmer
+  implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
-    // Shimmer
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+  // Barcode
+  implementation 'com.google.mlkit:barcode-scanning:17.1.0'
 
-    // Barcode
-    implementation 'com.google.mlkit:barcode-scanning:17.1.0'
+  // CameraX
+  implementation 'androidx.camera:camera-camera2:1.3.0-alpha05'
+  implementation 'androidx.camera:camera-lifecycle:1.3.0-alpha05'
+  implementation 'androidx.camera:camera-view:1.3.0-alpha05'
 
-    // CameraX
-    implementation 'androidx.camera:camera-camera2:1.3.0-alpha05'
-    implementation 'androidx.camera:camera-lifecycle:1.3.0-alpha05'
-    implementation 'androidx.camera:camera-view:1.3.0-alpha05'
+  implementation 'com.jakewharton.timber:timber:5.0.1'
 
-    implementation 'com.jakewharton.timber:timber:5.0.1'
+  // Google Play Auth
+  implementation 'com.google.android.gms:play-services-auth:20.5.0'
 }

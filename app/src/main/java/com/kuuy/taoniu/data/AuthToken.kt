@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.google.gson.GsonBuilder
 import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.account.dto.TokenDto
+import com.kuuy.taoniu.di.NetworkModule
 import com.kuuy.taoniu.di.PreferencesModule
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.*
@@ -16,7 +17,7 @@ import kotlin.coroutines.resumeWithException
 
 @Singleton
 class AuthToken constructor(
-  @Named("okHttp") private var okHttpClient: OkHttpClient,
+  @Named(NetworkModule.HTTP_CLIENT) private var okHttpClient: OkHttpClient,
   @Named(PreferencesModule.AUTH_PREFERENCES) private var authPreferences: SharedPreferences,
 ) {
   private var accessToken: String? = null
@@ -50,13 +51,12 @@ class AuthToken constructor(
     return suspendCancellableCoroutine {
       val callback = object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-          Timber.tag(TAG).d("Refresh token call failed. $e")
-          it.resumeWithException(Error("Refresh token call failed. $e"))
+          Timber.tag(TAG).d("refresh token call failed. $e")
+          it.resumeWithException(Error("refresh token call failed. $e"))
         }
 
         override fun onResponse(call: Call, response: Response) {
           if (response.isSuccessful) {
-            Timber.tag(TAG).d("Refresh token success!")
             val gson = GsonBuilder().create()
             var result = gson.fromJson(response.body?.string(), DtoResponse::class.java)
             if (result.success) {
@@ -66,14 +66,15 @@ class AuthToken constructor(
                 .putString("ACCESS_TOKEN", accessToken)
                 .putLong("EXPIRED_AT", System.currentTimeMillis() + 895000)
                 .apply()
+              Timber.tag(TAG).d("refresh token success!")
             } else {
-              it.resumeWithException(Error("Refresh token call failed. ${result.data.toString()}"))
+              it.resumeWithException(Error("refresh token call failed. ${result.data.toString()}"))
             }
           } else {
             if (response.code == 401 || response.code == 403) {
               clearToken()
             }
-            it.resumeWithException(Error("Refresh token call failed. ${response.code}"))
+            it.resumeWithException(Error("refresh token call failed. ${response.code}"))
           }
           response.closeQuietly()
         }

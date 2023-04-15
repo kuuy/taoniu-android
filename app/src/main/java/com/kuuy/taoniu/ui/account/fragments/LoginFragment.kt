@@ -1,19 +1,26 @@
 package com.kuuy.taoniu.ui.account.fragments
 
-import android.os.Build
+import android.Manifest
+import android.content.Intent
+import android.os.Bundle
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kuuy.taoniu.BuildConfig
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.databinding.FragmentAccountLoginBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.utils.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.Duration
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
+  private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+
   private val viewModels by viewModels<AuthViewModel>()
   override fun viewBinding(container: ViewGroup?)
       : FragmentAccountLoginBinding {
@@ -24,12 +31,24 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
     )
   }
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    googleSignInLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+      requireActivity().run {
+      }
+    }
+  }
+
   override fun onBind() {
     binding.btnSubmit.setOnClickListener {
       viewModels.login(
         binding.email.text.toString(),
         md5(binding.password.text.toString())
       )
+    }
+
+    binding.btnGoogleSignIn.setOnClickListener {
+      googleSignIn()
     }
 
     viewModels.token.observe(
@@ -58,6 +77,15 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
         }
       }
     }
+  }
+
+  private fun googleSignIn() {
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+      .requestIdToken(BuildConfig.GOOGLE_AUTH_CLIENT_ID)
+      .requestEmail()
+      .build()
+    val client = GoogleSignIn.getClient(requireActivity(), gso)
+    googleSignInLauncher.launch(client.signInIntent)
   }
 
   private fun showLoading(isLoading: Boolean) {

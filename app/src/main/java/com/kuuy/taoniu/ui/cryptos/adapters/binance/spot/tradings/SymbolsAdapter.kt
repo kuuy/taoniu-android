@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.models.binance.spot.SymbolFilterInfo
 import com.kuuy.taoniu.data.cryptos.models.tradingview.AnalysisInfo
 import com.kuuy.taoniu.databinding.ItemCryptosBinanceSpotTradingsSymbolsBinding
@@ -13,7 +13,7 @@ import com.kuuy.taoniu.ui.base.BaseListAdapter
 import com.kuuy.taoniu.ui.cryptos.holders.binance.spot.tradings.SymbolsHolder
 
 class SymbolsAdapter(
-  private val ticker: (String, (TickerInfo) -> Unit) -> Unit,
+  private val ticker: (String, (Ticker) -> Unit) -> Unit,
   private val onItemClicked: (AnalysisInfo) -> Unit,
 ): BaseListAdapter<AnalysisInfo, SymbolsHolder>(), Filterable {
   var filterListings: ArrayList<SymbolFilterInfo>? = null

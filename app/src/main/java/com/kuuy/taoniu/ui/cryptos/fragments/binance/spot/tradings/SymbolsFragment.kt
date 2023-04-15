@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.kuuy.taoniu.R
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.mappings.tradingview.transform
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.databinding.FragmentCryptosBinanceSpotTradingsSymbolsBinding
 import com.kuuy.taoniu.ui.base.BaseFragment
 import com.kuuy.taoniu.ui.cryptos.adapters.binance.spot.tradings.TabPagerAdapter
@@ -151,7 +151,7 @@ class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotTradingsSymbolsBi
     }
   }
 
-  private fun ticker(symbol: String, callback: (TickerInfo) -> Unit) {
+  private fun ticker(symbol: String, callback: (Ticker) -> Unit) {
     viewModel.tickers[symbol]?.let{
       callback(it)
     }

@@ -6,9 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
-import com.kuuy.taoniu.data.cryptos.models.TickerInfo
+import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.tradings.SymbolsRepository
+import com.kuuy.taoniu.data.cryptos.repositories.binance.tradings.FishersRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.tradings.SymbolsRepository as MarginIsolatedSymbolsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
 import com.kuuy.taoniu.ui.base.BaseViewModel
@@ -25,9 +26,10 @@ class SymbolsViewModel @Inject constructor(
   private val marginIsolatedSymbolsRepository: MarginIsolatedSymbolsRepository,
   private val tickersRepository: TickersRepository,
   private val analysisRepository: AnalysisRepository,
+  private val fishersRepository: FishersRepository,
 ) : BaseViewModel() {
-  private val _tickers: MutableMap<String, TickerInfo> = mutableMapOf()
-  val tickers: Map<String, TickerInfo>
+  private val _tickers: MutableMap<String, Ticker> = mutableMapOf()
+  val tickers: Map<String, Ticker>
     get() = _tickers
 
   private val _analysisListings
@@ -36,15 +38,19 @@ class SymbolsViewModel @Inject constructor(
     get() = _analysisListings
 
   fun scan(callback: () -> Unit) {
+    var scene = "spot"
     viewModelScope.launch {
       symbolsRepository.scan().onStart {
         _tickers.clear()
       }.catch {
       }.collect { response ->
         response.data?.let {
+          it?.data?.let { symbols ->
+            fishersRepository.addAll(scene, symbols.toTypedArray())
+          }
           it?.data?.forEach { symbol ->
             if (!_tickers.containsKey(symbol)) {
-              _tickers[symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
+              _tickers[symbol] = Ticker(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
             }
           }
         }
@@ -54,15 +60,19 @@ class SymbolsViewModel @Inject constructor(
   }
 
   fun scanMarginIsolated(callback: () -> Unit) {
+    var scene = "margin-isolated"
     viewModelScope.launch {
       marginIsolatedSymbolsRepository.scan().onStart {
         _tickers.clear()
       }.catch {
       }.collect { response ->
         response.data?.let {
+          it?.data?.let { symbols ->
+            fishersRepository.addAll(scene, symbols.toTypedArray())
+          }
           it?.data?.forEach { symbol ->
             if (!_tickers.containsKey(symbol)) {
-              _tickers[symbol] = TickerInfo(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
+              _tickers[symbol] = Ticker(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
             }
           }
         }
@@ -142,6 +152,7 @@ class SymbolsViewModel @Inject constructor(
                 ticker.changeState = 0
               }
               ticker.change = change
+              tickersRepository.save(symbol, ticker)
             }
           }
           callback()
