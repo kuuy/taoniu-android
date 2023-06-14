@@ -1,16 +1,16 @@
-package com.kuuy.taoniu.data.cryptos.repositories.binance.spot.tradings
+package com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated
 
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoResponse
-import com.kuuy.taoniu.data.cryptos.resources.binance.spot.tradings.SymbolsResource
+import com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.isolated.TradingsResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class SymbolsRepository @Inject constructor(
-  private val resource: SymbolsResource
+class TradingsRepository @Inject constructor(
+  private val resource: TradingsResource
 ) {
   suspend fun scan() : Flow<ApiResource<DtoResponse<List<String>>>> {
     return flow {

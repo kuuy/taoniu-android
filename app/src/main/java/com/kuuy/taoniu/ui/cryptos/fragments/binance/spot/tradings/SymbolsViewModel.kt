@@ -8,9 +8,9 @@ import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
 import com.kuuy.taoniu.data.cryptos.models.Ticker
 import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TickersRepository
-import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.tradings.SymbolsRepository
+import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.TradingsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.binance.tradings.FishersRepository
-import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.tradings.SymbolsRepository as MarginIsolatedSymbolsRepository
+import com.kuuy.taoniu.data.cryptos.repositories.binance.spot.margin.isolated.TradingsRepository as MarginIsolatedTradingsRepository
 import com.kuuy.taoniu.data.cryptos.repositories.tradingview.AnalysisRepository
 import com.kuuy.taoniu.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +22,8 @@ import kotlin.math.round
 
 @HiltViewModel
 class SymbolsViewModel @Inject constructor(
-  private val symbolsRepository: SymbolsRepository,
-  private val marginIsolatedSymbolsRepository: MarginIsolatedSymbolsRepository,
+  private val tradingsRepository: TradingsRepository,
+  private val marginIsolatedTradingsRepository: MarginIsolatedTradingsRepository,
   private val tickersRepository: TickersRepository,
   private val analysisRepository: AnalysisRepository,
   private val fishersRepository: FishersRepository,
@@ -40,7 +40,7 @@ class SymbolsViewModel @Inject constructor(
   fun scan(callback: () -> Unit) {
     var scene = "spot"
     viewModelScope.launch {
-      symbolsRepository.scan().onStart {
+      tradingsRepository.scan().onStart {
         _tickers.clear()
       }.catch {
       }.collect { response ->
@@ -62,7 +62,7 @@ class SymbolsViewModel @Inject constructor(
   fun scanMarginIsolated(callback: () -> Unit) {
     var scene = "margin-isolated"
     viewModelScope.launch {
-      marginIsolatedSymbolsRepository.scan().onStart {
+      marginIsolatedTradingsRepository.scan().onStart {
         _tickers.clear()
       }.catch {
       }.collect { response ->

@@ -15,13 +15,13 @@ import com.kuuy.taoniu.data.cryptos.api.StrategyApi
 import javax.inject.Named
 import com.kuuy.taoniu.data.cryptos.api.currencies.AboutApi as CurrenciesAboutApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.SymbolsApi as BinanceSpotSymbolsApi
-import com.kuuy.taoniu.data.cryptos.api.binance.spot.tradings.SymbolsApi as BinanceSpotTradingsSymbolsApi
+import com.kuuy.taoniu.data.cryptos.api.binance.spot.TradingsApi as BinanceSpotTradingsApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.TickersApi as BinanceSpotTickersApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.KlinesApi as BinanceSpotKlinesApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.plans.DailyApi as BinanceSpotPlansDailyApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.OrdersApi as BinanceSpotMarginOrdersApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.isolated.SymbolsApi as BinanceSpotMarginIsolatedSymbolsApi
-import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.isolated.tradings.SymbolsApi as BinanceSpotMarginIsolatedTradingsSymbolsApi
+import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.isolated.TradingsApi as BinanceSpotMarginIsolatedTradingsApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.isolated.tradings.GridsApi as BinanceSpotMarginIsolatedTradingsGridsApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.analysis.tradings.fishers.GridsApi as BinanceSpotAnalysisTradingsFishersGridsApi
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.analysis.margin.isolated.tradings.fishers.GridsApi as BinanceSpotAnalysisMarginIsolatedTradingsFishersGridsApi
@@ -80,14 +80,14 @@ object CryptosModule {
 
   @Provides
   @Singleton
-  fun provideBinanceSpotTradingsSymbolsApi(
+  fun provideBinanceSpotTradingsApi(
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
-  ): BinanceSpotTradingsSymbolsApi {
+  ): BinanceSpotTradingsApi {
     return getDynamicRetrofitClient(
       okHttpClient,
       gsonConverterFactory,
-    ).create(BinanceSpotTradingsSymbolsApi::class.java)
+    ).create(BinanceSpotTradingsApi::class.java)
   }
 
   @Provides
@@ -152,14 +152,14 @@ object CryptosModule {
 
   @Provides
   @Singleton
-  fun provideBinanceSpotMarginIsolatedTradingsSymbolsApi(
+  fun provideBinanceSpotMarginIsolatedTradingsApi(
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
-  ): BinanceSpotMarginIsolatedTradingsSymbolsApi {
+  ): BinanceSpotMarginIsolatedTradingsApi {
     return getDynamicRetrofitClient(
       okHttpClient,
       gsonConverterFactory,
-    ).create(BinanceSpotMarginIsolatedTradingsSymbolsApi::class.java)
+    ).create(BinanceSpotMarginIsolatedTradingsApi::class.java)
   }
 
   @Provides

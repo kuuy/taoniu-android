@@ -31,8 +31,8 @@ class AuthToken constructor(
 
   fun shouldRefresh(): Boolean {
     val now = System.currentTimeMillis()
-    val expiredAt = authPreferences.getLong("EXPIRED_AT", 0L)
-    if (now > expiredAt) {
+    val refreshAt = authPreferences.getLong("REFRESH_AT", 0L)
+    if (now > refreshAt) {
       return true
     }
     return false
@@ -64,7 +64,7 @@ class AuthToken constructor(
               accessToken = token.access
               authPreferences.edit()
                 .putString("ACCESS_TOKEN", accessToken)
-                .putLong("EXPIRED_AT", System.currentTimeMillis() + 895000)
+                .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
                 .apply()
               Timber.tag(TAG).d("refresh token success!")
             } else {
@@ -91,14 +91,14 @@ class AuthToken constructor(
       .clear()
       .remove(ACCESS_TOKEN)
       .remove(REFRESH_TOKEN)
-      .remove(EXPIRED_AT)
+      .remove(REFRESH_AT)
       .apply()
   }
 
   companion object {
     private const val ACCESS_TOKEN = "ACCESS_TOKEN"
     private const val REFRESH_TOKEN = "REFRESH_TOKEN"
-    private const val EXPIRED_AT = "EXPIRED_AT"
+    private const val REFRESH_AT = "REFRESH_AT"
     private const val TAG = "AUTH_TOKEN"
   }
 }

@@ -64,7 +64,7 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
             authPreferences.edit()
               .putString("ACCESS_TOKEN", it.access)
               .putString("REFRESH_TOKEN", it.refresh)
-              .putLong("EXPIRED_AT", System.currentTimeMillis() + 895000)
+              .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
               .apply()
             showToast(response.message ?: "login success")
             val action = LoginFragmentDirections.toHomeFragment()

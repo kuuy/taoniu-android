@@ -30,8 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     binding.navView.setOnItemSelectedListener {
       when (it.itemId) {
         R.id.navHome -> {
-          navController.navigate(R.id.loginFragment)
-//          navController.navigate(R.id.productListingsFragment)
+          navController.navigate(R.id.productListingsFragment)
         }
         R.id.navStrategyHome -> {
           navController.navigate(R.id.binanceSpotPlansDailyFragment)
