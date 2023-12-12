@@ -19,19 +19,17 @@ class TickersRepository @Inject constructor(
   ) : Flow<ApiResource<List<String>>> {
     return flow {
       emit(ApiResource.Loading())
-      try {
-        when (val response = resource.gets(symbols, fields).first()) {
-          is ApiResponse.Success -> {
-            emit(ApiResource.Success(response.data))
-          }
-          is ApiResponse.Empty -> {
-            emit(ApiResource.Success(null))
-          }
-          is ApiResponse.Error -> {
-            emit(ApiResource.Error(response.apiError))
-          }
+      when (val response = resource.gets(symbols, fields).first()) {
+        is ApiResponse.Success -> {
+          emit(ApiResource.Success(response.data))
         }
-      } catch(e: Exception) {}
+        is ApiResponse.Empty -> {
+          emit(ApiResource.Success(null))
+        }
+        is ApiResponse.Error -> {
+          emit(ApiResource.Error(response.apiError))
+        }
+      }
     }
   }
 
