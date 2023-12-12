@@ -1,6 +1,8 @@
 package com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin.isolated.tradings.fishers
 
 import com.google.gson.Gson
+import com.google.gson.JsonIOException
+import com.google.gson.JsonSyntaxException
 import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoPaginate
@@ -32,8 +34,12 @@ class GridsResource @Inject constructor(
           response.code(),
           response.message(),
         )
-        response.errorBody()?.let {
-          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        try {
+          response.errorBody()?.let {
+            apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+          }
+        } catch (ioException: JsonIOException) {
+        } catch (syntaxException: JsonSyntaxException) {
         }
         emit(ApiResponse.Error(apiError))
       }
