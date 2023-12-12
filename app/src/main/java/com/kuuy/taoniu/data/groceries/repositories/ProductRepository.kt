@@ -3,7 +3,7 @@ package com.kuuy.taoniu.data.groceries.repositories
 import javax.inject.Inject
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 
 import com.kuuy.taoniu.data.groceries.resources.ProductResource
@@ -24,16 +24,16 @@ class ProductRepository @Inject constructor(
       : Flow<ApiResource<ProductListingsDto>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = productResource.getProductListings().first()) {
+      when (val response = productResource.getProductListings().firstOrNull()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }
@@ -45,16 +45,16 @@ class ProductRepository @Inject constructor(
       emit(ApiResource.Loading())
       when (val response = productResource.getProductDetail(
         id
-      ).first()) {
+      ).firstOrNull()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }
@@ -66,16 +66,16 @@ class ProductRepository @Inject constructor(
       emit(ApiResource.Loading())
       when (val response = productResource.getProductBarcode(
         barcode
-      ).first()) {
+      ).firstOrNull()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }
@@ -96,15 +96,15 @@ class ProductRepository @Inject constructor(
         intro,
         price,
         cover,
-      ).first()) {
+      ).firstOrNull()) {
         is ApiResponse.Success -> {
-          emit(ApiResource.Success(null))
-        }
-        is ApiResponse.Empty -> {
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }
@@ -127,15 +127,15 @@ class ProductRepository @Inject constructor(
         intro,
         price,
         cover,
-      ).first()) {
+      ).firstOrNull()) {
         is ApiResponse.Success -> {
-          emit(ApiResource.Success(null))
-        }
-        is ApiResponse.Empty -> {
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }
@@ -152,15 +152,15 @@ class ProductRepository @Inject constructor(
         id,
         title,
         price
-      ).first()) {
+      ).firstOrNull()) {
         is DbResult.Success -> {
-          emit(DbResource.Success(null))
-        }
-        is DbResult.Empty -> {
           emit(DbResource.Success(null))
         }
         is DbResult.Error -> {
           emit(DbResource.Error(result.errorMessage))    
+        }
+        else -> {
+          emit(DbResource.Success(null))
         }
       }
     }

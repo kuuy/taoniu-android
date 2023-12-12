@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.flowOn
 import com.kuuy.taoniu.data.cryptos.api.StrategyApi
 import com.kuuy.taoniu.data.cryptos.dto.StrategyListingsDto
 import com.kuuy.taoniu.data.ApiResponse
+import java.io.EOFException
 
 class StrategyResource @Inject constructor(
   private var strategyApi: StrategyApi 
@@ -27,18 +28,12 @@ class StrategyResource @Inject constructor(
           emit(ApiResponse.Success(it.data))
         }
       } else {
-        var apiError = ApiError(
-          response.code(),
-          response.message(),
-        )
         try {
           response.errorBody()?.let {
-            apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+            var apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+            emit(ApiResponse.Error(apiError))
           }
-        } catch (ioException: JsonIOException) {
-        } catch (syntaxException: JsonSyntaxException) {
-        }
-        emit(ApiResponse.Error(apiError))
+        } catch (e: Throwable) {}
       }
     }.flowOn(Dispatchers.IO)
   }

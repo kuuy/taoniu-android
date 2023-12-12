@@ -6,7 +6,7 @@ import android.net.Uri
 import android.content.ContentResolver
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 
 import com.kuuy.taoniu.data.images.resources.ImageResource
@@ -25,16 +25,16 @@ class ImageRepository @Inject constructor(
     return flow {
       emit(ApiResource.Loading())
       when (val response =
-          imageResource.upload(uri, contentResolver).first()) {
+          imageResource.upload(uri, contentResolver).firstOrNull()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }

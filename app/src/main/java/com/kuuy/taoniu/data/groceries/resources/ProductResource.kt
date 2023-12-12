@@ -16,6 +16,7 @@ import com.kuuy.taoniu.data.groceries.dto.ProductListingsDto
 import com.kuuy.taoniu.data.groceries.dto.ProductDetailDto
 import com.kuuy.taoniu.data.groceries.dto.ProductBarcodeDto
 import com.kuuy.taoniu.data.ApiResponse
+import java.io.EOFException
 
 class ProductResource @Inject constructor(
   private var productApi: ProductApi 
@@ -37,18 +38,12 @@ class ProductResource @Inject constructor(
           emit(ApiResponse.Success(it.data))
         }
       } else {
-        var apiError = ApiError(
-          response.code(),
-          response.message(),
-        )
         try {
           response.errorBody()?.let {
-            apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+            var apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+            emit(ApiResponse.Error(apiError))
           }
-        } catch (ioException: JsonIOException) {
-        } catch (syntaxException: JsonSyntaxException) {
-        }
-        emit(ApiResponse.Error(apiError))
+        } catch (e: Throwable) {}
       }
     }.flowOn(Dispatchers.IO)
   }
@@ -62,18 +57,12 @@ class ProductResource @Inject constructor(
           emit(ApiResponse.Success(it.data))
         }
       } else {
-        var apiError = ApiError(
-          response.code(),
-          response.message(),
-        )
         try {
           response.errorBody()?.let {
-            apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+            var apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+            emit(ApiResponse.Error(apiError))
           }
-        } catch (ioException: JsonIOException) {
-        } catch (syntaxException: JsonSyntaxException) {
-        }
-        emit(ApiResponse.Error(apiError))
+        } catch (e: Throwable) {}
       }
     }.flowOn(Dispatchers.IO)
   }

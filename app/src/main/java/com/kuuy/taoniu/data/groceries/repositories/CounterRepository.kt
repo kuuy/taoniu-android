@@ -3,7 +3,7 @@ package com.kuuy.taoniu.data.groceries.repositories
 import javax.inject.Inject
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 
 import com.kuuy.taoniu.data.groceries.resources.ProductResource
@@ -20,16 +20,16 @@ class CounterRepository @Inject constructor(
       : Flow<DbResource<CounterOrderListings>> {
     return flow {
       emit(DbResource.Loading())
-      when (val result = counterOrderDao.getOrderListings().first()) {
+      when (val result = counterOrderDao.getOrderListings().firstOrNull()) {
         is DbResult.Success -> {
           val data = result.data
           emit(DbResource.Success(data))
         }
-        is DbResult.Empty -> {
-          emit(DbResource.Success(null))
-        }
         is DbResult.Error -> {
           emit(DbResource.Error(result.errorMessage))
+        }
+        else -> {
+          emit(DbResource.Success(null))
         }
       }
     }
@@ -41,16 +41,16 @@ class CounterRepository @Inject constructor(
       emit(DbResource.Loading())
       when (val result = counterOrderDao.getOrderDetail(
         id
-      ).first()) {
+      ).firstOrNull()) {
         is DbResult.Success -> {
           val data = result.data
           emit(DbResource.Success(data))
         }
-        is DbResult.Empty -> {
-          emit(DbResource.Success(null))
-        }
         is DbResult.Error -> {
           emit(DbResource.Error(result.errorMessage))
+        }
+        else -> {
+          emit(DbResource.Success(null))
         }
       }
     }
@@ -62,16 +62,16 @@ class CounterRepository @Inject constructor(
       emit(DbResource.Loading())
       when (val result = counterOrderDao.delete(
         id
-      ).first()) {
+      ).firstOrNull()) {
         is DbResult.Success -> {
           val data = result.data
           emit(DbResource.Success(data))
         }
-        is DbResult.Empty -> {
-          emit(DbResource.Success(null))
-        }
         is DbResult.Error -> {
           emit(DbResource.Error(result.errorMessage))
+        }
+        else -> {
+          emit(DbResource.Success(null))
         }
       }
     }
@@ -81,16 +81,16 @@ class CounterRepository @Inject constructor(
       : Flow<DbResource<Nothing?>> {
     return flow {
       emit(DbResource.Loading())
-      when (val result = counterOrderDao.clear().first()) {
+      when (val result = counterOrderDao.clear().firstOrNull()) {
         is DbResult.Success -> {
           val data = result.data
           emit(DbResource.Success(data))
         }
-        is DbResult.Empty -> {
-          emit(DbResource.Success(null))
-        }
         is DbResult.Error -> {
           emit(DbResource.Error(result.errorMessage))
+        }
+        else -> {
+          emit(DbResource.Success(null))
         }
       }
     }

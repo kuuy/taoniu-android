@@ -3,7 +3,7 @@ package com.kuuy.taoniu.data.cryptos.repositories
 import javax.inject.Inject
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 
 import com.kuuy.taoniu.data.cryptos.resources.OrderResource
@@ -18,16 +18,16 @@ class OrderRepository @Inject constructor(
       : Flow<ApiResource<OrderListingsDto>> {
     return flow {
       emit(ApiResource.Loading())
-      when (val response = orderResource.getOrderListings().first()) {
+      when (val response = orderResource.getOrderListings().firstOrNull()) {
         is ApiResponse.Success -> {
           val data = response.data
           emit(ApiResource.Success(data))
         }
-        is ApiResponse.Empty -> {
-          emit(ApiResource.Success(null))
-        }
         is ApiResponse.Error -> {
           emit(ApiResource.Error(response.apiError))
+        }
+        else -> {
+          emit(ApiResource.Success(null))
         }
       }
     }
