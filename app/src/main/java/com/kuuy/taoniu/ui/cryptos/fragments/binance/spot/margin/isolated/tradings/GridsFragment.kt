@@ -106,7 +106,7 @@ class GridsFragment : BaseFragment<FragmentCryptosBinanceSpotMarginIsolatedTradi
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }

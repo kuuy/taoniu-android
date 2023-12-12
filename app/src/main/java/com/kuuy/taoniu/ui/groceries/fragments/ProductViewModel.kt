@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DbResource
 import com.kuuy.taoniu.data.groceries.dto.ProductListingsDto
@@ -57,7 +58,7 @@ class ProductViewModel @Inject constructor(
             _productListings.postValue(ApiResource.Loading())
           }.catch {
             it.message?.let { message ->
-              _productListings.postValue(ApiResource.Error(message))
+              _productListings.postValue(ApiResource.Error(ApiError(500, message)))
               retryFunctionList.add(::getProductListings)
             }
           }.collect { response ->
@@ -79,10 +80,7 @@ class ProductViewModel @Inject constructor(
               code = it.code()
             }
             it.message?.let { message ->
-              _productDetail.postValue(ApiResource.Error(
-                message,
-                code,
-              ))
+              _productDetail.postValue(ApiResource.Error(ApiError(500, message)))
               //retryFunctionList.add(::getProductDetail)
             }
           }.collect { response ->
@@ -99,15 +97,8 @@ class ProductViewModel @Inject constructor(
           .onStart {
             _productBarcode.postValue(ApiResource.Loading())
           }.catch {
-            var code: Int = 0
-            if (it is HttpException) {
-              code = it.code()
-            }
             it.message?.let { message ->
-              _productBarcode.postValue(ApiResource.Error(
-                message,
-                code,
-              ))
+              _productBarcode.postValue(ApiResource.Error(ApiError(500, message)))
               //retryFunctionList.add(::getProductBarcode)
             }
           }.collect { response ->
@@ -136,7 +127,7 @@ class ProductViewModel @Inject constructor(
         _productCreate.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _productCreate.postValue(ApiResource.Error(message))
+          _productCreate.postValue(ApiResource.Error(ApiError(500, message)))
               //retryFunctionList.add(::getProductBarcode)
         }
       }.collect { response ->
@@ -167,7 +158,7 @@ class ProductViewModel @Inject constructor(
         _productUpdate.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _productUpdate.postValue(ApiResource.Error(message))
+          _productUpdate.postValue(ApiResource.Error(ApiError(500, message)))
               //retryFunctionList.add(::getProductBarcode)
         }
       }.collect { response ->

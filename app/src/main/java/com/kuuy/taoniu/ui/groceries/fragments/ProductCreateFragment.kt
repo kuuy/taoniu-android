@@ -159,7 +159,7 @@ class ProductCreateFragment
           }
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -182,7 +182,7 @@ class ProductCreateFragment
         }
         is ApiResource.Error -> {
           showLoading(false)
-          showToast(response.message ?: "api failed")
+          showToast(response.apiError?.message ?: "api failed")
         }
       }
     }

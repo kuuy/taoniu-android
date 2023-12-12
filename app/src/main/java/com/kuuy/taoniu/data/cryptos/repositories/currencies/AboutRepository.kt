@@ -14,7 +14,7 @@ class AboutRepository @Inject constructor(
 ) {
   suspend fun get(
     symbol: String,
-  ): Flow<ApiResource<DtoResponse<String>>> {
+  ): Flow<ApiResource<String>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.get(symbol).first()) {
@@ -25,7 +25,7 @@ class AboutRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }

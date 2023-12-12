@@ -3,7 +3,10 @@ package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.tradings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
+import com.kuuy.taoniu.data.ApiResponse
+import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
 import com.kuuy.taoniu.data.cryptos.models.Ticker
@@ -33,8 +36,8 @@ class SymbolsViewModel @Inject constructor(
     get() = _tickers
 
   private val _analysisListings
-      = MutableLiveData<ApiResource<DtoResponse<List<AnalysisInfoDto>>>>()
-  val analysisListings: LiveData<ApiResource<DtoResponse<List<AnalysisInfoDto>>>>
+      = MutableLiveData<ApiResource<List<AnalysisInfoDto>>>()
+  val analysisListings: LiveData<ApiResource<List<AnalysisInfoDto>>>
     get() = _analysisListings
 
   fun scan(callback: () -> Unit) {
@@ -45,10 +48,10 @@ class SymbolsViewModel @Inject constructor(
       }.catch {
       }.collect { response ->
         response.data?.let {
-          it?.data?.let { symbols ->
+          it.let { symbols ->
             fishersRepository.addAll(scene, symbols.toTypedArray())
           }
-          it?.data?.forEach { symbol ->
+          it.forEach { symbol ->
             if (!_tickers.containsKey(symbol)) {
               _tickers[symbol] = Ticker(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
             }
@@ -67,10 +70,10 @@ class SymbolsViewModel @Inject constructor(
       }.catch {
       }.collect { response ->
         response.data?.let {
-          it?.data?.let { symbols ->
+          it.let { symbols ->
             fishersRepository.addAll(scene, symbols.toTypedArray())
           }
-          it?.data?.forEach { symbol ->
+          it.forEach { symbol ->
             if (!_tickers.containsKey(symbol)) {
               _tickers[symbol] = Ticker(0f, 0f, 0f, 0f, 0f,0f,0, 0f, 0)
             }
@@ -92,12 +95,8 @@ class SymbolsViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      analysisRepository.gets(exchange, symbols, interval).onStart {
-        _analysisListings.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _analysisListings.postValue(ApiResource.Error(message))
-        }
+      analysisRepository.gets(exchange, symbols, interval).catch {
+        it.message?.let {}
       }.collect { response ->
         response.data?.let {
           callback()
@@ -118,7 +117,7 @@ class SymbolsViewModel @Inject constructor(
     viewModelScope.launch {
       tickersRepository.gets(symbols, fields).collect { response ->
         response.data?.let {
-          it.data.forEachIndexed { i, values ->
+          it.forEachIndexed { i, values ->
             val symbol = symbols[i]
             val data = values.split(",")
             if (data.size != fields.size) {

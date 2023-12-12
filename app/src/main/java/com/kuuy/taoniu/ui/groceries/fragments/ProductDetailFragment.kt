@@ -140,7 +140,7 @@ class ProductDetailFragment
         }
         is ApiResource.Error -> {
           showLoading(false)
-          showToast(response.message ?: "api failed")
+          showToast(response.apiError?.message ?: "api failed")
         }
       }
     }
@@ -202,12 +202,12 @@ class ProductDetailFragment
         }
         is ApiResource.Error -> {
           showLoading(false)
-          if (response.code == 404) {
+          if (response.apiError?.code == 404) {
             val action = ProductDetailFragmentDirections
                 .toProductListingsFragment()
             findNavController().navigate(action)
           } else {
-            showToast(response.message ?: "api failed")
+            showToast(response.apiError?.message ?: "api failed")
           }
         }
       }
@@ -227,7 +227,7 @@ class ProductDetailFragment
           }
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -248,7 +248,7 @@ class ProductDetailFragment
         }
         is ApiResource.Error -> {
           showLoading(false)
-          showToast(response.message ?: "api failed")
+          showToast(response.apiError?.message ?: "api failed")
         }
       }
     }

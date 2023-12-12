@@ -3,6 +3,7 @@ package com.kuuy.taoniu.ui.cryptos.fragments.tradingview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
@@ -42,7 +43,7 @@ class AnalysisViewModel @Inject constructor(
     viewModelScope.launch {
       tickersRepository.gets(symbols, fields).collect { response ->
         response.data?.let {
-          it.data.forEachIndexed { i, values ->
+          it.forEachIndexed { i, values ->
             val symbol = symbols[i]
             val data = values.split(",")
             if (data.size != fields.size) {
@@ -100,7 +101,7 @@ class AnalysisViewModel @Inject constructor(
         _analysisPaginate.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _analysisPaginate.postValue(ApiResource.Error(message))
+          _analysisPaginate.postValue(ApiResource.Error(ApiError(500, message)))
         }
       }.collect { response ->
         response.data.let {

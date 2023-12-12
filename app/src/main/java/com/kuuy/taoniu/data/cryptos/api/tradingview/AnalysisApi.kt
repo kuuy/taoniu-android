@@ -4,6 +4,7 @@ import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.tradingview.AnalysisSummaryDto
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -14,7 +15,7 @@ interface AnalysisApi {
     @Path("exchange") exchange: String,
     @Path("symbol") symbol: String,
     @Path("interval") interval: String,
-  ): DtoResponse<AnalysisSummaryDto>
+  ): Response<DtoResponse<AnalysisSummaryDto>>
 
   @GET("v1/tradingview/analysis")
   suspend fun listings(
@@ -22,12 +23,12 @@ interface AnalysisApi {
     @Query("interval") interval: String,
     @Query("current") current: Int,
     @Query("page_size") pageSize: Int
-  ): DtoPaginate<AnalysisInfoDto>
+  ): Response<DtoPaginate<AnalysisInfoDto>>
 
   @GET("v1/tradingview/analysis/gets")
   suspend fun gets(
     @Query("exchange") exchange: String,
     @Query("symbols") symbol: String,
     @Query("interval") interval: String,
-  ): DtoResponse<List<AnalysisInfoDto>>
+  ): Response<DtoResponse<List<AnalysisInfoDto>>>
 }

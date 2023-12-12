@@ -79,7 +79,7 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
           response.data?.let {
             val values = ArrayList<BarEntry>()
             val dates = mutableListOf<String>()
-            it.data.forEachIndexed { index, item ->
+            it.forEachIndexed { index, item ->
               values.add(BarEntry(index.toFloat()+1, floatArrayOf(
                 item[0].toString().toFloat(),
                 -item[1].toString().toFloat(),
@@ -117,7 +117,7 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -139,7 +139,7 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -156,7 +156,7 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
           response.data?.let {
             val values = ArrayList<BarEntry>()
             val dates = mutableListOf<String>()
-            it.data.forEachIndexed { index, item ->
+            it.forEachIndexed { index, item ->
               values.add(BarEntry(index.toFloat()+1, floatArrayOf(
                 item[0].toString().toFloat(),
                 -item[1].toString().toFloat(),
@@ -194,7 +194,7 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -216,7 +216,7 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }

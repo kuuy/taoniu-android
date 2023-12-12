@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
-import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.SymbolInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.OrderInfoDto
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.plans.DailyInfoDto as PlanInfoDto
@@ -26,7 +25,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 import kotlin.math.round
 
@@ -41,12 +39,12 @@ class TradeViewModel @Inject constructor(
   private val plansRepository: PlansReposioty,
   private val gridsRepository: GridsRepository,
 ) : BaseViewModel() {
-  private val _symbolInfo = MutableLiveData<ApiResource<DtoResponse<SymbolInfoDto>>>()
-  val symbolInfo: LiveData<ApiResource<DtoResponse<SymbolInfoDto>>>
+  private val _symbolInfo = MutableLiveData<ApiResource<SymbolInfoDto>>()
+  val symbolInfo: LiveData<ApiResource<SymbolInfoDto>>
     get() = _symbolInfo
 
-  private val _about = MutableLiveData<ApiResource<DtoResponse<String>>>()
-  val about: LiveData<ApiResource<DtoResponse<String>>>
+  private val _about = MutableLiveData<ApiResource<String>>()
+  val about: LiveData<ApiResource<String>>
     get() = _about
 
   private var _summaryInfo = AnalysisSummary(0, 0, 0, "--")
@@ -65,8 +63,8 @@ class TradeViewModel @Inject constructor(
     set(value) { field=value; _tickers[symbol] = Ticker(0f, 0f, 0f, 0f, 0f, 0f, 0, 0f, 0) }
 
   private val _series
-      = MutableLiveData<ApiResource<DtoResponse<List<FloatArray>>>>()
-  val series: LiveData<ApiResource<DtoResponse<List<FloatArray>>>>
+      = MutableLiveData<ApiResource<List<FloatArray>>>()
+  val series: LiveData<ApiResource<List<FloatArray>>>
     get() = _series
 
   private val _ordersPaginate
@@ -90,19 +88,9 @@ class TradeViewModel @Inject constructor(
         .onStart {
           _about.postValue(ApiResource.Loading())
         }.catch {
-          var code: Int = 0
-          if (it is HttpException) {
-            code = it.code()
-          }
-          it.message?.let { message ->
-            _about.postValue(
-              ApiResource.Error(
-                message,
-                code,
-              ))
-          }
+          it.message?.let {}
         }.collect { response ->
-          response.data.let {
+          response.data?.let {
             _about.postValue(ApiResource.Success(it))
           }
         }
@@ -115,22 +103,9 @@ class TradeViewModel @Inject constructor(
         .onStart {
           _symbolInfo.postValue(ApiResource.Loading())
         }.catch {
-          var code: Int = 0
-          if (it is HttpException) {
-            code = it.code()
-          }
-          it.message?.let { message ->
-            _symbolInfo.postValue(
-              ApiResource.Error(
-              message,
-              code,
-            ))
-          }
+          it.message?.let {}
         }.collect { response ->
           response.data?.let {
-            if (!it.success) {
-              return@collect
-            }
             _symbolInfo.postValue(ApiResource.Success(it))
           }
         }
@@ -148,10 +123,7 @@ class TradeViewModel @Inject constructor(
     viewModelScope.launch {
       tickersRepository.gets(symbols, fields).collect { response ->
         response.data?.let {
-          if (!it.success) {
-            return@collect
-          }
-          it.data.forEachIndexed { i, values ->
+          it.forEachIndexed { i, values ->
             val symbol = symbols[i]
             val data = values.split(",")
             if (data.size != fields.size) {
@@ -202,15 +174,12 @@ class TradeViewModel @Inject constructor(
   }
 
   fun flushSlippages(callback: () -> Unit) {
-    var fields = listOf("slippage@1%","slippage@-1%","slippage@2%","slippage@-2%")
+    val fields = listOf("slippage@1%","slippage@-1%","slippage@2%","slippage@-2%")
 
     viewModelScope.launch {
       tickersRepository.gets(listOf(symbol), fields).collect { response ->
         response.data?.let {
-          if (!it.success) {
-            return@collect
-          }
-          it.data.forEachIndexed { _, values ->
+          it.forEachIndexed { _, values ->
             val data = values.split(",")
             if (data.size != fields.size) {
               return@forEachIndexed
@@ -232,10 +201,7 @@ class TradeViewModel @Inject constructor(
     viewModelScope.launch {
       analysisRepository.summary("BINANCE", symbol, "1m").collect { response ->
         response.data?.let {
-          if (!it.success) {
-            return@collect
-          }
-          _summaryInfo = it.data.transform()
+          _summaryInfo = it.transform()
           callback()
         }
       }
@@ -244,17 +210,14 @@ class TradeViewModel @Inject constructor(
 
   fun getSeries() {
     viewModelScope.launch {
-      klinesRepository.series(symbol, "1d", 100).onStart {
-        _series.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _series.postValue(ApiResource.Error(message))
+      klinesRepository.series(symbol, "1d", 100)
+        .catch {
+          it.message?.let {}
+        }.collect { response ->
+          response.data.let {
+            _series.postValue(ApiResource.Success(it))
+          }
         }
-      }.collect { response ->
-        response.data.let {
-          _series.postValue(ApiResource.Success(it))
-        }
-      }
     }
   }
 
@@ -267,12 +230,8 @@ class TradeViewModel @Inject constructor(
         listOf(symbol),
         current,
         pageSize,
-      ).onStart {
-        _ordersPaginate.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _ordersPaginate.postValue(ApiResource.Error(message))
-        }
+      ).catch {
+        it.message?.let {}
       }.collect { response ->
         response.data.let {
           _ordersPaginate.postValue(ApiResource.Success(it))
@@ -290,12 +249,8 @@ class TradeViewModel @Inject constructor(
         listOf(symbol),
         current,
         pageSize,
-      ).onStart {
-        _plansPaginate.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _plansPaginate.postValue(ApiResource.Error(message))
-        }
+      ).catch {
+        it.message?.let {}
       }.collect { response ->
         response.data.let {
           _plansPaginate.postValue(ApiResource.Success(it))
@@ -313,12 +268,8 @@ class TradeViewModel @Inject constructor(
         listOf(symbol),
         current,
         pageSize,
-      ).onStart {
-        _gridsPaginate.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _gridsPaginate.postValue(ApiResource.Error(message))
-        }
+      ).catch {
+        it.message?.let {}
       }.collect { response ->
         response.data.let {
           _gridsPaginate.postValue(ApiResource.Success(it))

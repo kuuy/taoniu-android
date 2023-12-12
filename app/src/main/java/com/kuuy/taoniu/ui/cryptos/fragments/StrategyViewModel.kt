@@ -3,6 +3,7 @@ package com.kuuy.taoniu.ui.cryptos.fragments
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.dto.StrategyListingsDto
 import com.kuuy.taoniu.data.cryptos.repositories.StrategyRepository
@@ -31,7 +32,7 @@ class StrategyViewModel @Inject constructor(
             _strategyListings.postValue(ApiResource.Loading())
           }.catch {
             it.message?.let { message ->
-              _strategyListings.postValue(ApiResource.Error(message))
+              _strategyListings.postValue(ApiResource.Error(ApiError(500, message)))
               retryFunctionList.add(::getStrategyListings)
             }
           }.collect { response ->

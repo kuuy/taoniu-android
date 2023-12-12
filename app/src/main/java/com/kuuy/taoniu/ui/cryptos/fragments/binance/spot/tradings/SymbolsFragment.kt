@@ -138,13 +138,13 @@ class SymbolsFragment : BaseFragment<FragmentCryptosBinanceSpotTradingsSymbolsBi
         }
         is ApiResource.Success -> {
           response.data?.let {
-            val analysis = it.data.transform()
+            val analysis = it.transform()
             adapter.addDatas(analysis)
           }
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }

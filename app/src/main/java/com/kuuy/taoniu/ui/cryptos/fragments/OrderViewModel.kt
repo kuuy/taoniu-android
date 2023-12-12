@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.cryptos.dto.OrderListingsDto
 import com.kuuy.taoniu.data.cryptos.repositories.OrderRepository
@@ -32,7 +33,7 @@ class OrderViewModel @Inject constructor(
             _orderListings.postValue(ApiResource.Loading())
           }.catch {
             it.message?.let { message ->
-              _orderListings.postValue(ApiResource.Error(message))
+              _orderListings.postValue(ApiResource.Error(ApiError(500, message)))
               retryFunctionList.add(::getOrderListings)
             }
           }.collect { response ->

@@ -27,7 +27,7 @@ class OrderRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }

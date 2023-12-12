@@ -1,10 +1,12 @@
 package com.kuuy.taoniu.data.groceries.api
 
+import com.kuuy.taoniu.data.DtoResponse
 import retrofit2.http.*;
 
 import com.kuuy.taoniu.data.groceries.dto.ProductListingsDto
 import com.kuuy.taoniu.data.groceries.dto.ProductDetailDto
 import com.kuuy.taoniu.data.groceries.dto.ProductBarcodeDto
+import retrofit2.Response
 
 interface ProductApi {
   @GET("products")
@@ -13,13 +15,13 @@ interface ProductApi {
   @GET("products/{id}")
   suspend fun getProductDetail(
     @Path("id") id: String,
-  ): ProductDetailDto
+  ): Response<DtoResponse<ProductDetailDto>>
 
 
   @GET("products/barcode/{barcode}")
   suspend fun getProductBarcode(
     @Path("barcode") barcode: String,
-  ): ProductBarcodeDto
+  ): Response<DtoResponse<ProductBarcodeDto>>
 
   @FormUrlEncoded
   @POST("products")

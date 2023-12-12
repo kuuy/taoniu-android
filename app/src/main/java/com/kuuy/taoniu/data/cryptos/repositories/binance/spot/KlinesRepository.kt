@@ -16,7 +16,7 @@ class KlinesRepository @Inject constructor(
     symbol: String,
     interval: String,
     limit: Int,
-  ) : Flow<ApiResource<DtoResponse<List<FloatArray>>>> {
+  ) : Flow<ApiResource<List<FloatArray>>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.series(symbol, interval, limit).first()) {
@@ -27,7 +27,7 @@ class KlinesRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }

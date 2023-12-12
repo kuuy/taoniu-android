@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.data.cryptos.api.binance.spot
 
 import com.kuuy.taoniu.data.DtoResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,5 +11,5 @@ interface KlinesApi {
     @Query("symbol") symbol: String,
     @Query("interval") interval: String,
     @Query("limit") limit: Int,
-  ): DtoResponse<List<FloatArray>>
+  ): Response<DtoResponse<List<FloatArray>>>
 }

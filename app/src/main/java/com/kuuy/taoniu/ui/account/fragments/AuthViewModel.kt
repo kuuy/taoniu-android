@@ -1,9 +1,9 @@
 package com.kuuy.taoniu.ui.account.fragments
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.account.dto.TokenDto
 import com.kuuy.taoniu.data.account.repositories.AuthRepository
@@ -30,7 +30,7 @@ class AuthViewModel @Inject constructor(
           _token.postValue(ApiResource.Loading())
         }.catch {
           it.message?.let { message ->
-            _token.postValue(ApiResource.Error(message))
+            _token.postValue(ApiResource.Error(ApiError(500, message)))
           }
         }.collect { response ->
           response.data.let {

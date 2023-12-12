@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.data.cryptos.api.binance.spot
 
 import com.kuuy.taoniu.data.DtoResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -9,5 +10,5 @@ interface TickersApi {
   suspend fun gets(
     @Query("symbols") symbols: String,
     @Query("fields") fields: String,
-  ): DtoResponse<List<String>>
+  ): Response<DtoResponse<List<String>>>
 }

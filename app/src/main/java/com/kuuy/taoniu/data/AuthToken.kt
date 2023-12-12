@@ -1,32 +1,21 @@
 package com.kuuy.taoniu.data
 
 import android.content.SharedPreferences
-import com.google.gson.GsonBuilder
-import com.kuuy.taoniu.BuildConfig
-import com.kuuy.taoniu.data.account.dto.TokenDto
-import com.kuuy.taoniu.di.NetworkModule
+import com.kuuy.taoniu.data.account.repositories.TokenRepository
 import com.kuuy.taoniu.di.PreferencesModule
-import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.flow.catch
 import okhttp3.*
-import okhttp3.internal.closeQuietly
 import timber.log.Timber
-import java.io.IOException
 import javax.inject.Named
 import javax.inject.Singleton
-import kotlin.coroutines.resumeWithException
 
 @Singleton
 class AuthToken constructor(
-  @Named(NetworkModule.HTTP_CLIENT) private var okHttpClient: OkHttpClient,
   @Named(PreferencesModule.AUTH_PREFERENCES) private var authPreferences: SharedPreferences,
+  private var tokenRepository: TokenRepository,
 ) {
-  private var accessToken: String? = null
-
   fun accessToken(): String? {
-    if (accessToken == null) {
-      accessToken = authPreferences.getString("ACCESS_TOKEN", null)
-    }
-    return accessToken
+    return authPreferences.getString(ACCESS_TOKEN, null)
   }
 
   fun shouldRefresh(): Boolean {
@@ -38,55 +27,26 @@ class AuthToken constructor(
     return false
   }
 
-  suspend fun refreshToken() {
+  suspend fun refresh() {
     val refreshToken = authPreferences.getString("REFRESH_TOKEN", null)
-      ?: throw Error("refresh token is not available")
 
-    var request = Request.Builder()
-      .header("Content-Type", "application/x-www-form-urlencoded")
-      .url(BuildConfig.ACCOUNT_API_URL + "v1/token/refresh")
-      .post(FormBody.Builder().add("refresh_token", refreshToken).build())
-      .build()
-
-    return suspendCancellableCoroutine {
-      val callback = object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
-          Timber.tag(TAG).d("refresh token call failed. $e")
-          it.resumeWithException(Error("refresh token call failed. $e"))
+    if (refreshToken != null) {
+      tokenRepository.refresh(refreshToken).catch {
+        it.message?.let { message ->
+          Timber.tag(TAG).d("refresh token call failed. $message")
         }
-
-        override fun onResponse(call: Call, response: Response) {
-          if (response.isSuccessful) {
-            val gson = GsonBuilder().create()
-            var result = gson.fromJson(response.body?.string(), DtoResponse::class.java)
-            if (result.success) {
-              var token = gson.fromJson(gson.toJson(result.data), TokenDto::class.java)
-              accessToken = token.access
-              authPreferences.edit()
-                .putString("ACCESS_TOKEN", accessToken)
-                .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
-                .apply()
-              Timber.tag(TAG).d("refresh token success!")
-            } else {
-              it.resumeWithException(Error("refresh token call failed. ${result.data.toString()}"))
-            }
-          } else {
-            if (response.code == 401 || response.code == 403) {
-              clearToken()
-            }
-            it.resumeWithException(Error("refresh token call failed. ${response.code}"))
-          }
-          response.closeQuietly()
+      }.collect { response ->
+        response.data?.let {
+          authPreferences.edit()
+            .putString("ACCESS_TOKEN", it.access)
+            .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
+            .apply()
         }
       }
-      val call = okHttpClient.newCall(request)
-      it.invokeOnCancellation { call.cancel() }
-      call.enqueue(callback)
     }
   }
 
-  fun clearToken() {
-    accessToken = null
+  fun clear() {
     authPreferences.edit()
       .clear()
       .remove(ACCESS_TOKEN)

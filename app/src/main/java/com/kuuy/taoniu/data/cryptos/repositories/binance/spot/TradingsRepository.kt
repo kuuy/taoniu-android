@@ -12,7 +12,7 @@ import javax.inject.Inject
 class TradingsRepository @Inject constructor(
   private val resource: TradingsResource
 ) {
-  suspend fun scan() : Flow<ApiResource<DtoResponse<List<String>>>> {
+  suspend fun scan() : Flow<ApiResource<List<String>>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.scan().first()) {
@@ -23,7 +23,7 @@ class TradingsRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }

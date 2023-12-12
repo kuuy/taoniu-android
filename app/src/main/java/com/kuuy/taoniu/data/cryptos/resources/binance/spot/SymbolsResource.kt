@@ -1,5 +1,7 @@
 package com.kuuy.taoniu.data.cryptos.resources.binance.spot
 
+import com.google.gson.Gson
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoResponse
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.SymbolsApi
@@ -16,26 +18,65 @@ class SymbolsResource @Inject constructor(
 ) {
   suspend fun get(
     symbol: String,
-  ) : Flow<ApiResponse<DtoResponse<SymbolInfoDto>>> {
+  ) : Flow<ApiResponse<SymbolInfoDto>> {
     return flow {
       val response = symbolsApi.get(symbol)
-      emit(ApiResponse.Success(response))
+      if (response.isSuccessful) {
+        response.body()?.let {
+          emit(ApiResponse.Success(it.data))
+        }
+      } else {
+        var apiError = ApiError(
+          response.code(),
+          response.message(),
+        )
+        response.errorBody()?.let {
+          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        }
+        emit(ApiResponse.Error(apiError))
+      }
     }.flowOn(Dispatchers.IO)
   }
 
   suspend fun gets(
     symbols: List<String>,
-  ) : Flow<ApiResponse<DtoResponse<List<String>>>> {
+  ) : Flow<ApiResponse<List<String>>> {
     return flow {
       val response = symbolsApi.gets(symbols.joinToString(","))
-      emit(ApiResponse.Success(response))
+      if (response.isSuccessful) {
+        response.body()?.let {
+          emit(ApiResponse.Success(it.data))
+        }
+      } else {
+        var apiError = ApiError(
+          response.code(),
+          response.message(),
+        )
+        response.errorBody()?.let {
+          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        }
+        emit(ApiResponse.Error(apiError))
+      }
     }.flowOn(Dispatchers.IO)
   }
 
-  suspend fun scan() : Flow<ApiResponse<DtoResponse<List<String>>>> {
+  suspend fun scan() : Flow<ApiResponse<List<String>>> {
     return flow {
       val response = symbolsApi.scan()
-      emit(ApiResponse.Success(response))
+      if (response.isSuccessful) {
+        response.body()?.let {
+          emit(ApiResponse.Success(it.data))
+        }
+      } else {
+        var apiError = ApiError(
+          response.code(),
+          response.message(),
+        )
+        response.errorBody()?.let {
+          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        }
+        emit(ApiResponse.Error(apiError))
+      }
     }.catch {}.flowOn(Dispatchers.IO)
   }
 }

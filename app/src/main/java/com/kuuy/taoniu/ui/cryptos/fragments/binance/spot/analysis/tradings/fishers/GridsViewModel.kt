@@ -3,6 +3,7 @@ package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.analysis.tradings.fish
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.DtoResponse
@@ -23,8 +24,8 @@ class GridsViewModel @Inject constructor(
   private val marginIsolatedRepository: MarginIsolatedGridsRepository,
 ): BaseViewModel() {
   private val _series
-      = MutableLiveData<ApiResource<DtoResponse<List<ArrayList<Any>>>>>()
-  val series: LiveData<ApiResource<DtoResponse<List<ArrayList<Any>>>>>
+      = MutableLiveData<ApiResource<List<ArrayList<Any>>>>()
+  val series: LiveData<ApiResource<List<ArrayList<Any>>>>
     get() = _series
 
   private val _gridsPaginate
@@ -33,8 +34,8 @@ class GridsViewModel @Inject constructor(
     get() = _gridsPaginate
 
   private val _marginIsolatedSeries
-      = MutableLiveData<ApiResource<DtoResponse<List<ArrayList<Any>>>>>()
-  val marginIsolatedSeries: LiveData<ApiResource<DtoResponse<List<ArrayList<Any>>>>>
+      = MutableLiveData<ApiResource<List<ArrayList<Any>>>>()
+  val marginIsolatedSeries: LiveData<ApiResource<List<ArrayList<Any>>>>
     get() = _marginIsolatedSeries
 
   private val _marginIsolatedGridsPaginate
@@ -48,7 +49,7 @@ class GridsViewModel @Inject constructor(
         _series.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _series.postValue(ApiResource.Error(message))
+          _series.postValue(ApiResource.Error(ApiError(500, message)))
         }
       }.collect { response ->
         response.data.let {
@@ -70,7 +71,7 @@ class GridsViewModel @Inject constructor(
         _gridsPaginate.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _gridsPaginate.postValue(ApiResource.Error(message))
+          _gridsPaginate.postValue(ApiResource.Error(ApiError(500, message)))
         }
       }.collect { response ->
         response.data.let {
@@ -86,7 +87,7 @@ class GridsViewModel @Inject constructor(
         _marginIsolatedSeries.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _marginIsolatedSeries.postValue(ApiResource.Error(message))
+          _marginIsolatedSeries.postValue(ApiResource.Error(ApiError(500, message)))
         }
       }.collect { response ->
         response.data.let {
@@ -108,7 +109,7 @@ class GridsViewModel @Inject constructor(
         _marginIsolatedGridsPaginate.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _marginIsolatedGridsPaginate.postValue(ApiResource.Error(message))
+          _marginIsolatedGridsPaginate.postValue(ApiResource.Error(ApiError(500, message)))
         }
       }.collect { response ->
         response.data.let {

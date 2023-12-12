@@ -28,7 +28,7 @@ class GridsRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }
@@ -36,7 +36,7 @@ class GridsRepository @Inject constructor(
 
   suspend fun series(
     limit: Int,
-  ) : Flow<ApiResource<DtoResponse<List<ArrayList<Any>>>>> {
+  ) : Flow<ApiResource<List<ArrayList<Any>>>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.series(limit).first()) {
@@ -47,7 +47,7 @@ class GridsRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }

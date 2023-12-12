@@ -309,14 +309,14 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         }
         is ApiResource.Success -> {
           response.data?.let {
-            val symbolInfo = it.data.transform()
+            val symbolInfo = it.transform()
             binding.tvTitle.text = "${symbolInfo.baseAsset}/${symbolInfo.quoteAsset}"
             viewModel.getAbout(symbolInfo.baseAsset)
           }
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -329,11 +329,11 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         }
         is ApiResource.Success -> {
           response.data?.let {
-            about = it.data
+            about = it
           }
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
         }
       }
     }
@@ -348,7 +348,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         is ApiResource.Success -> {
           response.data?.let {
             var series: MutableList<BarData> = mutableListOf()
-            it.data.forEach{ item ->
+            it.forEach{ item ->
               series.add(0, BarData(
                 Time.Utc(item[4].toLong() / 1000),
                 item[0],
@@ -372,7 +372,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -393,7 +393,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -414,7 +414,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }
@@ -435,7 +435,7 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
           showLoading(false)
         }
         is ApiResource.Error -> {
-          showToast(response.message ?: "api error")
+          showToast(response.apiError?.message ?: "api error")
           showLoading(false)
         }
       }

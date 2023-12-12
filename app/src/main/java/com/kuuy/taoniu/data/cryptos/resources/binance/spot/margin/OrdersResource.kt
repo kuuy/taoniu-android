@@ -1,5 +1,7 @@
 package com.kuuy.taoniu.data.cryptos.resources.binance.spot.margin
 
+import com.google.gson.Gson
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.cryptos.api.binance.spot.margin.OrdersApi
@@ -21,7 +23,20 @@ class OrdersResource @Inject constructor(
   ) : Flow<ApiResponse<DtoPaginate<OrderInfoDto>>> {
     return flow {
       val response = ordersApi.listings(symbols.joinToString(","), current, pageSize)
-      emit(ApiResponse.Success(response))
+      if (response.isSuccessful) {
+        response.body()?.let {
+          emit(ApiResponse.Success(it))
+        }
+      } else {
+        var apiError = ApiError(
+          response.code(),
+          response.message(),
+        )
+        response.errorBody()?.let {
+          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        }
+        emit(ApiResponse.Error(apiError))
+      }
     }.catch {}.flowOn(Dispatchers.IO)
   }
 }

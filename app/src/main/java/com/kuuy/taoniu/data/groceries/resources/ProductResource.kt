@@ -1,5 +1,7 @@
 package com.kuuy.taoniu.data.groceries.resources
 
+import com.google.gson.Gson
+import com.kuuy.taoniu.data.ApiError
 import javax.inject.Inject
 
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +30,20 @@ class ProductResource @Inject constructor(
       : Flow<ApiResponse<ProductDetailDto>> {
     return flow {
       var response = productApi.getProductDetail(id)
-      emit(ApiResponse.Success(response))
+      if (response.isSuccessful) {
+        response.body()?.let {
+          emit(ApiResponse.Success(it.data))
+        }
+      } else {
+        var apiError = ApiError(
+          response.code(),
+          response.message(),
+        )
+        response.errorBody()?.let {
+          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        }
+        emit(ApiResponse.Error(apiError))
+      }
     }.flowOn(Dispatchers.IO)
   }
 
@@ -36,7 +51,20 @@ class ProductResource @Inject constructor(
       : Flow<ApiResponse<ProductBarcodeDto>> {
     return flow {
       var response = productApi.getProductBarcode(barcode)
-      emit(ApiResponse.Success(response))
+      if (response.isSuccessful) {
+        response.body()?.let {
+          emit(ApiResponse.Success(it.data))
+        }
+      } else {
+        var apiError = ApiError(
+          response.code(),
+          response.message(),
+        )
+        response.errorBody()?.let {
+          apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
+        }
+        emit(ApiResponse.Error(apiError))
+      }
     }.flowOn(Dispatchers.IO)
   }
 

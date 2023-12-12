@@ -16,7 +16,7 @@ class TickersRepository @Inject constructor(
   suspend fun gets(
     symbols: List<String>,
     fields: List<String>,
-  ) : Flow<ApiResource<DtoResponse<List<String>>>> {
+  ) : Flow<ApiResource<List<String>>> {
     return flow {
       emit(ApiResource.Loading())
       try {
@@ -28,7 +28,7 @@ class TickersRepository @Inject constructor(
             emit(ApiResource.Success(null))
           }
           is ApiResponse.Error -> {
-            emit(ApiResource.Error(response.errorMessage))
+            emit(ApiResource.Error(response.apiError))
           }
         }
       } catch(e: Exception) {}

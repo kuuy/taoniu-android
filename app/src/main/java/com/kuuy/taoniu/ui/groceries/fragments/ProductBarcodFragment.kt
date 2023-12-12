@@ -61,12 +61,12 @@ class ProductBarcodeFragment
         }
         is ApiResource.Error -> {
           showLoading(false)
-          if (response.code == 404) {
+          if (response.apiError?.code == 404) {
             val action = ProductBarcodeFragmentDirections
                 .toProductCreateFragment(args.barcode)
             findNavController().navigate(action)
           } else {
-            showToast(response.message ?: "api failed")
+            showToast(response.apiError?.message ?: "api failed")
           }
         }
       }

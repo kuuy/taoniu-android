@@ -3,6 +3,7 @@ package com.kuuy.taoniu.ui.cryptos.fragments.binance.spot.margin.isolated.tradin
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DtoPaginate
 import com.kuuy.taoniu.data.cryptos.dto.binance.spot.margin.isolated.tradings.GridInfoDto
@@ -36,7 +37,7 @@ class GridsViewModel @Inject constructor(
         _gridsPaginate.postValue(ApiResource.Loading())
       }.catch {
         it.message?.let { message ->
-          _gridsPaginate.postValue(ApiResource.Error(message))
+          _gridsPaginate.postValue(ApiResource.Error(ApiError(500, message)))
         }
       }.collect { response ->
         response.data.let {

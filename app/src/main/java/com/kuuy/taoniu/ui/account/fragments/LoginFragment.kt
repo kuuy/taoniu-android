@@ -1,6 +1,5 @@
 package com.kuuy.taoniu.ui.account.fragments
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
@@ -66,14 +65,14 @@ class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
               .putString("REFRESH_TOKEN", it.refresh)
               .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
               .apply()
-            showToast(response.message ?: "login success")
+            showToast(response.apiError?.message ?: "login success")
             val action = LoginFragmentDirections.toHomeFragment()
             findNavController().navigate(action)
           }
         }
         is ApiResource.Error -> {
           showLoading(false)
-          showToast(response.message ?: "api failed")
+          showToast(response.apiError?.message ?: "api failed")
         }
       }
     }

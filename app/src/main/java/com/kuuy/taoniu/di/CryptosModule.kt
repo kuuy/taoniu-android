@@ -36,7 +36,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): OrderApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(OrderApi::class.java)
@@ -48,7 +48,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): StrategyApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(StrategyApi::class.java)
@@ -60,7 +60,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): CurrenciesAboutApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(CurrenciesAboutApi::class.java)
@@ -72,7 +72,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotSymbolsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotSymbolsApi::class.java)
@@ -84,7 +84,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotTradingsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotTradingsApi::class.java)
@@ -96,7 +96,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotTickersApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotTickersApi::class.java)
@@ -108,7 +108,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotKlinesApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotKlinesApi::class.java)
@@ -120,7 +120,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotPlansDailyApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotPlansDailyApi::class.java)
@@ -132,7 +132,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotMarginOrdersApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotMarginOrdersApi::class.java)
@@ -144,7 +144,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotMarginIsolatedSymbolsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotMarginIsolatedSymbolsApi::class.java)
@@ -156,7 +156,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotMarginIsolatedTradingsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotMarginIsolatedTradingsApi::class.java)
@@ -168,7 +168,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotMarginIsolatedTradingsGridsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotMarginIsolatedTradingsGridsApi::class.java)
@@ -180,7 +180,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotAnalysisTradingsFishersGridsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotAnalysisTradingsFishersGridsApi::class.java)
@@ -192,7 +192,7 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): BinanceSpotAnalysisMarginIsolatedTradingsFishersGridsApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(BinanceSpotAnalysisMarginIsolatedTradingsFishersGridsApi::class.java)
@@ -204,13 +204,13 @@ object CryptosModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): TradingviewAnalysisApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(TradingviewAnalysisApi::class.java)
   }
 
-  private fun getDynamicRetrofitClient(
+  private fun getDynamicRetrofitAuthClient(
     @Named(NetworkModule.AUTH_HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): Retrofit {

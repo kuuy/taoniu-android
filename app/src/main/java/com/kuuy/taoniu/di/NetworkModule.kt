@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.kuuy.taoniu.data.ApiInterceptor
 import com.kuuy.taoniu.data.AuthInterceptor
 import com.kuuy.taoniu.data.AuthToken
+import com.kuuy.taoniu.data.account.repositories.TokenRepository
 import com.kuuy.taoniu.data.network.ApiService
 import com.kuuy.taoniu.utils.Constants.BASE_URL
 import dagger.Module
@@ -87,9 +88,9 @@ object NetworkModule {
   @Singleton
   @Provides
   fun provideAuthToken(
-    @Named(HTTP_CLIENT) client: OkHttpClient,
-    @Named(PreferencesModule.AUTH_PREFERENCES) authPreferences: SharedPreferences
+    @Named(PreferencesModule.AUTH_PREFERENCES) authPreferences: SharedPreferences,
+    tokenRepository: TokenRepository,
   ): AuthToken {
-    return AuthToken(client, authPreferences)
+    return AuthToken(authPreferences, tokenRepository)
   }
 }

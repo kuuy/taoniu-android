@@ -2,7 +2,6 @@ package com.kuuy.taoniu.data
 
 import kotlinx.coroutines.runBlocking
 import okhttp3.*
-import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
@@ -11,12 +10,8 @@ class ApiInterceptor constructor(
 ) : Interceptor {
   override fun intercept(chain: Interceptor.Chain): Response = runBlocking{
     val request = chain.request()
-    if (authToken.shouldRefresh()) {
-      try {
-        authToken.refreshToken()
-      } catch (t: Throwable) {
-        Timber.tag(TAG).e(t)
-      }
+    if (authToken.accessToken() != null && authToken.shouldRefresh()) {
+      authToken.refresh()
     }
     chain.proceed(request)
   }

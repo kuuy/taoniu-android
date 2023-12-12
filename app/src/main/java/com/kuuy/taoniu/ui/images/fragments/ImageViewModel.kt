@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -35,7 +36,7 @@ class ImageViewModel @Inject constructor(
             _imageInfo.postValue(ApiResource.Loading())
           }.catch {
             it.message?.let { message ->
-              _imageInfo.postValue(ApiResource.Error(message))
+              _imageInfo.postValue(ApiResource.Error(ApiError(500, message)))
             }
           }.collect { response ->
             response.data.let {

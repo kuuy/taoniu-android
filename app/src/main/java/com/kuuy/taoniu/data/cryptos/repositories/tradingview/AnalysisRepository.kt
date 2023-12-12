@@ -19,7 +19,7 @@ class AnalysisRepository @Inject constructor(
     exchange: String,
     symbol: String,
     interval: String,
-  ) : Flow<ApiResource<DtoResponse<AnalysisSummaryDto>>> {
+  ) : Flow<ApiResource<AnalysisSummaryDto>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.summary(exchange,symbol, interval).first()) {
@@ -30,7 +30,7 @@ class AnalysisRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }
@@ -52,7 +52,7 @@ class AnalysisRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }
@@ -62,7 +62,7 @@ class AnalysisRepository @Inject constructor(
     exchange: String,
     symbols: List<String>,
     interval: String,
-  ) : Flow<ApiResource<DtoResponse<List<AnalysisInfoDto>>>> {
+  ) : Flow<ApiResource<List<AnalysisInfoDto>>> {
     return flow {
       emit(ApiResource.Loading())
       when (val response = resource.gets(exchange, symbols.joinToString(","), interval).first()) {
@@ -73,7 +73,7 @@ class AnalysisRepository @Inject constructor(
           emit(ApiResource.Success(null))
         }
         is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.errorMessage))
+          emit(ApiResource.Error(response.apiError))
         }
       }
     }

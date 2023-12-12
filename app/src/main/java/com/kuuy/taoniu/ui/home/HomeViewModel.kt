@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.model.NewsResponse
 import com.kuuy.taoniu.data.repository.NewsRepository
@@ -31,7 +32,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .catch {
                     it.message?.let { message ->
-                        _newsResponses.postValue(ApiResource.Error(message))
+                        _newsResponses.postValue(ApiResource.Error(ApiError(500, message)))
                         retryFunctionList.add(::getNewsResponse)
                     }
                 }

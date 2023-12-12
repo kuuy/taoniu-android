@@ -15,7 +15,7 @@ class SymbolsRepository @Inject constructor(
 ) {
   suspend fun get(
     symbol: String,
-  ) : Flow<ApiResource<DtoResponse<SymbolInfoDto>>> {
+  ) : Flow<ApiResource<SymbolInfoDto>> {
     return flow {
       emit(ApiResource.Loading())
       try {
@@ -27,7 +27,7 @@ class SymbolsRepository @Inject constructor(
             emit(ApiResource.Success(null))
           }
           is ApiResponse.Error -> {
-            emit(ApiResource.Error(response.errorMessage))
+            emit(ApiResource.Error(response.apiError))
           }
         }
       } catch(e: Exception) {}
@@ -36,7 +36,7 @@ class SymbolsRepository @Inject constructor(
 
   suspend fun gets(
     symbols: List<String>,
-  ) : Flow<ApiResource<DtoResponse<List<String>>>> {
+  ) : Flow<ApiResource<List<String>>> {
     return flow {
       emit(ApiResource.Loading())
       try {
@@ -48,7 +48,7 @@ class SymbolsRepository @Inject constructor(
             emit(ApiResource.Success(null))
           }
           is ApiResponse.Error -> {
-            emit(ApiResource.Error(response.errorMessage))
+            emit(ApiResource.Error(response.apiError))
           }
         }
       } catch(e: Exception) {}

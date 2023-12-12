@@ -22,7 +22,7 @@ object AccountModule {
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): AuthApi {
-    return getDynamicRetrofitClient(
+    return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
     ).create(AuthApi::class.java)
@@ -31,7 +31,7 @@ object AccountModule {
   @Provides
   @Singleton
   fun provideTokenApi(
-    @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
+    @Named(NetworkModule.HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): TokenApi {
     return getDynamicRetrofitClient(
@@ -40,8 +40,19 @@ object AccountModule {
     ).create(TokenApi::class.java)
   }
 
-  private fun getDynamicRetrofitClient(
+  private fun getDynamicRetrofitAuthClient(
     @Named(NetworkModule.AUTH_HTTP_CLIENT) client: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory,
+  ): Retrofit {
+    return Retrofit.Builder()
+      .client(client)
+      .baseUrl(BuildConfig.ACCOUNT_API_URL)
+      .addConverterFactory(gsonConverterFactory)
+      .build()
+  }
+
+  private fun getDynamicRetrofitClient(
+    @Named(NetworkModule.HTTP_CLIENT) client: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
   ): Retrofit {
     return Retrofit.Builder()
