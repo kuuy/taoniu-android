@@ -115,7 +115,7 @@ dependencies {
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0'
 
   //Database
-  implementation 'io.realm.kotlin:library-base:1.6.1'
+  implementation 'io.realm.kotlin:library-base:1.11.0'
 
   // Lifecycle
   implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
@@ -143,8 +143,8 @@ dependencies {
   implementation "io.noties.markwon:core:4.6.2"
 
   // libtorrent
-  implementation "org.libtorrent4j:libtorrent4j-android-arm64:2.0.1-9"
-  implementation "org.libtorrent4j:libtorrent4j-android-x86:2.0.1-9"
+  implementation "org.libtorrent4j:libtorrent4j-android-arm64:2.1.0-31"
+  implementation "org.libtorrent4j:libtorrent4j-android-x86:2.1.0-31"
 
   // MPAndroidChart
   implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
