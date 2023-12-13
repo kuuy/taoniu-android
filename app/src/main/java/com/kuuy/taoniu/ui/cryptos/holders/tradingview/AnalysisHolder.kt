@@ -23,7 +23,7 @@ class AnalysisHolder(
         } else {
           it.text = "\ue621"
         }
-        it.setTextColor(binding.root.context.getColor(R.color.material_green300))
+        it.setTextColor(binding.root.context.getColor(R.color.md_green_300))
       }
     } else if (model.summary.recommendation == "SELL" || model.summary.recommendation == "STRONG_SELL") {
       binding.tvRecommendation.let{
@@ -32,7 +32,7 @@ class AnalysisHolder(
         } else {
           it.text = "\ue622"
         }
-        it.setTextColor(binding.root.context.getColor(R.color.material_red300))
+        it.setTextColor(binding.root.context.getColor(R.color.md_red_300))
       }
     }
 

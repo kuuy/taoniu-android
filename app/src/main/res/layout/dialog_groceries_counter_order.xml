@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@color/material_grey200"
+    android:background="@color/md_grey_200"
     tools:context=".ui.groceries.dialogs.CounterOrderDialog">
 
     <ImageView 
@@ -58,7 +58,7 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:inputType="number"
-            android:textColor="@color/material_grey800"
+            android:textColor="@color/md_grey_800"
             android:background="@drawable/border_edittext"
             android:gravity="center"
             android:text="0"
@@ -102,7 +102,7 @@
             android:inputType="number"
             android:padding="5dp"
             android:text="0.00"
-            android:textColor="@color/material_grey800"
+            android:textColor="@color/md_grey_800"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5" />
@@ -126,7 +126,7 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:inputType="number"
-            android:textColor="@color/material_grey800"
+            android:textColor="@color/md_grey_800"
             android:background="@drawable/border_edittext"
             android:gravity="center"
             android:text="0.0"
@@ -158,7 +158,7 @@
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:inputType="number"
-            android:textColor="@color/material_grey800"
+            android:textColor="@color/md_grey_800"
             android:background="@drawable/border_edittext"
             android:gravity="center"
             android:text="0.00"
@@ -203,7 +203,7 @@
             android:inputType="number"
             android:padding="5dp"
             android:text="0"
-            android:textColor="@color/material_grey800"
+            android:textColor="@color/md_grey_800"
             app:layout_constraintStart_toEndOf="@id/tvFree"
             app:layout_constraintEnd_toStartOf="@id/tvGift"
             app:layout_constraintHorizontal_weight="1" />

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-	android:background="@color/material_grey300">
+	android:background="@color/md_grey_300">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
 
 			<View
 				android:id="@+id/settlementSplit"
-				android:background="@color/material_grey300"
+				android:background="@color/md_grey_300"
 				android:layout_width="match_parent"
 				android:layout_height="2dp"
 				android:layout_marginTop="8dp"

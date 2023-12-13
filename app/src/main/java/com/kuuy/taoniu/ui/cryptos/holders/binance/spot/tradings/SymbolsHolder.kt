@@ -18,7 +18,7 @@ class SymbolsHolder(
     binding.tvRecommendation.typeface = Typeface.createFromAsset(binding.root.context.assets, "fonts/iconfont.ttf")
     if (model.summary.recommendation == "BUY" || model.summary.recommendation == "STRONG_BUY") {
       binding.tvRecommendation.let{
-        it.setTextColor(binding.root.context.getColor(R.color.material_green300))
+        it.setTextColor(binding.root.context.getColor(R.color.md_green_300))
         if (model.summary.recommendation == "STRONG_BUY") {
           it.text = "\ue621\ue621"
         } else {
@@ -27,7 +27,7 @@ class SymbolsHolder(
       }
     } else if (model.summary.recommendation == "SELL" || model.summary.recommendation == "STRONG_SELL") {
       binding.tvRecommendation.let{
-        it.setTextColor(binding.root.context.getColor(R.color.material_red300))
+        it.setTextColor(binding.root.context.getColor(R.color.md_red_300))
         if (model.summary.recommendation == "STRONG_SELL") {
           it.text = "\ue622\uE622"
         } else {

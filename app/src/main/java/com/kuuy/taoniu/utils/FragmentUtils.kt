@@ -3,7 +3,11 @@ package com.kuuy.taoniu.utils
 import android.app.AlertDialog
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -48,4 +52,12 @@ fun Fragment.showOptionsDialog(
 fun Fragment.md5(input:String): String {
   val md = MessageDigest.getInstance("MD5")
   return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+}
+
+fun Fragment.findNavController(): NavController {
+  return NavHostFragment.findNavController(this)
+}
+
+fun Fragment.navigate(@IdRes resId: Int) {
+  findNavController().navigate(resId)
 }

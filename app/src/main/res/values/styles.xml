@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="ButtonStyleGreen" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
-        <item name="colorButtonNormal">@color/material_green400</item>
-    </style>
-    <style name="ButtonStyleRedLighter" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
-        <item name="colorButtonNormal">@color/material_red300</item>
-    </style>
-    <style name="ButtonStyleOrangeLighter" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
-        <item name="colorButtonNormal">@color/material_orange400</item>
-    </style>
-    <style name="ButtonStyleGreenLighter" parent="@style/Widget.AppCompat.Button.Colored">
-        <item name="android:textColor">@color/white</item>
-        <item name="colorButtonNormal">@color/material_green300</item>
-    </style>
+	<style name="ButtonStyleGreen" parent="@style/Widget.AppCompat.Button.Colored">
+		<item name="android:textColor">@color/white</item>
+		<item name="colorButtonNormal">@color/md_green_400</item>
+	</style>
+	<style name="ButtonStyleRedLighter" parent="@style/Widget.AppCompat.Button.Colored">
+		<item name="android:textColor">@color/white</item>
+		<item name="colorButtonNormal">@color/md_red_300</item>
+	</style>
+	<style name="ButtonStyleOrangeLighter" parent="@style/Widget.AppCompat.Button.Colored">
+		<item name="android:textColor">@color/white</item>
+		<item name="colorButtonNormal">@color/md_orange_400</item>
+	</style>
+	<style name="ButtonStyleGreenLighter" parent="@style/Widget.AppCompat.Button.Colored">
+		<item name="android:textColor">@color/white</item>
+		<item name="colorButtonNormal">@color/md_green_300</item>
+	</style>
 </resources>

@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="backgroud">#ffffff</color>
-    <color name="primary_text">#181725</color>
-    <color name="colorPrimary">#ff4169e1</color>
-    <color name="secondary_text">#9d9d9d</color>
-    <color name="card_background">#FAFAFA</color>
-    <color name="whitesmoke">#f2f3f2</color>
-    <color name="gray">#8c8c8c</color>
+	<color name="backgroud">#ffffff</color>
+	<color name="primary_text">#181725</color>
+	<color name="colorPrimary">#ff4169e1</color>
+	<color name="secondary_text">#9d9d9d</color>
+	<color name="card_background">#FAFAFA</color>
+	<color name="whitesmoke">#f2f3f2</color>
+	<color name="gray">#8c8c8c</color>
 
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="accent">#FF5722</color>
+	<color name="green_500">#55ab60</color>
 
-    <color name="text_color">#FFFFFF</color>
-    <color name="text_detail_color">#000000</color>
-    <color name="button_color">#701111</color>
-    <color name="statusbar_color">#770F0F</color>
-    <color name="action_bar_color">#930808</color>
+	<color name="purple_200">#FFBB86FC</color>
+	<color name="purple_500">#FF6200EE</color>
+	<color name="purple_700">#FF3700B3</color>
+	<color name="teal_200">#FF03DAC5</color>
+	<color name="teal_700">#FF018786</color>
+	<color name="black">#FF000000</color>
+	<color name="white">#FFFFFFFF</color>
+	<color name="accent">#FF5722</color>
 
-    <color name="cmr_green">#8be0d2</color>
+	<color name="text_color">#FFFFFF</color>
+	<color name="text_detail_color">#000000</color>
+	<color name="button_color">#701111</color>
+	<color name="statusbar_color">#770F0F</color>
+	<color name="action_bar_color">#930808</color>
 
-    <color name="seashell">#fef6ed</color>
-    <color name="honeydew">#e5f3ea</color>
-    <color name="purplesmoke">#f4ebf7</color>
-    <color name="mistyrose">#fde8e4</color>
+	<color name="cmr_green">#8be0d2</color>
 
-    <color name="tc_theme">#ff2271e6</color>
+	<color name="seashell">#fef6ed</color>
+	<color name="honeydew">#e5f3ea</color>
+	<color name="purplesmoke">#f4ebf7</color>
+	<color name="mistyrose">#fde8e4</color>
 
-    <color name="darkCard">#1f2b35</color>
+	<color name="tc_theme">#ff2271e6</color>
 
-    <color name="ripple_color">#80015256</color>
+	<color name="darkCard">#1f2b35</color>
 
-    <color name="material_grey200">#ffeeeeee</color>
-    <color name="material_grey300">#ffe0e0e0</color>
-    <color name="material_grey800">#ff424242</color>
-    <color name="material_green300">#ff81c784</color>
-    <color name="material_green400">#ff66bb6a</color>
-    <color name="material_green700">#ff388e3c</color>
-    <color name="material_orange400">#ffffa726</color>
-    <color name="material_red300">#ffe57373</color>
+	<color name="ripple_color">#80015256</color>
 </resources>

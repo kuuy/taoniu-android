@@ -6,7 +6,7 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_grey300">
+    android:background="@color/md_green_300">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

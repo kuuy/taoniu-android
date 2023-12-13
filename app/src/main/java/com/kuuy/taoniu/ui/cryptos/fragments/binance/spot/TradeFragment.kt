@@ -102,16 +102,16 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
             if (ticker.change > 0) {
               binding.tvPercent.let{
                 it.text ="+%.2f%%".format(ticker.change)
-                it.setTextColor(it.context.getColor(R.color.material_green300))
+                it.setTextColor(it.context.getColor(R.color.md_green_300))
               }
             } else {
               binding.tvPercent.let{
                 if (ticker.change < 0) {
                   it.text ="%.2f%%".format(ticker.change)
-                  it.setTextColor(it.context.getColor(R.color.material_red300))
+                  it.setTextColor(it.context.getColor(R.color.md_red_300))
                 } else {
                   it.text = "0.00%"
-                  it.setTextColor(it.context.getColor(R.color.material_grey300))
+                  it.setTextColor(it.context.getColor(R.color.md_grey_300))
                 }
               }
             }
@@ -175,11 +175,11 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
         binding.tvSummaryRecommendation.apply{
           text = viewModel.summaryInfo.recommendation
           if (viewModel.summaryInfo.recommendation == "BUY" || viewModel.summaryInfo.recommendation == "STRONG_BUY") {
-            setBackgroundColor(context.getColor(R.color.material_green300))
+            setBackgroundColor(context.getColor(R.color.md_green_300))
           } else if (viewModel.summaryInfo.recommendation == "SELL" || viewModel.summaryInfo.recommendation == "STRONG_SELL") {
-            setBackgroundColor(context.getColor(R.color.material_red300))
+            setBackgroundColor(context.getColor(R.color.md_red_300))
           } else {
-            setBackgroundColor(context.getColor(R.color.material_grey300))
+            setBackgroundColor(context.getColor(R.color.md_grey_300))
           }
         }
       }
@@ -264,11 +264,11 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
       }
       grid = gridOptions {
         vertLines = gridLineOptions {
-          color = R.color.material_grey300.toIntColor()
+          color = R.color.md_grey_300.toIntColor()
           style = LineStyle.SPARSE_DOTTED
         }
         horzLines = gridLineOptions {
-          color = R.color.material_grey300.toIntColor()
+          color = R.color.md_grey_300.toIntColor()
           style = LineStyle.SPARSE_DOTTED
         }
       }
@@ -359,10 +359,10 @@ class TradeFragment : BaseFragment<FragmentCryptosBinanceSpotTradeBinding>() {
             }
             binding.klineChart.api.addCandlestickSeries(
               options = candlestickSeriesOptions {
-                wickUpColor = R.color.material_green300.toIntColor()
-//                upColor = R.color.material_green300.toIntColor()
-                wickDownColor = R.color.material_red300.toIntColor()
-//                downColor = R.color.material_red300.toIntColor()
+                wickUpColor = R.color.md_green_300.toIntColor()
+//                upColor = R.color.md_green_300.toIntColor()
+                wickDownColor = R.color.md_red_300.toIntColor()
+//                downColor = R.color.md_red_300.toIntColor()
               },
               onSeriesCreated = { api ->
                 api.setData(series)

@@ -7,12 +7,12 @@
 
   <item
     android:id="@+id/navStrategyHome"
-    android:icon="@drawable/ic_announcements"
+    android:icon="@drawable/ic_explore"
     android:title="Announcements" />
 
   <item
     android:id="@+id/navOrderHome"
-    android:icon="@drawable/ic_explore"
+    android:icon="@drawable/ic_cart"
     android:title="Orders" />
 
   <item
@@ -22,13 +22,13 @@
 
   <item
     android:id="@+id/navScanner"
-    android:icon="@drawable/ic_explore"
+    android:icon="@drawable/ic_profile"
     android:title="Explore" />
 
   <!--
   <item
     android:id="@+id/messaging"
-    android:icon="@drawable/ic_messaging"
+    android:icon="@drawable/ic_explore"
     android:title="Messaging"/>
   -->
 

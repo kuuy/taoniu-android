@@ -1,42 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".ui.main.MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/navHostFragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomAppBar"
-        app:navGraph="@navigation/nav_graph" />
+	<androidx.fragment.app.FragmentContainerView
+		android:id="@+id/navHostFragment"
+		android:name="androidx.navigation.fragment.NavHostFragment"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		app:defaultNavHost="true"
+		app:layout_constraintBottom_toTopOf="@id/mainNav"
+		app:layout_constraintTop_toTopOf="parent"
+		app:navGraph="@navigation/nav_graph" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-	    android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/back_bottom_nav_menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="BottomAppBar">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView 
-            android:id="@+id/navView"
-            android:layout_width="match_parent" 
-            android:layout_height="match_parent" 
-            android:background="@android:color/transparent" 
-            app:elevation="0dp"
-            app:itemIconSize="20dp"
-            app:itemIconTint="@color/custom_bottom_nav_manu_icon_color"
-            app:itemTextColor="@color/custom_bottom_nav_manu_icon_color"
-            app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/main_menu" />
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
+	<com.google.android.material.bottomnavigation.BottomNavigationView
+		android:id="@+id/mainNav"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/_36sdp"
+		android:background="@android:color/transparent"
+		app:elevation="0dp"
+		app:itemIconSize="@dimen/_16sdp"
+		app:itemIconTint="@color/custom_bottom_nav_manu_icon_color"
+		app:itemTextColor="@color/custom_bottom_nav_manu_icon_color"
+		app:labelVisibilityMode="unlabeled"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:menu="@menu/main_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -107,15 +107,17 @@ class SymbolsViewModel @Inject constructor(
   }
 
   fun flushTickers(callback: () -> Unit) {
-    var symbols = tickers.keys.toList()
-    var fields = listOf("open","price")
+    val symbols = tickers.keys.toList()
+    val fields = listOf("open","price")
 
     if (symbols.isEmpty()) {
       return
     }
 
     viewModelScope.launch {
-      tickersRepository.gets(symbols, fields).collect { response ->
+      tickersRepository.gets(symbols, fields).catch {
+        it.message?.let {}
+      }.collect { response ->
         response.data?.let {
           it.forEachIndexed { i, values ->
             val symbol = symbols[i]

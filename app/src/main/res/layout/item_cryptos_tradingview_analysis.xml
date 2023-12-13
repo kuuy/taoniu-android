@@ -49,7 +49,7 @@
             android:paddingStart="5dp"
             android:gravity="start|center_vertical"
             android:textSize="20sp"
-            android:textColor="@color/material_red300"
+            android:textColor="@color/md_red_300"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvSymbol"

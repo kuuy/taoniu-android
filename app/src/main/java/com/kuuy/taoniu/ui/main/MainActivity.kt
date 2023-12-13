@@ -1,5 +1,6 @@
 package com.kuuy.taoniu.ui.main
 
+import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -27,7 +28,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     setupActionBarWithNavController(navController)
 
-    binding.navView.setOnItemSelectedListener {
+    binding.mainNav.setOnItemSelectedListener {
       when (it.itemId) {
         R.id.navHome -> {
           navController.navigate(R.id.productListingsFragment)

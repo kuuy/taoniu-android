@@ -18,6 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentAccountLoginBinding>() {
+  override var skipAuth: Boolean = true
+
   private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
 
   private val viewModels by viewModels<AuthViewModel>()

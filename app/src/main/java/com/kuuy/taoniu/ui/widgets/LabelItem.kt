@@ -19,6 +19,7 @@ class LabelItem @JvmOverloads constructor(
   var value: Any = "--"
     set(value) {
       tvValue.text = value.toString()
+      field = value
     }
 
   private val tvLable by lazy {
@@ -45,7 +46,7 @@ class LabelItem @JvmOverloads constructor(
       (layoutParams as LayoutParams).bottomToBottom = LayoutParams.PARENT_ID
       (layoutParams as LayoutParams).topMargin = 4
     }
-    tvLable.setTextColor(context.getColor(R.color.material_grey800))
+    tvLable.setTextColor(context.getColor(R.color.md_grey_800))
     tvValue.setTextColor(context.getColor(R.color.primary_text))
     tvLable.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
     tvValue.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15f)

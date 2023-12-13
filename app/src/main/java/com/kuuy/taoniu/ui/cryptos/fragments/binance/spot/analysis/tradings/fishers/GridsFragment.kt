@@ -93,8 +93,8 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
               setDrawValues(false)
               binding.barChart.context.let{
                 setColors(
-                  binding.barChart.context.getColor(R.color.material_green300),
-                  binding.barChart.context.getColor(R.color.material_red300),
+                  binding.barChart.context.getColor(R.color.md_green_300),
+                  binding.barChart.context.getColor(R.color.md_red_300),
                 )
               }
             }
@@ -170,8 +170,8 @@ class GridsFragment: BaseFragment<FragmentCryptosBinanceSpotAnalysisTradingsFish
               setDrawValues(false)
               binding.barChart.context.let{
                 setColors(
-                  binding.barChart.context.getColor(R.color.material_green300),
-                  binding.barChart.context.getColor(R.color.material_red300),
+                  binding.barChart.context.getColor(R.color.md_green_300),
+                  binding.barChart.context.getColor(R.color.md_red_300),
                 )
               }
             }

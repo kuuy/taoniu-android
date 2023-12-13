@@ -88,8 +88,8 @@ dependencies {
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
   // Scalable Size Unit
-  implementation 'com.intuit.sdp:sdp-android:1.0.6'
-  implementation 'com.intuit.ssp:ssp-android:1.0.6'
+  implementation 'com.intuit.sdp:sdp-android:1.1.0'
+  implementation 'com.intuit.ssp:ssp-android:1.1.0'
 
   // Navigation Component
   implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'

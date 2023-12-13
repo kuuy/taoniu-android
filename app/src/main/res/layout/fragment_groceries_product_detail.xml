@@ -1,107 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeRefreshLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/swipeRefreshLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.groceries.fragments.ProductDetailFragment">
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		tools:context=".ui.groceries.fragments.ProductDetailFragment">
 
-        <TextView
-            android:id="@+id/tvBarcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintTop_toTopOf="parent"
-	    app:layout_constraintStart_toStartOf="parent"/>
+		<TextView
+			android:id="@+id/tvBarcode"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/primary_text"
+			android:textSize="@dimen/_10ssp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/etTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvBarcode"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<EditText
+			android:id="@+id/etTitle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tvBarcode" />
 
-        <EditText
-            android:id="@+id/etIntro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/etTitle"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<EditText
+			android:id="@+id/etIntro"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/etTitle" />
 
-        <EditText
-            android:id="@+id/etPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/etIntro"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<EditText
+			android:id="@+id/etPrice"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/etIntro" />
 
-        <TextView
-            android:id="@+id/tvCover"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            app:layout_constraintTop_toBottomOf="@id/etPrice"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<TextView
+			android:id="@+id/tvCover"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textIsSelectable="true"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/etPrice" />
 
-        <Button
-            android:id="@+id/btnUpload"
-            android:text="Upload"
-            android:textAllCaps="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvCover"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<Button
+			android:id="@+id/btnUpload"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Upload"
+			android:textAllCaps="false"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tvCover" />
 
-         <Button
-            android:id="@+id/btnAdd"
-            android:text="柜台结算"
-            android:textAllCaps="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/btnUpload"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<Button
+			android:id="@+id/btnAdd"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="柜台结算"
+			android:textAllCaps="false"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/btnUpload" />
 
-        <Button
-            android:id="@+id/btnSubmit"
-            android:text="Submit"
-            android:textAllCaps="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/btnAdd"
-            app:layout_constraintStart_toStartOf="parent"/>
+		<Button
+			android:id="@+id/btnSubmit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Submit"
+			android:textAllCaps="false"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/btnAdd" />
 
-        <ImageView
-            android:id="@+id/ivErrorIcon"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_150sdp"
-            android:alpha="0.7"
-            android:src="@drawable/ic_no_internet"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:contentDescription="@string/image_no_internet" />
+		<ImageView
+			android:id="@+id/ivErrorIcon"
+			android:layout_width="@dimen/_150sdp"
+			android:layout_height="@dimen/_150sdp"
+			android:alpha="0.7"
+			android:contentDescription="@string/image_no_internet"
+			android:src="@drawable/ic_no_internet"
+			android:visibility="gone"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintHorizontal_bias="0.5" />
 
-        <TextView
-            android:id="@+id/tvErrorMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:alpha="0.7"
-            android:text="@string/no_internet_connection"
-            android:textColor="@color/text_color"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="@+id/ivErrorIcon"
-            app:layout_constraintTop_toBottomOf="@+id/ivErrorIcon" />
+		<TextView
+			android:id="@+id/tvErrorMessage"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:alpha="0.7"
+			android:text="@string/no_internet_connection"
+			android:textColor="@color/text_color"
+			android:textSize="20sp"
+			android:textStyle="bold"
+			android:visibility="gone"
+			app:layout_constraintStart_toStartOf="@+id/ivErrorIcon"
+			app:layout_constraintTop_toBottomOf="@+id/ivErrorIcon" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

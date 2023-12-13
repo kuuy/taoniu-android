@@ -12,13 +12,17 @@ import androidx.viewbinding.ViewBinding
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.kuuy.taoniu.R
 import com.kuuy.taoniu.di.PreferencesModule
+import com.kuuy.taoniu.utils.navigate
 
 import com.kuuy.taoniu.utils.showToast
 import javax.inject.Inject
 import javax.inject.Named
 
 abstract class BaseFragment<B:ViewBinding> : Fragment() {
+  open var skipAuth: Boolean = false
+
   private var _binding: B? = null
   protected val binding get() = _binding!!
 
@@ -79,6 +83,9 @@ abstract class BaseFragment<B:ViewBinding> : Fragment() {
     savedInstanceState: Bundle?
   ): View {
     _binding = viewBinding(container)
+    if (!skipAuth && !authPreferences.contains("ACCESS_TOKEN")) {
+      navigate(R.id.loginFragment)
+    }
     return binding.root
   }
 
