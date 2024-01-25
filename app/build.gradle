@@ -151,9 +151,9 @@ dependencies {
   implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
   // ExoPlayer
-  implementation "androidx.media3:media3-exoplayer:1.2.1"
-  implementation "androidx.media3:media3-exoplayer-dash:1.2.1"
-  implementation "androidx.media3:media3-ui:1.2.1"
+  implementation "androidx.media3:media3-exoplayer:1.0.0"
+  implementation "androidx.media3:media3-exoplayer-dash:1.0.0"
+  implementation "androidx.media3:media3-ui:1.0.0"
 
   // Shimmer
   implementation 'com.facebook.shimmer:shimmer:0.5.0'
