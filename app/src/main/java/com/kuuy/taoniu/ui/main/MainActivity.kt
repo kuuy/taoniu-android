@@ -1,6 +1,5 @@
 package com.kuuy.taoniu.ui.main
 
-import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -31,7 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     binding.mainNav.setOnItemSelectedListener {
       when (it.itemId) {
         R.id.navHome -> {
-          navController.navigate(R.id.productListingsFragment)
+          navController.navigate(R.id.productsFragment)
         }
         R.id.navStrategyHome -> {
           navController.navigate(R.id.binanceSpotPlansDailyFragment)
@@ -42,7 +41,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 //          navController.navigate(R.id.orderHomeFragment)
         }
         R.id.navCounter -> {
-          navController.navigate(R.id.binanceSpotTradingsSymbolsFragment)
+          navController.navigate(R.id.counterFragment)
 //          navController.navigate(R.id.counterFragment)
         }
         R.id.navScanner -> {

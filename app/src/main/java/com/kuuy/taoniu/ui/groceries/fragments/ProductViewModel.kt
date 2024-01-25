@@ -2,14 +2,13 @@ package com.kuuy.taoniu.ui.groceries.fragments
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kuuy.taoniu.data.ApiError
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DbResource
-import com.kuuy.taoniu.data.groceries.dto.ProductListingsDto
+import com.kuuy.taoniu.data.DtoPaginate
+import com.kuuy.taoniu.data.groceries.dto.ProductInfoDto
 import com.kuuy.taoniu.data.groceries.dto.ProductDetailDto
-import com.kuuy.taoniu.data.groceries.dto.ProductBarcodeDto
+import com.kuuy.taoniu.data.groceries.dto.BarcodeInfoDto
 import com.kuuy.taoniu.data.groceries.repositories.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -17,32 +16,31 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-import retrofit2.HttpException
-
 import com.kuuy.taoniu.ui.base.BaseViewModel
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
   private val repository: ProductRepository
 ) : BaseViewModel() {
-
-  private val _productListings
-      = MutableLiveData<ApiResource<ProductListingsDto>>()
+  private val _productPaginate
+      = MutableLiveData<ApiResource<DtoPaginate<ProductInfoDto>>>()
   private val _productDetail
       = MutableLiveData<ApiResource<ProductDetailDto>>()
   private val _productBarcode
-      = MutableLiveData<ApiResource<ProductBarcodeDto>>()
+      = MutableLiveData<ApiResource<BarcodeInfoDto>>()
   private val _productCreate
       = MutableLiveData<ApiResource<Nothing>>()
   private val _productUpdate
       = MutableLiveData<ApiResource<Nothing>>()
   private val _productAddToCounter
       = MutableLiveData<DbResource<Nothing>>()
-  val productListings: LiveData<ApiResource<ProductListingsDto>>
-      get() = _productListings
+
+  var status = MutableLiveData<Int>()
+  val productPaginate: LiveData<ApiResource<DtoPaginate<ProductInfoDto>>>
+      get() = _productPaginate
   val productDetail: LiveData<ApiResource<ProductDetailDto>>
       get() = _productDetail
-  val productBarcode: LiveData<ApiResource<ProductBarcodeDto>>
+  val barcodeInfo: LiveData<ApiResource<BarcodeInfoDto>>
       get() = _productBarcode
   val productCreate: LiveData<ApiResource<Nothing>>
       get() = _productCreate
@@ -51,119 +49,124 @@ class ProductViewModel @Inject constructor(
   val productAddToCounter: LiveData<DbResource<Nothing>>
       get() = _productAddToCounter
 
-  fun getProductListings() {
-    viewModelScope.launch {
-      repository.getProductListings()
-          .onStart {
-            _productListings.postValue(ApiResource.Loading())
-          }.catch {
-            it.message?.let { message ->
-              _productListings.postValue(ApiResource.Error(ApiError(500, message)))
-              retryFunctionList.add(::getProductListings)
-            }
-          }.collect { response ->
-            response.data.let {
-              _productListings.postValue(ApiResource.Success(it))
-            }
-          }
-    }
-  }
-
-  fun getProductDetail(id: String) {
-    viewModelScope.launch {
-      repository.getProductDetail(id)
-          .onStart {
-            _productDetail.postValue(ApiResource.Loading())
-          }.catch {
-            var code: Int = 0
-            if (it is HttpException) {
-              code = it.code()
-            }
-            it.message?.let { message ->
-              _productDetail.postValue(ApiResource.Error(ApiError(500, message)))
-              //retryFunctionList.add(::getProductDetail)
-            }
-          }.collect { response ->
-            response.data.let {
-              _productDetail.postValue(ApiResource.Success(it))
-            }
-          }
-    }
-  }
-
-  fun getProductBarcode(barcode: String) {
-    viewModelScope.launch {
-      repository.getProductBarcode(barcode)
-          .onStart {
-            _productBarcode.postValue(ApiResource.Loading())
-          }.catch {
-            it.message?.let { message ->
-              _productBarcode.postValue(ApiResource.Error(ApiError(500, message)))
-              //retryFunctionList.add(::getProductBarcode)
-            }
-          }.collect { response ->
-            response.data.let {
-              _productBarcode.postValue(ApiResource.Success(it))
-            }
-          }
-    }
-  }
-
-  fun createProduct(
-    barcode: String,
-    title: String,
-    intro: String,
-    price: Float,
-    cover: String,
+  fun listings(
+    current: Int,
+    pageSize: Int,
   ) {
     viewModelScope.launch {
-      repository.createProduct(
-        barcode,
-        title,
-        intro,
-        price,
-        cover,
-      ).onStart {
-        _productCreate.postValue(ApiResource.Loading())
+      repository.listings(current, pageSize).onStart {
+        _productPaginate.postValue(ApiResource.Loading())
       }.catch {
-        it.message?.let { message ->
-          _productCreate.postValue(ApiResource.Error(ApiError(500, message)))
-              //retryFunctionList.add(::getProductBarcode)
-        }
+        _productPaginate.postValue(ApiResource.Success(null))
       }.collect { response ->
-        response.data.let {
-          _productCreate.postValue(ApiResource.Success(it))
+        when (response) {
+          is ApiResource.Loading -> {
+            _productPaginate.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _productPaginate.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _productPaginate.postValue(ApiResource.Error(it))
+            }
+          }
         }
       }
     }
   }
 
-  fun updateProduct(
-    id: String,
-    barcode: String,
+  fun get(id: String) {
+    viewModelScope.launch {
+      repository.get(id).catch {
+        _productDetail.postValue(ApiResource.Success(null))
+      }.collect { response ->
+        when (response) {
+          is ApiResource.Loading -> {
+            _productDetail.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _productDetail.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _productDetail.postValue(ApiResource.Error(it))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  fun create(
     title: String,
     intro: String,
     price: Float,
     cover: String,
   ) {
     viewModelScope.launch {
-      repository.updateProduct(
-        id,
-        barcode,
+      repository.create(
         title,
         intro,
         price,
         cover,
-      ).onStart {
-        _productUpdate.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _productUpdate.postValue(ApiResource.Error(ApiError(500, message)))
-              //retryFunctionList.add(::getProductBarcode)
-        }
+      ).catch {
+        _productCreate.postValue(ApiResource.Success(null))
       }.collect { response ->
-        response.data.let {
-          _productUpdate.postValue(ApiResource.Success(it))
+        when (response) {
+          is ApiResource.Loading -> {
+            _productCreate.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _productCreate.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _productCreate.postValue(ApiResource.Error(it))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  fun update(
+    id: String,
+    title: String,
+    intro: String,
+    price: Float,
+    cover: String,
+  ) {
+    viewModelScope.launch {
+      repository.update(
+        id,
+        title,
+        intro,
+        price,
+        cover,
+      ).catch {
+        _productUpdate.postValue(ApiResource.Success(null))
+      }.collect { response ->
+        when (response) {
+          is ApiResource.Loading -> {
+            _productUpdate.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _productUpdate.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _productUpdate.postValue(ApiResource.Error(it))
+            }
+          }
         }
       }
     }

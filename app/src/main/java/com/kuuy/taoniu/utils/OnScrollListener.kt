@@ -2,9 +2,10 @@ package com.kuuy.taoniu.utils
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 class OnScrollListener(
-  private val layoutManager: LinearLayoutManager,
+  private val layoutManager: RecyclerView.LayoutManager,
   private val onLoadMoreListener: () -> Unit,
 ): RecyclerView.OnScrollListener() {
   var previousTotal = 0
@@ -17,7 +18,16 @@ class OnScrollListener(
   override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
     visibleItemCount = recyclerView.childCount
     totalItemCount = layoutManager.itemCount
-    firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+    when (layoutManager) {
+      is LinearLayoutManager -> {
+        firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+      }
+      is StaggeredGridLayoutManager -> {
+        val positions = layoutManager.findFirstVisibleItemPositions(null)
+        firstVisibleItem = positions.min()
+      }
+      else -> {}
+    }
 
     if (loading) {
       if (totalItemCount > previousTotal) {

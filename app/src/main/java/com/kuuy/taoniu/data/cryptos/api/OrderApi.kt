@@ -1,6 +1,5 @@
 package com.kuuy.taoniu.data.cryptos.api
 
-
 import retrofit2.http.GET;
 import retrofit2.Response
 

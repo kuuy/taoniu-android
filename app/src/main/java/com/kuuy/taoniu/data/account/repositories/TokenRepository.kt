@@ -5,8 +5,9 @@ import com.kuuy.taoniu.data.ApiResponse
 import com.kuuy.taoniu.data.account.dto.TokenDto
 import com.kuuy.taoniu.data.account.resources.TokenResource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class TokenRepository @Inject constructor(
@@ -15,17 +16,22 @@ class TokenRepository @Inject constructor(
   suspend fun refresh(refreshToken: String)
       : Flow<ApiResource<TokenDto>> {
     return flow {
-      emit(ApiResource.Loading())
-      when (val response = tokenResource.refresh(refreshToken).firstOrNull()) {
-        is ApiResponse.Success -> {
-          val data = response.data
-          emit(ApiResource.Success(data))
-        }
-        is ApiResponse.Error -> {
-          emit(ApiResource.Error(response.apiError))
-        }
-        else -> {
-          emit(ApiResource.Success(null))
+      tokenResource.refresh(refreshToken).onStart {
+        emit(ApiResource.Loading())
+      }.catch {
+        emit(ApiResource.Success(null))
+      }.collect { response ->
+        when (response) {
+          is ApiResponse.Success -> {
+            val data = response.data
+            emit(ApiResource.Success(data))
+          }
+          is ApiResponse.Error -> {
+            emit(ApiResource.Error(response.apiError))
+          }
+          is ApiResponse.Empty -> {
+            emit(ApiResource.Success(null))
+          }
         }
       }
     }

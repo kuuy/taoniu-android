@@ -16,7 +16,8 @@ import java.io.EOFException
 import javax.inject.Inject
 
 class TokenResource @Inject constructor(
-  private var tokenApi: TokenApi
+  private var tokenApi: TokenApi,
+  private var gson: Gson,
 ) {
   suspend fun refresh(refreshToken: String): Flow<ApiResponse<TokenDto>> {
     return flow {
@@ -26,12 +27,10 @@ class TokenResource @Inject constructor(
           emit(ApiResponse.Success(it.data))
         }
       } else {
-        try {
-          response.errorBody()?.let {
-            var apiError = Gson().fromJson(it.charStream(), ApiError::class.java)
-            emit(ApiResponse.Error(apiError))
-          }
-        } catch (e: Throwable) {}
+        response.errorBody()?.let {
+          var apiError = gson.fromJson(it.charStream(), ApiError::class.java)
+          emit(ApiResponse.Error(apiError))
+        }
       }
     }.flowOn(Dispatchers.IO)
   }

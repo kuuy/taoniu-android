@@ -4,7 +4,8 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="120dp"
 	android:layout_height="60dp"
-	android:layout_marginEnd="8dp"
+	android:layout_marginStart="@dimen/_3sdp"
+	android:layout_marginEnd="@dimen/_3sdp"
 	android:background="@drawable/bg_rounded"
 	android:orientation="horizontal"
 	app:layout_constraintCircleRadius="3dp">

@@ -1,9 +1,7 @@
 package com.kuuy.taoniu.ui.groceries.fragments
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.fragment.findNavController
 
@@ -13,22 +11,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.kuuy.taoniu.utils.*
 import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.groceries.mappings.transform
-import com.kuuy.taoniu.data.groceries.models.ProductBarcode
 
 import com.kuuy.taoniu.ui.base.BaseFragment
-import com.kuuy.taoniu.databinding.FragmentGroceriesProductBarcodeBinding
+import com.kuuy.taoniu.databinding.FragmentGroceriesBarcodeBinding
 
 @AndroidEntryPoint
-class ProductBarcodeFragment
-    : BaseFragment<FragmentGroceriesProductBarcodeBinding>() {
+class BarcodeFragment
+    : BaseFragment<FragmentGroceriesBarcodeBinding>() {
 
-  private val args by navArgs<ProductBarcodeFragmentArgs>()
+  private val args by navArgs<BarcodeFragmentArgs>()
   private val viewModels by viewModels<ProductViewModel>()
   private var snackBar: Snackbar? = null
 
   protected override fun viewBinding(container: ViewGroup?)
-      : FragmentGroceriesProductBarcodeBinding {
-    return FragmentGroceriesProductBarcodeBinding.inflate(
+      : FragmentGroceriesBarcodeBinding {
+    return FragmentGroceriesBarcodeBinding.inflate(
       layoutInflater,
       container,
       false
@@ -38,13 +35,13 @@ class ProductBarcodeFragment
   protected override fun onBind() {
     initViewModel()
     binding.swipeRefreshLayout.setOnRefreshListener {
-      viewModels.getProductBarcode(args.barcode)
+      viewModels.get(args.barcode)
     }
   }
 
   private fun initViewModel() {
-    viewModels.getProductBarcode(args.barcode)
-    viewModels.productBarcode.observe(
+    viewModels.get(args.barcode)
+    viewModels.barcodeInfo.observe(
       viewLifecycleOwner
     ) { response->
       when (response) {
@@ -54,7 +51,7 @@ class ProductBarcodeFragment
         is ApiResource.Success -> {
           response.data?.let {
             showLoading(false)
-            val action = ProductBarcodeFragmentDirections
+            val action = BarcodeFragmentDirections
                 .toProductDetailFragment(it.transform().productId)
             findNavController().navigate(action)
           }
@@ -62,7 +59,7 @@ class ProductBarcodeFragment
         is ApiResource.Error -> {
           showLoading(false)
           if (response.apiError?.code == 404) {
-            val action = ProductBarcodeFragmentDirections
+            val action = BarcodeFragmentDirections
                 .toProductCreateFragment(args.barcode)
             findNavController().navigate(action)
           } else {

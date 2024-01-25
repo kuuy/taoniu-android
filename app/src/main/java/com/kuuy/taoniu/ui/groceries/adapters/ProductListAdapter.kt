@@ -13,7 +13,6 @@ import com.kuuy.taoniu.ui.groceries.holders.ProductInfoHolder
 class ProductListAdapter(
   private val onItemClicked: (ProductInfo) -> Unit
 ) : BaseListAdapter<ProductInfo, ProductInfoHolder>() {
-
   override fun viewHolder(parent: ViewGroup): ProductInfoHolder {
     var binding = ItemGroceriesProductInfoBinding.inflate(
       LayoutInflater.from(parent.context),
@@ -32,7 +31,7 @@ class ProductListAdapter(
   }
 
   fun setData(products: List<ProductInfo>) {
-    val diffUtil = DiffUtils<ProductInfo>(listings, products)
+    val diffUtil = DiffUtils(listings, products)
     val diffUtilResult = DiffUtil.calculateDiff(diffUtil)
     listings = products as MutableList<ProductInfo>
     diffUtilResult.dispatchUpdatesTo(this)

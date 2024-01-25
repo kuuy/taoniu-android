@@ -10,9 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
-import okhttp3.MediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 
 import com.kuuy.taoniu.data.images.api.ImageApi
 import com.kuuy.taoniu.data.images.dto.ImageInfoDto

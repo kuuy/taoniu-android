@@ -10,7 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 import com.kuuy.taoniu.BuildConfig
-import com.kuuy.taoniu.data.groceries.api.ProductApi
+import com.kuuy.taoniu.data.groceries.api.FeedsApi
+import com.kuuy.taoniu.data.groceries.api.ProductsApi
 import javax.inject.Named
 
 @Module
@@ -18,14 +19,26 @@ import javax.inject.Named
 object GroceriesModule {
   @Provides
   @Singleton
-  fun provideProductApi(
+  fun provideFeedsApi(
     @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory,
-  ): ProductApi {
+  ): FeedsApi {
     return getDynamicRetrofitAuthClient(
       okHttpClient,
       gsonConverterFactory,
-    ).create(ProductApi::class.java)
+    ).create(FeedsApi::class.java)
+  }
+
+  @Provides
+  @Singleton
+  fun provideProductApi(
+    @Named(NetworkModule.AUTH_HTTP_CLIENT) okHttpClient: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory,
+  ): ProductsApi {
+    return getDynamicRetrofitAuthClient(
+      okHttpClient,
+      gsonConverterFactory,
+    ).create(ProductsApi::class.java)
   }
 
   private fun getDynamicRetrofitAuthClient(

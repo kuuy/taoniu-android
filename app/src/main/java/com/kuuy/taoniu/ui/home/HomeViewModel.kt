@@ -16,40 +16,40 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: NewsRepository
+  private val repository: NewsRepository
 ) : ViewModel() {
 
-    private val _newsResponses = MutableLiveData<ApiResource<NewsResponse>>()
-    val newsResponses: LiveData<ApiResource<NewsResponse>> get() = _newsResponses
+  private val _newsResponses = MutableLiveData<ApiResource<NewsResponse>>()
+  val newsResponses: LiveData<ApiResource<NewsResponse>> get() = _newsResponses
 
-    private var retryFunctionList: MutableList<() -> Unit> = mutableListOf()
+  private var retryFunctionList: MutableList<() -> Unit> = mutableListOf()
 
-    fun getNewsResponse() {
-        viewModelScope.launch {
-            repository.getTopNews()
-                .onStart {
-                    _newsResponses.postValue(ApiResource.Loading())
-                }
-                .catch {
-                    it.message?.let { message ->
-                        _newsResponses.postValue(ApiResource.Error(ApiError(500, message)))
-                        retryFunctionList.add(::getNewsResponse)
-                    }
-                }
-                .collect { news ->
-                    news.data.let {
-                        _newsResponses.postValue(ApiResource.Success(it))
-                    }
-                }
+  fun getNewsResponse() {
+    viewModelScope.launch {
+      repository.getTopNews()
+        .onStart {
+          _newsResponses.postValue(ApiResource.Loading())
+        }
+        .catch {
+          it.message?.let { message ->
+            _newsResponses.postValue(ApiResource.Error(ApiError(500, message)))
+            retryFunctionList.add(::getNewsResponse)
+          }
+        }
+        .collect { news ->
+          news.data.let {
+            _newsResponses.postValue(ApiResource.Success(it))
+          }
         }
     }
+  }
 
-    fun retryFailed() {
-        val currentList = retryFunctionList.toList()
-        retryFunctionList.clear()
-        currentList.forEach {
-            it()
-        }
+  fun retryFailed() {
+    val currentList = retryFunctionList.toList()
+    retryFunctionList.clear()
+    currentList.forEach {
+      it()
     }
+  }
 
 }

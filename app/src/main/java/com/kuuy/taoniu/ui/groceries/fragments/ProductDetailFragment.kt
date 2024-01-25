@@ -6,12 +6,10 @@ import android.content.Intent
 import android.content.ContentValues
 import android.net.Uri
 import android.provider.MediaStore
-import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.fragment.findNavController
 
@@ -24,7 +22,6 @@ import com.kuuy.taoniu.data.ApiResource
 import com.kuuy.taoniu.data.DbResource
 import com.kuuy.taoniu.data.images.mappings.transform
 import com.kuuy.taoniu.data.groceries.mappings.transform
-import com.kuuy.taoniu.data.groceries.models.ProductBarcode
 import com.kuuy.taoniu.data.groceries.models.ProductDetail
 
 import com.kuuy.taoniu.ui.base.BaseFragment
@@ -120,7 +117,7 @@ class ProductDetailFragment
 
   protected override fun onBind() {
     initViewModel()
-    viewModel.getProductDetail(args.id)
+    viewModel.get(args.id)
     binding.swipeRefreshLayout.setOnRefreshListener {
     }
     viewModel.productUpdate.observe(
@@ -170,9 +167,8 @@ class ProductDetailFragment
     }
 
     binding.btnSubmit.setOnClickListener {
-      viewModel.updateProduct(
+      viewModel.update(
         args.id,
-        binding.tvBarcode.text.toString(),
         binding.etTitle.text.toString(),
         binding.etIntro.text.toString(),
         binding.etPrice.text.toString().toFloat(),
@@ -193,7 +189,6 @@ class ProductDetailFragment
           showLoading(false)
           response.data?.let {
             productDetail = it.transform()
-            binding.tvBarcode.text = productDetail.barcode
             binding.etTitle.setText(productDetail.title)
             binding.etIntro.setText(productDetail.intro)
             binding.etPrice.setText(productDetail.price.toString())

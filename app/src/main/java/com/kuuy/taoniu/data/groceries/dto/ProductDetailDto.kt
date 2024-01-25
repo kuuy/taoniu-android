@@ -8,8 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class ProductDetailDto(
   @field:SerializedName("id")
   val id: String,
-  @field:SerializedName("barcode")
-  val barcode: String,
   @field:SerializedName("title")
   val title: String,
   @field:SerializedName("intro")

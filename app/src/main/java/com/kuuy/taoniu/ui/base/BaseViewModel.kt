@@ -20,5 +20,5 @@ abstract class BaseViewModel : ViewModel() {
     currentList.forEach {
       it()
     }
-  } 
+  }
 }

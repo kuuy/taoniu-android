@@ -11,14 +11,14 @@
     android:title="Announcements" />
 
   <item
-    android:id="@+id/navOrderHome"
+    android:id="@+id/navCounter"
     android:icon="@drawable/ic_cart"
-    android:title="Orders" />
+    android:title="Counter"/>
 
   <item
-    android:id="@+id/navCounter"
+    android:id="@+id/navOrderHome"
     android:icon="@drawable/ic_messaging"
-    android:title="Counter"/>
+    android:title="Orders" />
 
   <item
     android:id="@+id/navScanner"

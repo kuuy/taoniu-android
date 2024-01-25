@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/swipeRefreshLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@color/md_grey_300">
+
+	<androidx.core.widget.NestedScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<com.kuuy.taoniu.ui.widgets.banner.BannerView
+				android:id="@+id/banner"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintVertical_bias="0.0" />
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/rvCoinList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/_6sdp"
+				android:clipToPadding="false"
+				android:paddingStart="@dimen/_3sdp"
+				android:paddingEnd="@dimen/_3sdp"
+				app:layout_constraintTop_toBottomOf="@id/banner"
+				tools:ignore="RtlSymmetry" />
+
+			<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/rvProductList"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="@dimen/_6sdp"
+				android:paddingStart="@dimen/_3sdp"
+				android:paddingEnd="@dimen/_3sdp"
+				app:layout_constraintTop_toBottomOf="@id/rvCoinList" />
+
+		</androidx.constraintlayout.widget.ConstraintLayout>
+
+	</androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

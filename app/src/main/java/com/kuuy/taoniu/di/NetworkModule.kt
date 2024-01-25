@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.di
 
 import android.content.SharedPreferences
+import com.google.gson.Gson
 import com.kuuy.taoniu.data.ApiInterceptor
 import com.kuuy.taoniu.data.AuthInterceptor
 import com.kuuy.taoniu.data.AuthToken
@@ -62,8 +63,16 @@ object NetworkModule {
 
   @Singleton
   @Provides
-  fun provideGsonConverterFactory(): GsonConverterFactory {
-    return GsonConverterFactory.create()
+  fun provideGson(): Gson {
+    return Gson()
+  }
+
+  @Singleton
+  @Provides
+  fun provideGsonConverterFactory(
+    gson: Gson
+  ): GsonConverterFactory {
+    return GsonConverterFactory.create(gson)
   }
 
   @Singleton

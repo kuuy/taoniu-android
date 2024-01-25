@@ -1,6 +1,7 @@
 package com.kuuy.taoniu.data
 
 import android.content.SharedPreferences
+import android.view.View
 import com.kuuy.taoniu.data.account.repositories.TokenRepository
 import com.kuuy.taoniu.di.PreferencesModule
 import kotlinx.coroutines.flow.catch
@@ -36,11 +37,23 @@ class AuthToken constructor(
           Timber.tag(TAG).d("refresh token call failed. $message")
         }
       }.collect { response ->
-        response.data?.let {
-          authPreferences.edit()
-            .putString("ACCESS_TOKEN", it.access)
-            .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
-            .apply()
+        when (response) {
+          is ApiResource.Loading -> {}
+          is ApiResource.Success -> {
+            response.data?.let {
+              authPreferences.edit()
+                .putString("ACCESS_TOKEN", it.access)
+                .putLong("REFRESH_AT", System.currentTimeMillis() + 895000)
+                .apply()
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              if (it.code == 401 || it.code == 403) {
+                clear()
+              }
+            }
+          }
         }
       }
     }

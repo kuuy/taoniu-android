@@ -1,19 +1,15 @@
 package com.kuuy.taoniu.ui.groceries.fragments
 
-import java.io.InputStream
-
 import android.app.Activity
 import android.Manifest
 import android.content.Intent
 import android.content.ContentValues
 import android.net.Uri
 import android.provider.MediaStore
-import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.fragment.findNavController
 
@@ -108,7 +104,7 @@ class ProductCreateFragment
     }
   }
 
-  protected override fun viewBinding(container: ViewGroup?)
+  override fun viewBinding(container: ViewGroup?)
       : FragmentGroceriesProductCreateBinding {
     return FragmentGroceriesProductCreateBinding.inflate(
       layoutInflater,
@@ -117,7 +113,7 @@ class ProductCreateFragment
     )
   }
 
-  protected override fun onBind() {
+  override fun onBind() {
     initViewModel()
     binding.tvBarcode.text = args.barcode
     binding.btnUpload.setOnClickListener {
@@ -134,8 +130,7 @@ class ProductCreateFragment
       }
     }
     binding.btnSubmit.setOnClickListener {
-      viewModel.createProduct(
-        args.barcode,
+      viewModel.create(
         binding.etTitle.text.toString(),
         binding.etIntro.text.toString(),
         binding.etPrice.text.toString().toFloat(),
@@ -188,7 +183,7 @@ class ProductCreateFragment
     }
   }
 
-  override protected fun bindCameraUseCases() {
+  override fun bindCameraUseCases() {
     imageUri = requireActivity().contentResolver.insert(
       MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues()
     )!!
@@ -197,7 +192,7 @@ class ProductCreateFragment
     resultLauncherCamera.launch(intent)
   }
 
-  override protected fun bindStorageUseCases() {
+  override fun bindStorageUseCases() {
     val intent = Intent(Intent.ACTION_PICK)
     intent.type = "image/*"
     resultLauncherGallery.launch(intent)

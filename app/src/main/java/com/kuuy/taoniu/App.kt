@@ -8,6 +8,7 @@ import coil.Coil
 import coil.Coil.setImageLoader
 import coil.ImageLoader
 import coil.decode.SvgDecoder
+import coil.request.CachePolicy
 
 @HiltAndroidApp
 class App : Application() {
@@ -16,9 +17,10 @@ class App : Application() {
 
     Coil.setImageLoader(
       ImageLoader.Builder(this@App)
-          .components {
-            add(SvgDecoder.Factory())
-          }.build()
+        .components {
+          add(SvgDecoder.Factory())
+        }
+        .build()
     )
 
     if (BuildConfig.DEBUG) {

@@ -30,6 +30,7 @@ android {
     buildConfigField("String", "CRYPTOS_ASSETS_URL", project.properties["CRYPTOS_ASSETS_URL"])
     buildConfigField("String", "GROCERIES_API_URL", project.properties["GROCERIES_API_URL"])
     buildConfigField("String", "GROCERIES_ASSETS_URL", project.properties["GROCERIES_ASSETS_URL"])
+    buildConfigField("String", "STORAGES_URL", project.properties["STORAGES_URL"])
     buildConfigField("String", "IMAGES_API_URL", project.properties["IMAGES_API_URL"])
     buildConfigField("String", "PHOTOES_API_URL", project.properties["PHOTOES_API_URL"])
     buildConfigField("String", "GOOGLE_AUTH_CLIENT_ID", project.properties["GOOGLE_AUTH_CLIENT_ID"])
@@ -111,8 +112,8 @@ dependencies {
   kapt 'com.google.dagger:hilt-android-compiler:2.45'
 
   // Coroutines
-  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0'
-  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
   //Database
   implementation 'io.realm.kotlin:library-base:1.11.0'
@@ -124,14 +125,14 @@ dependencies {
   implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
 
   // Image Loading library Coil
-  implementation 'io.coil-kt:coil:2.1.0'
-  implementation 'io.coil-kt:coil-svg:2.1.0'
+  implementation 'io.coil-kt:coil:2.3.0'
+  implementation 'io.coil-kt:coil-svg:2.3.0'
 
   // Gson
   implementation 'com.google.code.gson:gson:2.9.1'
 
   // Jsoup
-  implementation 'org.jsoup:jsoup:1.15.1'
+  implementation 'org.jsoup:jsoup:1.15.3'
 
   // Rounded Image View
   implementation 'com.makeramen:roundedimageview:2.3.0'
@@ -150,9 +151,9 @@ dependencies {
   implementation "com.github.PhilJay:MPAndroidChart:v3.1.0"
 
   // ExoPlayer
-  implementation "androidx.media3:media3-exoplayer:1.0.0"
-  implementation "androidx.media3:media3-exoplayer-dash:1.0.0"
-  implementation "androidx.media3:media3-ui:1.0.0"
+  implementation "androidx.media3:media3-exoplayer:1.2.1"
+  implementation "androidx.media3:media3-exoplayer-dash:1.2.1"
+  implementation "androidx.media3:media3-ui:1.2.1"
 
   // Shimmer
   implementation 'com.facebook.shimmer:shimmer:0.5.0'
@@ -169,4 +170,8 @@ dependencies {
 
   // Google Play Auth
   implementation 'com.google.android.gms:play-services-auth:20.7.0'
+
+  // Mqtt
+  implementation 'org.eclipse.paho:org.eclipse.paho.mqttv5.client:1.2.5'
+  implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }

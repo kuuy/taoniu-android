@@ -25,18 +25,25 @@ class AuthViewModel @Inject constructor(
 
   fun login(email: String, password: String) {
     viewModelScope.launch {
-      repository.login(email, password)
-        .onStart {
-          _token.postValue(ApiResource.Loading())
-        }.catch {
-          it.message?.let { message ->
-            _token.postValue(ApiResource.Error(ApiError(500, message)))
+      repository.login(email, password).catch {
+        _token.postValue(ApiResource.Success(null))
+      }.collect { response ->
+        when (response) {
+          is ApiResource.Loading -> {
+            _token.postValue(ApiResource.Loading())
           }
-        }.collect { response ->
-          response.data.let {
-            _token.postValue(ApiResource.Success(it))
+          is ApiResource.Success -> {
+            response.data?.let {
+              _token.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _token.postValue(ApiResource.Error(it))
+            }
           }
         }
+      }
     }
   }
 }

@@ -1,0 +1,6 @@
+[submodule "plugin/hysteria"]
+	path = plugin/hysteria
+	url = git@github.com:apernet/hysteria.git
+[submodule "plugin/hysteria/src/main/go/hysteria"]
+	path = plugin/hysteria/src/main/go/hysteria
+	url = git@github.com:apernet/hysteria.git

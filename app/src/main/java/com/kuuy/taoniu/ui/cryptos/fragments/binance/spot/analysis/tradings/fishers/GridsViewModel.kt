@@ -67,15 +67,23 @@ class GridsViewModel @Inject constructor(
       repository.listings(
         current,
         pageSize,
-      ).onStart {
-        _gridsPaginate.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _gridsPaginate.postValue(ApiResource.Error(ApiError(500, message)))
-        }
+      ).catch {
+        _gridsPaginate.postValue(ApiResource.Success(null))
       }.collect { response ->
-        response.data.let {
-          _gridsPaginate.postValue(ApiResource.Success(it))
+        when (response) {
+          is ApiResource.Loading -> {
+            _gridsPaginate.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _gridsPaginate.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _gridsPaginate.postValue(ApiResource.Error(it))
+            }
+          }
         }
       }
     }
@@ -83,15 +91,23 @@ class GridsViewModel @Inject constructor(
 
   fun getMarginIsolatedSeries() {
     viewModelScope.launch {
-      marginIsolatedRepository.series(10).onStart {
-        _marginIsolatedSeries.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _marginIsolatedSeries.postValue(ApiResource.Error(ApiError(500, message)))
-        }
+      marginIsolatedRepository.series(10).catch {
+        _marginIsolatedSeries.postValue(ApiResource.Success(null))
       }.collect { response ->
-        response.data.let {
-          _marginIsolatedSeries.postValue(ApiResource.Success(it))
+        when (response) {
+          is ApiResource.Loading -> {
+            _marginIsolatedSeries.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _marginIsolatedSeries.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _marginIsolatedSeries.postValue(ApiResource.Error(it))
+            }
+          }
         }
       }
     }
@@ -105,15 +121,23 @@ class GridsViewModel @Inject constructor(
       marginIsolatedRepository.listings(
         current,
         pageSize,
-      ).onStart {
-        _marginIsolatedGridsPaginate.postValue(ApiResource.Loading())
-      }.catch {
-        it.message?.let { message ->
-          _marginIsolatedGridsPaginate.postValue(ApiResource.Error(ApiError(500, message)))
-        }
+      ).catch {
+        _marginIsolatedGridsPaginate.postValue(ApiResource.Success(null))
       }.collect { response ->
-        response.data.let {
-          _marginIsolatedGridsPaginate.postValue(ApiResource.Success(it))
+        when (response) {
+          is ApiResource.Loading -> {
+            _marginIsolatedGridsPaginate.postValue(ApiResource.Loading())
+          }
+          is ApiResource.Success -> {
+            response.data?.let {
+              _marginIsolatedGridsPaginate.postValue(ApiResource.Success(it))
+            }
+          }
+          is ApiResource.Error -> {
+            response.apiError?.let {
+              _marginIsolatedGridsPaginate.postValue(ApiResource.Error(it))
+            }
+          }
         }
       }
     }
